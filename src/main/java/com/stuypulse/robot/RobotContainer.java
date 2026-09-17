@@ -5,10 +5,10 @@
 package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.auton.AutonomousRoutines;
-import com.stuypulse.robot.constants.Ports;
+import com.stuypulse.robot.constants.GlobalPorts;
 
 import org.wpilib.command3.Command;
-import org.wpilib.command3.button.CommandNiDsXboxController;
+import org.wpilib.command3.button.CommandGamepad;
 import org.wpilib.smartdashboard.SendableChooser;
 import org.wpilib.smartdashboard.SmartDashboard;
 
@@ -18,12 +18,10 @@ import dev.doglog.DogLogOptions;
 public class RobotContainer {
 
     // Gamepads
-    public final CommandNiDsXboxController driver =
-            new CommandNiDsXboxController(Ports.Gamepad.DRIVER);
-    public final CommandNiDsXboxController operator =
-            new CommandNiDsXboxController(Ports.Gamepad.OPERATOR);
+    public final CommandGamepad driver = new CommandGamepad(GlobalPorts.Gamepad.DRIVER); // model-agnostic controller
+    // public final CommandGamepad operator = new CommandGamepad(GlobalPorts.Gamepad.OPERATOR);
 
-    // Subsystem
+    // Subsystems
 
     // Autons
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();

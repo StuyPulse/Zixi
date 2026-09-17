@@ -9,8 +9,8 @@ import org.wpilib.framework.RobotBase;
 /**
  * Main Class
  *
- * This is the main class that instantiates the robot code.
- * There is no need to edit this file, and it should not be edited unless you know what you are doing.
+ * <p>This is the main class that instantiates the robot code. There is no need to edit this file,
+ * and it should not be edited unless you know what you are doing.
  */
 public final class Main {
     private Main() {}
@@ -19,7 +19,7 @@ public final class Main {
      * The main method that starts the robot code. This should not be edited unless you know what
      * you are doing.
      */
-    public static void main(String... args) {
+    void main() {
         RobotBase.startRobot(Robot.class);
     }
 }

@@ -83,6 +83,7 @@ dependencies {
 test {
     useJUnitPlatform()
     systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
+    jvmArgs '--add-opens=java.base/jdk.internal.vm=ALL-UNNAMED' // allow tests to access robot code classes
 }
 
 // Simulation configuration (e.g. environment variables).
@@ -111,6 +112,7 @@ tasks.withType(JavaCompile) {
     options.compilerArgs.add '-XDstringConcat=inline'
 }
 
+project.compileJava.dependsOn(spotlessApply)
 spotless {
     enforceCheck = false
     java {

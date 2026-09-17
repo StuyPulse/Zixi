@@ -15,7 +15,7 @@ import java.util.Optional;
 /**
  * Robot Class
  *
- * This is the main class for robot code, instantiated in {@link com.stuypulse.robot.Main} It
+ * <p>This is the main class for robot code, instantiated in {@link com.stuypulse.robot.Main} It
  * extends TimedRobot, meaning that the methods in this class are called automatically during
  * specific states of the robot.
  */
