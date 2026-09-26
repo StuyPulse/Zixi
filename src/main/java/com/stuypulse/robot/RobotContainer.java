@@ -18,7 +18,8 @@ import dev.doglog.DogLogOptions;
 public class RobotContainer {
 
     // Gamepads
-    public final CommandGamepad driver = new CommandGamepad(GlobalPorts.Gamepad.DRIVER); // model-agnostic controller
+    public final CommandGamepad driver =
+            new CommandGamepad(GlobalPorts.Gamepad.DRIVER); // model-agnostic controller
     // public final CommandGamepad operator = new CommandGamepad(GlobalPorts.Gamepad.OPERATOR);
 
     // Subsystems

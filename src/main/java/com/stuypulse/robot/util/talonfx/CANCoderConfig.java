@@ -9,6 +9,7 @@ import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
+/** Wrapper class for configuring CANCoder encoders */
 public class CANCoderConfig {
     private final CANcoderConfiguration configuration = new CANcoderConfiguration();
     private final MagnetSensorConfigs magnetSensorConfigs = new MagnetSensorConfigs();

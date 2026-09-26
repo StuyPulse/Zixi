@@ -5,10 +5,11 @@
 package com.stuypulse.robot.util.talonfx;
 
 import static org.wpilib.units.Units.*;
+
 import org.wpilib.units.measure.*;
 
-import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.configs.*;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.*;
 
 /** Wrapper class for configuring TalonFX motors */

@@ -5,7 +5,7 @@
 package com.stuypulse.robot.constants;
 
 /**
- * File containing tunable settings for every subsystem on the robot.
+ * File containing non-subsystem settings for the robot.
  *
  * <p>We use DogLog's tunables in order to have tunable values that we can edit from external
  * dashboards.

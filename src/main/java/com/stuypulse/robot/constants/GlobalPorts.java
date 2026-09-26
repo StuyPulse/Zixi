@@ -4,7 +4,10 @@
 /**************************************************************/
 package com.stuypulse.robot.constants;
 
-/** This file contains the different ports of motors, solenoids and sensors */
+/**
+ * This file contains the different hardware ports of hardware not belonging to a particular
+ * subsystem.
+ */
 public interface GlobalPorts {
     public interface Gamepad {
         int DRIVER = 0;

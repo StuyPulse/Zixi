@@ -19,7 +19,7 @@ public final class Main {
      * The main method that starts the robot code. This should not be edited unless you know what
      * you are doing.
      */
-    void main() {
+    public static void main(String[] args) {
         RobotBase.startRobot(Robot.class);
     }
 }
