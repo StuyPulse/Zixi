@@ -4,10 +4,41 @@
 /**************************************************************/
 package com.stuypulse.robot.constants;
 
+import static org.wpilib.units.Units.*;
+import org.wpilib.units.measure.*;
+
+import dev.doglog.DogLog;
+
+import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean;
+import org.wpilib.framework.RobotBase;
+
 /**
  * File containing non-subsystem settings for the robot.
- *
- * <p>We use DogLog's tunables in order to have tunable values that we can edit from external
- * dashboards.
  */
-public interface GlobalSettings {}
+public interface GlobalSettings {
+    Time DT = Milliseconds.of(20);
+
+    /**
+     * Uses either a {@link DogLog#tunable(key, value)} or
+     * {@link LoggedNetworkBoolean} for each subsystem to add subsystem toggling
+     * functionality from external dashboards.
+     */
+    interface EnabledSubsystems {
+    }
+
+    /** What mode the robot is in when running a simulation. */
+    RobotMode SIM_MODE = RobotMode.SIM;
+
+    RobotMode CURRENT_MODE = RobotBase.isReal() ? RobotMode.REAL : SIM_MODE;
+
+    enum RobotMode {
+        /** Running on a real robot. */
+        REAL,
+
+        /** Running in simulation. */
+        SIM,
+
+        /** Replaying from a log file. */
+        REPLAY
+    }
+}
