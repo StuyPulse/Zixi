@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 public class RobotContainerTest {
     @BeforeEach
     public void setup() {
-        assert HAL.initialize(500, 0);
+        assert HAL.initialize();
     }
 
     @Test

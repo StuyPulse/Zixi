@@ -9,11 +9,8 @@ import com.stuypulse.robot.constants.GlobalPorts;
 
 import org.wpilib.command3.Command;
 import org.wpilib.command3.button.CommandGamepad;
-import org.wpilib.smartdashboard.SendableChooser;
-import org.wpilib.smartdashboard.SmartDashboard;
-
-import dev.doglog.DogLog;
-import dev.doglog.DogLogOptions;
+import org.wpilib.telemetry.Telemetry;
+import org.wpilib.tunable.Selectable;
 
 public class RobotContainer {
 
@@ -25,7 +22,7 @@ public class RobotContainer {
     // Subsystems
 
     // Autons
-    private static SendableChooser<Command> autonChooser = new SendableChooser<>();
+    private static Selectable<Command> autonChooser = new Selectable<>();
 
     // Robot container
 
@@ -41,8 +38,6 @@ public class RobotContainer {
     /***************/
 
     private void configureLogging() {
-        DogLog.setOptions(
-                new DogLogOptions().withCaptureDs(true).withNtTunables(true).withLogExtras(true));
     }
 
     /****************/
@@ -62,9 +57,9 @@ public class RobotContainer {
     /**************/
 
     public void configureAutons() {
-        autonChooser.setDefaultOption("Do Nothing", AutonomousRoutines.doNothingAuton());
+        autonChooser.addDefault("Do Nothing", AutonomousRoutines.doNothingAuton());
 
-        SmartDashboard.putData("Autonomous", autonChooser);
+        Telemetry.log("Autonomous", autonChooser);
     }
 
     /**
