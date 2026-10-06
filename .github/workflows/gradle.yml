@@ -5,15 +5,15 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, staging ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, staging ]
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
-
+    runs-on: ubuntu-24.04
+    container: wpilib/systemcore-cross-ubuntu:2027-24.04
     steps:
     - uses: actions/checkout@v7
     - name: Set up JDK 25

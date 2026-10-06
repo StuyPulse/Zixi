@@ -37,8 +37,7 @@ public class RobotContainer {
     /*** LOGGING ***/
     /***************/
 
-    private void configureLogging() {
-    }
+    private void configureLogging() {}
 
     /****************/
     /*** DEFAULTS ***/

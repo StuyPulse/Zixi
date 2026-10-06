@@ -1,12 +1,12 @@
-# Phil
+# Zixi
 
-A template repo for a command style robot. 
+A template repo for an IO style robot. 
 
 ## To Use
 
-- Click `Use this template` in GitHub and create your new repository using the `Phil` template. 
+- Click `Use this template` in GitHub and create your new repository using the `Zixi` template. 
 - Ensure that the `vendordeps` & `build.gradle`'s plugin versions are up-to-date in your new repository.
-- Now go Phil up your repository 😀
+- Happy coding! 😀
 
 ## To Update | Maintain
 Do *not* use the automatic import project tool. Instead,

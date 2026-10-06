@@ -16,8 +16,8 @@ public interface GlobalSettings {
     Time DT = Milliseconds.of(20);
 
     /**
-     * Uses a {@link LoggedNetworkBoolean} for each
-     * subsystem to add subsystem toggling functionality from external dashboards.
+     * Uses a {@link LoggedNetworkBoolean} for each subsystem to add subsystem toggling
+     * functionality from external dashboards.
      */
     interface EnabledSubsystems {}
 
