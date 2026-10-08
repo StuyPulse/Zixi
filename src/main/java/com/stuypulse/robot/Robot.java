@@ -4,21 +4,20 @@
 /**************************************************************/
 package com.stuypulse.robot;
 
+import com.stuypulse.robot.constants.GlobalSettings;
+
+import org.wpilib.command3.Command;
+import org.wpilib.command3.Scheduler;
+import org.wpilib.driverstation.Alliance;
+import org.wpilib.driverstation.MatchState;
+
+import java.util.Optional;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
-import org.wpilib.command3.Command;
-import org.wpilib.command3.Scheduler;
-import org.wpilib.driverstation.Alliance;
-import org.wpilib.driverstation.MatchState;
-import org.wpilib.framework.TimedRobot;
-
-import com.stuypulse.robot.constants.GlobalSettings;
-
-import java.util.Optional;
 
 /**
  * Robot Class
