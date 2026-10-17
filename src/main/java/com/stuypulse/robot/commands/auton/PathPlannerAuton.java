@@ -55,6 +55,7 @@ public class PathPlannerAuton implements Auton {
     }
 
     /** Sets path poses as field objects which display as trajectories on elastic */
+    @Override
     public void displayPaths() {
         for (int i = 0; i < subPaths.size(); i++) {
             if (MatchState.getAlliance().get() == Alliance.BLUE) {
@@ -76,6 +77,7 @@ public class PathPlannerAuton implements Auton {
     }
 
     /** Sets field objects to empty poses so they disappear */
+    @Override
     public void clearPaths() {
         for (int i = 0; i < subPaths.size(); i++) {
             Field.FIELD_2D.getObject("path: " + subPaths.get(i).name).setPoses();
@@ -83,6 +85,7 @@ public class PathPlannerAuton implements Auton {
     }
 
     /** @return The auton command to schedule */
+    @Override
     public Command getCommand() {
         return command;
     }
