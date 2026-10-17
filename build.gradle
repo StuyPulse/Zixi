@@ -146,28 +146,6 @@ spotless {
     }
 }
 
-def getGitCommitDetails() {
-    try {
-        def process = new ProcessBuilder("git", "log", "-1", "--format=%h|%s|%b")
-            .directory(project.rootDir)
-            .redirectErrorStream(true)
-            .start()
-
-        def output = process.inputStream.getText('UTF-8').trim()
-        def exitCode = process.waitFor()
-
-        if (exitCode != 0) {
-            println "Git command failed: ${output}"
-            return "unknown|unknown|unknown"
-        }
-
-        return output
-    } catch (Exception e) {
-        println "Failed to get Git commit details: ${e.message}"
-        return "unknown|unknown|unknown"
-    }
-}
-
 tasks.register('recordLastCommit', JavaExec) {
     group = 'deployment'
 
