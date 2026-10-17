@@ -58,7 +58,7 @@ public class RobotContainer {
     public void configureAutons() {
         AutonFactory autonFactory = new AutonFactory();
 
-        autonChooser.addDefault("Do Nothing", autonFactory.doNothingAuton());
+        // autonChooser.addDefault("Do Nothing", autonFactory.doNothingAuton());
 
         Telemetry.log("Autonomous", autonChooser);
     }
