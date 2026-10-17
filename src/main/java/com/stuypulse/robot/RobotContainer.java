@@ -4,7 +4,7 @@
 /**************************************************************/
 package com.stuypulse.robot;
 
-import com.stuypulse.robot.commands.auton.AutonomousRoutines;
+import com.stuypulse.robot.commands.auton.AutonFactory;
 import com.stuypulse.robot.constants.GlobalPorts;
 
 import org.wpilib.command3.Command;
@@ -22,7 +22,7 @@ public class RobotContainer {
     // Subsystems
 
     // Autons
-    private static Selectable<Command> autonChooser = new Selectable<>();
+    private Selectable<Command> autonChooser = new Selectable<>();
 
     // Robot container
 
@@ -56,7 +56,9 @@ public class RobotContainer {
     /**************/
 
     public void configureAutons() {
-        autonChooser.addDefault("Do Nothing", AutonomousRoutines.doNothingAuton());
+        AutonFactory autonFactory = new AutonFactory();
+
+        autonChooser.addDefault("Do Nothing", autonFactory.doNothingAuton());
 
         Telemetry.log("Autonomous", autonChooser);
     }
