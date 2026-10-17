@@ -4,6 +4,7 @@
 /**************************************************************/
 package com.stuypulse.robot;
 
+import com.stuypulse.robot.commands.auton.Auton;
 import com.stuypulse.robot.commands.auton.AutonFactory;
 import com.stuypulse.robot.constants.GlobalPorts;
 
@@ -22,7 +23,7 @@ public class RobotContainer {
     // Subsystems
 
     // Autons
-    private LoggedNetworkChooser<Command> autonChooser = new LoggedNetworkChooser<>("Auton");
+    private LoggedNetworkChooser<Auton> autonChooser = new LoggedNetworkChooser<>("Auton");
 
     // Robot container
 
@@ -66,7 +67,7 @@ public class RobotContainer {
      *
      * @return The command to run in autonomous
      */
-    public Command getAutonomousCommand() {
+    public Auton getAutonomousCommand() {
         return autonChooser.getSelected();
     }
 }
