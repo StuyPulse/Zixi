@@ -93,10 +93,10 @@ public class Robot extends LoggedRobot {
                 String message = object.path("message").asText("unknown");
                 String description = object.path("description").asText("");
 
-                Logger.recordMetadata("Commit/Hash", hash);
-                Logger.recordMetadata("Commit/Message", message);
+                Logger.recordMetadata("Commit Hash", hash);
+                Logger.recordMetadata("Commit Message", message);
                 if (!description.isBlank()) {
-                    Logger.recordMetadata("Commit/Description", description);
+                    Logger.recordMetadata("Commit Description", description);
                 }
             } else {
                 Logger.recordMetadata("Commit", "commit.json file missing");
