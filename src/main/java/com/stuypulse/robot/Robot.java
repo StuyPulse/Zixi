@@ -4,6 +4,7 @@
 /**************************************************************/
 package com.stuypulse.robot;
 
+import com.stuypulse.robot.commands.auton.Auton;
 import com.stuypulse.robot.constants.GlobalSettings;
 
 import org.wpilib.command3.Command;
@@ -43,7 +44,7 @@ public class Robot extends LoggedRobot {
 
     private final RobotContainer robot;
     private final Scheduler defaultScheduler;
-    private Command auto;
+    private Auton auto;
 
     public Robot() {
         robot = new RobotContainer();
@@ -67,9 +68,11 @@ public class Robot extends LoggedRobot {
                 String logPath = LogFileUtil.findReplayLog();
                 Logger.setReplaySource(new WPILOGReader(logPath));
                 Logger.addDataReceiver(
-                        new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
+                        new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_replay")));
             }
         }
+
+        Logger.start();
     }
 
     /*************************/
@@ -89,7 +92,22 @@ public class Robot extends LoggedRobot {
     public void disabledInit() {}
 
     @Override
-    public void disabledPeriodic() {}
+    public void disabledPeriodic() {
+        if (auto != robot.getAutonomousCommand() && auto != null) {
+            auto.clearPaths();
+
+            auto = robot.getAutonomousCommand();
+
+            auto.displayPaths();
+        } 
+        
+        if (auto == null) {
+            auto = robot.getAutonomousCommand();
+            if (auto != null) {
+                auto.displayPaths();
+            }
+        }
+    }
 
     /***********************/
     /*** AUTONOMOUS MODE ***/
@@ -97,10 +115,14 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void autonomousInit() {
+        if (auto != null) {
+            auto.clearPaths();
+        }
+
         auto = robot.getAutonomousCommand();
 
         if (auto != null) {
-            defaultScheduler.schedule(auto);
+            defaultScheduler.schedule(auto.getCommand());
         }
     }
 
@@ -117,7 +139,8 @@ public class Robot extends LoggedRobot {
     @Override
     public void teleopInit() {
         if (auto != null) {
-            defaultScheduler.cancel(auto);
+            auto.clearPaths();
+            defaultScheduler.cancel(auto.getCommand());
         }
     }
 

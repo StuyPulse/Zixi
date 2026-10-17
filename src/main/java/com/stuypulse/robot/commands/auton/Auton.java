@@ -3,7 +3,7 @@ package com.stuypulse.robot.commands.auton;
 import org.wpilib.command3.Command;
 
 /** Interface for disdplaying auton paths on elastic 
- * <p> Default implementions used for do nothing auton </p>
+ * <p> Default implementions used for do nothing auton and characterization routines</p>
 */
 public interface Auton {
     /** Display auton path trajectories on elastic */

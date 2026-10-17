@@ -4,13 +4,14 @@
 /**************************************************************/
 package com.stuypulse.robot;
 
+import com.stuypulse.robot.commands.auton.Auton;
 import com.stuypulse.robot.commands.auton.AutonFactory;
 import com.stuypulse.robot.constants.GlobalPorts;
 
 import org.wpilib.command3.Command;
 import org.wpilib.command3.button.CommandGamepad;
-import org.wpilib.telemetry.Telemetry;
-import org.wpilib.tunable.Selectable;
+
+import org.littletonrobotics.junction.networktables.LoggedNetworkChooser;
 
 public class RobotContainer {
 
@@ -22,7 +23,7 @@ public class RobotContainer {
     // Subsystems
 
     // Autons
-    private Selectable<Command> autonChooser = new Selectable<>();
+    private LoggedNetworkChooser<Auton> autonChooser = new LoggedNetworkChooser<>("Auton");
 
     // Robot container
 
@@ -58,9 +59,7 @@ public class RobotContainer {
     public void configureAutons() {
         AutonFactory autonFactory = new AutonFactory();
 
-        // autonChooser.addDefault("Do Nothing", autonFactory.doNothingAuton());
-
-        Telemetry.log("Autonomous", autonChooser);
+        autonChooser.addDefault("Do Nothing", autonFactory.doNothingAuton());
     }
 
     /**
@@ -68,7 +67,7 @@ public class RobotContainer {
      *
      * @return The command to run in autonomous
      */
-    public Command getAutonomousCommand() {
+    public Auton getAutonomousCommand() {
         return autonChooser.getSelected();
     }
 }

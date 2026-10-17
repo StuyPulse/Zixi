@@ -26,7 +26,7 @@ import org.wpilib.driverstation.MatchState;
  * <p>Define an auton in {@link AutonFactory} and add it to the auton chooser as shown in the
  * example auton in {@link RobotContainer}
  */
-public class PathPlannerAuton implements Auton{
+public class PathPlannerAuton implements Auton {
     private final List<PathPlannerPath> subPaths = new ArrayList<PathPlannerPath>();
 
     private final Command command;

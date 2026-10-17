@@ -24,7 +24,7 @@ import bline.path.Path;
  * <p>Define an auton in {@link AutonFactory} and add it to the auton chooser as shown in the
  * example auton in {@link RobotContainer}
  */
-public class BLineAuton implements Auton{
+public class BLineAuton implements Auton {
     private final List<Path> displayedPaths = new ArrayList<>();
 
     private final Command command;
