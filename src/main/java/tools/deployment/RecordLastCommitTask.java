@@ -4,6 +4,8 @@
 /**************************************************************/
 package tools.deployment;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -17,9 +19,17 @@ public class RecordLastCommitTask {
         String message = parts.length > 1 ? parts[1] : "";
         String description = parts.length > 2 ? parts[2] : "";
 
-        // should be fine to hardcode line endings since the systemcore is on linux
-        String content = hash + "\n" + message + "\n" + description + "\n";
-        Path commitPath = Paths.get("src", "main", "deploy", "commit.txt");
+        Path commitPath = Paths.get("src", "main", "deploy", "commit.json");
+
+        ObjectMapper json = new ObjectMapper();
+        ObjectNode object = json.createObjectNode();
+        object.put("hash", hash);
+        object.put("message", message);
+        if (!description.isBlank()) {
+            object.put("description", description);
+        }
+
+        String content = json.writerWithDefaultPrettyPrinter().writeValueAsString(object);
 
         try {
             Files.writeString(commitPath, content, StandardCharsets.UTF_8);
