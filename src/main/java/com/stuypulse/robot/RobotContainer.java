@@ -9,8 +9,8 @@ import com.stuypulse.robot.constants.GlobalPorts;
 
 import org.wpilib.command3.Command;
 import org.wpilib.command3.button.CommandGamepad;
-import org.wpilib.telemetry.Telemetry;
-import org.wpilib.tunable.Selectable;
+
+import org.littletonrobotics.junction.networktables.LoggedNetworkChooser;
 
 public class RobotContainer {
 
@@ -22,7 +22,7 @@ public class RobotContainer {
     // Subsystems
 
     // Autons
-    private Selectable<Command> autonChooser = new Selectable<>();
+    private LoggedNetworkChooser<Command> autonChooser = new LoggedNetworkChooser<>("Auton");
 
     // Robot container
 
@@ -59,8 +59,6 @@ public class RobotContainer {
         AutonFactory autonFactory = new AutonFactory();
 
         autonChooser.addDefault("Do Nothing", autonFactory.doNothingAuton());
-
-        Telemetry.log("Autonomous", autonChooser);
     }
 
     /**
