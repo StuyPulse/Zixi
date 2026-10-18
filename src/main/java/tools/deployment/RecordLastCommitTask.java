@@ -7,6 +7,7 @@ package tools.deployment;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,10 +15,25 @@ import java.nio.file.Paths;
 
 public class RecordLastCommitTask {
     public static void main() throws IOException, InterruptedException {
-        String[] parts = getCommitInfo();
-        String hash = parts.length > 0 ? parts[0] : "";
-        String message = parts.length > 1 ? parts[1] : "";
-        String description = parts.length > 2 ? parts[2] : "";
+        String hash = "unknown";
+        String message = "unknown";
+        String description = "unknown";
+
+        try {
+            String[] parts = getCommitInfo();
+            if (parts.length > 0 && !parts[0].isBlank()) {
+                hash = parts[0];
+            }
+            if (parts.length > 1 && !parts[1].isBlank()) {
+                message = parts[1];
+            }
+            if (parts.length > 2 && !parts[2].isBlank()) {
+                description = parts[2];
+            }
+        } catch (Exception e) {
+            IO.println("Failed to get git commit info: ");
+            e.printStackTrace();
+        }
 
         Path commitPath = Paths.get("src", "main", "deploy", "commit.json");
 
@@ -29,12 +45,12 @@ public class RecordLastCommitTask {
             object.put("description", description);
         }
 
-        String content = json.writerWithDefaultPrettyPrinter().writeValueAsString(object);
-
         try {
+            Files.createDirectories(commitPath.getParent());
+            String content = json.writerWithDefaultPrettyPrinter().writeValueAsString(object);
             Files.writeString(commitPath, content, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            IO.println("Failed to write git commit to deploy file: " + e.getMessage());
+        } catch (Exception e) {
+            IO.println("Failed to write git commit info to commit.json: ");
             e.printStackTrace();
         }
     }
@@ -55,8 +71,10 @@ public class RecordLastCommitTask {
                         .redirectErrorStream(true)
                         .start();
 
-        String output =
-                new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8).trim();
+        String output;
+        try (InputStream stream = process.getInputStream()) {
+            output = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+        }
 
         int exitCode = process.waitFor();
 
@@ -65,8 +83,7 @@ public class RecordLastCommitTask {
         }
 
         // \u0000 is java unicode escape character for the NUL character
-        String[] parts = output.split("\u0000", 3);
-
+        String[] parts = output.strip().split("\u0000", 3);
         return parts;
     }
 }

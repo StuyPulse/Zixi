@@ -101,9 +101,8 @@ public class Robot extends LoggedRobot {
             } else {
                 Logger.recordMetadata("Commit", "commit.json file missing");
             }
-        } catch (IOException e) {
-            Logger.recordMetadata("Commit", "JSON parse failed: " + e.getMessage());
-            e.printStackTrace();
+        } catch (Exception e) {
+            Logger.recordMetadata("Commit", "JSON parse failed: " + e);
         }
     }
 
