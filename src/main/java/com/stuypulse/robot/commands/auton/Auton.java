@@ -13,6 +13,8 @@ import org.wpilib.command3.Command;
  *
  * <p>Define an auton in {@link AutonFactory} and add it to the auton chooser as shown in the
  * example auton in {@link RobotContainer}
+ * 
+ * Auton routines without paths like characterization routines can be constructed using the {@link #noPaths} method
  */
 public interface Auton {
     /** Display auton path trajectories on elastic */
@@ -26,8 +28,12 @@ public interface Auton {
         return Command.sequence().named("Do Nothing");
     }
 
-    /** Used to construct characterization routines like sysid as autons */
-    public static Auton characterization(Command command) {
+    /** 
+     * Used to construct autons with no paths such as sysid characterization routines
+     * 
+     * @param command The command to run in the auton
+    */
+    public static Auton noPaths(Command command) {
         return new Auton() {
             @Override
             public Command getCommand() {
