@@ -1,11 +1,14 @@
+/************************ PROJECT ZIXI ************************/
+/* Copyright (c) 2026 StuyPulse Robotics. All rights reserved.*/
+/* This work is licensed under the terms of the MIT license.  */
+/**************************************************************/
 package com.stuypulse.robot.constants;
-
-import java.util.List;
 
 import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.smartdashboard.Field2d;
 
 import com.pathplanner.lib.util.FlippingUtil;
+import java.util.List;
 
 public interface Field {
     Field2d FIELD_2D = new Field2d();

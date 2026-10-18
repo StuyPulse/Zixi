@@ -1,20 +1,20 @@
+/************************ PROJECT ZIXI ************************/
+/* Copyright (c) 2026 StuyPulse Robotics. All rights reserved.*/
+/* This work is licensed under the terms of the MIT license.  */
+/**************************************************************/
 package com.stuypulse.robot.commands.auton;
-
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.wpilib.command3.Command;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Field;
 
+import org.wpilib.command3.Command;
+
 import bline.field.BLineField;
 import bline.path.Path;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Implementation of {@link Auton} using BLine paths
- */
+/** Implementation of {@link Auton} using BLine paths */
 public class BLineAuton implements Auton {
     private final List<Path> displayedPaths = new ArrayList<>();
 

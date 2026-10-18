@@ -6,15 +6,14 @@ package com.stuypulse.robot.commands.auton;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Field;
+
+import org.wpilib.command3.Command;
+
 import com.pathplanner.lib.path.PathPlannerPath;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.wpilib.command3.Command;
-
-/**
- * Implementation of {@link Auton} using PathPlanner paths
- */
+/** Implementation of {@link Auton} using PathPlanner paths */
 public class PathPlannerAuton implements Auton {
     private final List<PathPlannerPath> subPaths = new ArrayList<PathPlannerPath>();
 

@@ -7,7 +7,6 @@ package com.stuypulse.robot;
 import com.stuypulse.robot.commands.auton.Auton;
 import com.stuypulse.robot.constants.GlobalSettings;
 
-import org.wpilib.command3.Command;
 import org.wpilib.command3.Scheduler;
 import org.wpilib.driverstation.Alliance;
 import org.wpilib.driverstation.MatchState;
@@ -99,8 +98,8 @@ public class Robot extends LoggedRobot {
             auto = robot.getAutonomousCommand();
 
             auto.displayPaths();
-        } 
-        
+        }
+
         if (auto == null) {
             auto = robot.getAutonomousCommand();
             if (auto != null) {
