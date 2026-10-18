@@ -43,15 +43,7 @@ public class RecordLastCommitTask {
     // separators
     private static String constructFormat(String... formatters) {
         String NUL = "%x00";
-        String format = "--format=";
-        for (int i = 0; i < formatters.length; i++) {
-            if (i == formatters.length - 1) {
-                format += formatters[i];
-            } else {
-                format += formatters[i] + NUL;
-            }
-        }
-        return format;
+        return "--format=" + String.join(NUL, formatters);
     }
 
     private static String[] getCommitInfo() throws IOException, InterruptedException {
