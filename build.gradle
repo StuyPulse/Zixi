@@ -112,12 +112,22 @@ tasks.withType(JavaCompile) {
     options.compilerArgs.add '-XDstringConcat=inline'
 }
 
+// True if the file has nothing left after stripping comments
+// For ignoring commented out files with spotless
+def isFullyCommented = { File f ->
+    def stripped = f.text
+        .replaceAll('(?s)/\\*.*?\\*/', '')   // block comments (including license headers)
+        .replaceAll('(?m)//.*$', '')         // line comments
+    stripped.trim().isEmpty()
+}
+
 project.compileJava.dependsOn(spotlessApply)
 spotless {
-    enforceCheck = false
+    enforceCheck = true
     java {
-        targetExclude("src/main/java/com/stuypulse/robot/commands/autons/*.java")
+        targetExclude(fileTree('src').matching { include '**/*.java' }.filter { isFullyCommented(it) })
         
+        // Update this license header to match the robot project
         licenseHeader("""/************************ PROJECT ZIXI ************************/
 /* Copyright (c) 2026 StuyPulse Robotics. All rights reserved.*/
 /* This work is licensed under the terms of the MIT license.  */
