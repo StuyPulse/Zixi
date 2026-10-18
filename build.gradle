@@ -123,7 +123,6 @@ def isFullyCommented = { File f ->
 
 project.compileJava.dependsOn(spotlessApply)
 spotless {
-    enforceCheck = true
     java {
         targetExclude(fileTree('src').matching { include '**/*.java' }.filter { isFullyCommented(it) })
         
