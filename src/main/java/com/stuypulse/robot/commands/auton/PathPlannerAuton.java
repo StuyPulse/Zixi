@@ -4,7 +4,6 @@
 /**************************************************************/
 package com.stuypulse.robot.commands.auton;
 
-import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.constants.Field;
 import com.pathplanner.lib.path.PathPlannerPath;
 import java.util.ArrayList;
@@ -15,16 +14,7 @@ import org.wpilib.driverstation.Alliance;
 import org.wpilib.driverstation.MatchState;
 
 /**
- *
- *
- * <h2>PathPlannerAuton </h2>
- *
- * <p>Made for the purpose of previewing the selected auton in elastic
- *
- * <p>The selected path disappears when a different auton is selected or when the robot is enabled
- *
- * <p>Define an auton in {@link AutonFactory} and add it to the auton chooser as shown in the
- * example auton in {@link RobotContainer}
+ * Implementation of {@link Auton} using PathPlanner paths
  */
 public class PathPlannerAuton implements Auton {
     private final List<PathPlannerPath> subPaths = new ArrayList<PathPlannerPath>();
@@ -35,6 +25,7 @@ public class PathPlannerAuton implements Auton {
      * Creates an auton that previews the given paths and runs the given commands
      *
      * @param paths Paths to preview
+     * @param name Name of auton command given to scheduler
      * @param commands Auton command seqeunce
      */
     public PathPlannerAuton(PathPlannerPath[] paths, String name, Command... commands) {
@@ -45,16 +36,6 @@ public class PathPlannerAuton implements Auton {
         this.command = Command.sequence(commands).named(name);
     }
 
-    /**
-     * Creates an auton without paths, for sysid and characterization routines
-     *
-     * @param command The command to run
-     */
-    public PathPlannerAuton(Command command) {
-        this.command = command;
-    }
-
-    /** Sets path poses as field objects which display as trajectories on elastic */
     @Override
     public void displayPaths() {
         for (int i = 0; i < subPaths.size(); i++) {
@@ -76,7 +57,6 @@ public class PathPlannerAuton implements Auton {
         }
     }
 
-    /** Sets field objects to empty poses so they disappear */
     @Override
     public void clearPaths() {
         for (int i = 0; i < subPaths.size(); i++) {
@@ -84,7 +64,6 @@ public class PathPlannerAuton implements Auton {
         }
     }
 
-    /** @return The auton command to schedule */
     @Override
     public Command getCommand() {
         return command;

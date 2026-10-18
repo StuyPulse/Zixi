@@ -2,9 +2,18 @@ package com.stuypulse.robot.commands.auton;
 
 import org.wpilib.command3.Command;
 
-/** Interface for disdplaying auton paths on elastic 
- * <p> Default implementions used for do nothing auton and characterization routines</p>
-*/
+/**
+ *
+ *
+ * <h2>Auton </h2>
+ *
+ * <p> Used for previewing the selected auton's paths in elastic
+ *
+ * <p>The selected path disappears when a different auton is selected or when the robot is enabled
+ *
+ * <p>Define an auton in {@link AutonFactory} and add it to the auton chooser as shown in the
+ * example auton in {@link RobotContainer}
+ */
 public interface Auton {
     /** Display auton path trajectories on elastic */
     public default void displayPaths() {}

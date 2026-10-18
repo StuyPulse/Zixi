@@ -13,16 +13,7 @@ import bline.field.BLineField;
 import bline.path.Path;
 
 /**
- *
- *
- * <h2>BLineAuton </h2>
- *
- * <p>Made for the purpose of previewing the selected auton in elastic
- *
- * <p>The selected path disappears when a different auton is selected or when the robot is enabled
- *
- * <p>Define an auton in {@link AutonFactory} and add it to the auton chooser as shown in the
- * example auton in {@link RobotContainer}
+ * Implementation of {@link Auton} using BLine paths
  */
 public class BLineAuton implements Auton {
     private final List<Path> displayedPaths = new ArrayList<>();
@@ -33,6 +24,7 @@ public class BLineAuton implements Auton {
      * Creates an auton that previews the given paths and runs the given commands
      *
      * @param paths Paths to preview
+     * @param name Name of auton command given to scheduler
      * @param commands Auton command seqeunce
      */
     public BLineAuton(Path[] paths, String name, Command... commands) {
@@ -41,15 +33,6 @@ public class BLineAuton implements Auton {
         }
 
         this.command = Command.sequence(commands).named(name);
-    }
-
-    /**
-     * Creates an auton without paths, for sysid and characterization routines
-     *
-     * @param command The command to run
-     */
-    public BLineAuton(Command command) {
-        this.command = command;
     }
 
     @Override
@@ -73,7 +56,6 @@ public class BLineAuton implements Auton {
     }
 
     @Override
-    /** @return The auton command to schedule */
     public Command getCommand() {
         return command;
     }
