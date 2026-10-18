@@ -20,6 +20,7 @@ public interface Auton {
     /** Used to construct characterization routines like sysid as autons */
     public static Auton characterization(Command command) {
         return new Auton() {
+            @Override
             public Command getCommand() {
                 return command;
             }
