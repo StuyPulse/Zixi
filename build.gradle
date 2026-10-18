@@ -146,15 +146,19 @@ spotless {
     }
 }
 
-tasks.register('recordLastCommit', JavaExec) {
-    group = 'deployment'
+tasks.register("recordLastCommit", JavaExec) {
+    group = "deployment"
 
     classpath = sourceSets.main.runtimeClasspath
-    mainClass = 'tools.deployment.RecordLastCommitTask'
+    mainClass = "tools.deployment.RecordLastCommitTask"
 
     workingDir = project.rootDir
 }
 
-tasks.named('deploy') {
-    dependsOn tasks.named('recordLastCommit')
+tasks.named("deploy") {
+    dependsOn tasks.named("recordLastCommit")
+}
+
+tasks.named("simulateExternalJava") {
+    dependsOn tasks.named("recordLastCommit")
 }
