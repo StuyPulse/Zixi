@@ -39,9 +39,27 @@ public class RecordLastCommitTask {
         }
     }
 
+    // Use NUL character deliminator so that characters in commit message don't conflict with
+    // separators
+    private static String constructFormat(String... formatters) {
+        String NUL = "%x00";
+        String format = "--format=";
+        for (int i = 0; i < formatters.length; i++) {
+            if (i == formatters.length - 1) {
+                format += formatters[i];
+            } else {
+                format += formatters[i] + NUL;
+            }
+        }
+        return format;
+    }
+
     private static String[] getCommitInfo() throws IOException, InterruptedException {
+        String hash = "%h";
+        String message = "%s";
+        String description = "%b";
         Process process =
-                new ProcessBuilder("git", "log", "-1", "--format=%h%x00%s%x00%b")
+                new ProcessBuilder("git", "log", "-1", constructFormat(hash, message, description))
                         .redirectErrorStream(true)
                         .start();
 
@@ -54,6 +72,7 @@ public class RecordLastCommitTask {
             throw new RuntimeException("Git failed: " + output);
         }
 
+        // \u0000 is java unicode escape character for the NUL character
         String[] parts = output.split("\u0000", 3);
 
         return parts;
