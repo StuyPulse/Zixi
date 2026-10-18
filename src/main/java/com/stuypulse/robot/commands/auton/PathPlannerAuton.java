@@ -4,14 +4,13 @@
 /**************************************************************/
 package com.stuypulse.robot.commands.auton;
 
+import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Field;
 import com.pathplanner.lib.path.PathPlannerPath;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.wpilib.command3.Command;
-import org.wpilib.driverstation.Alliance;
-import org.wpilib.driverstation.MatchState;
 
 /**
  * Implementation of {@link Auton} using PathPlanner paths
@@ -39,15 +38,10 @@ public class PathPlannerAuton implements Auton {
     @Override
     public void displayPaths() {
         for (int i = 0; i < subPaths.size(); i++) {
-            if (MatchState.getAlliance().get() == Alliance.BLUE) {
+            if (Robot.isBlue()) {
                 Field.FIELD_2D
                         .getObject("path: " + subPaths.get(i).name)
                         .setPoses(subPaths.get(i).getPathPoses());
-            } else if (MatchState.getAlliance().isEmpty()) {
-                Field.FIELD_2D
-                        .getObject("path: " + subPaths.get(i).name)
-                        .setPoses(
-                                Field.transformToOppositeAlliance(subPaths.get(i).getPathPoses()));
             } else {
                 Field.FIELD_2D
                         .getObject("path: " + subPaths.get(i).name)
