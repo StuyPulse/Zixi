@@ -10,6 +10,7 @@ import com.stuypulse.robot.constants.GlobalSettings;
 import org.wpilib.command3.Scheduler;
 import org.wpilib.driverstation.Alliance;
 import org.wpilib.driverstation.MatchState;
+import org.wpilib.util.Alert;
 import org.wpilib.system.Filesystem;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -33,6 +34,7 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
  * specific states of the robot.
  */
 public class Robot extends LoggedRobot {
+    private static final Alert allianceMissing = new Alert("MissingAllianceWarning", "Alliance optional has no value present", Alert.Level.MEDIUM);
     /**
      * Checks the alliance the robot is on
      *
@@ -42,7 +44,10 @@ public class Robot extends LoggedRobot {
     public static boolean isBlue() {
         final Optional<Alliance> alliance = MatchState.getAlliance();
         if (alliance.isPresent()) {
+            allianceMissing.set(false);
             return alliance.get() == Alliance.BLUE;
+        } else {
+            allianceMissing.set(true);
         }
         return false;
     }
