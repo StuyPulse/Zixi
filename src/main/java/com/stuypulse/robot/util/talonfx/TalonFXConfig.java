@@ -89,15 +89,9 @@ public class TalonFXConfig {
         lastKA[slot] = kA;
 
         switch (slot) {
-            case 0:
-                motor.getConfigurator().refresh(this.getConfiguration().Slot0);
-                break;
-            case 1:
-                motor.getConfigurator().refresh(this.getConfiguration().Slot1);
-                break;
-            case 2:
-                motor.getConfigurator().refresh(this.getConfiguration().Slot2);
-                break;
+            case 0 -> motor.getConfigurator().refresh(this.getConfiguration().Slot0);
+            case 1 -> motor.getConfigurator().refresh(this.getConfiguration().Slot1);
+            case 2 -> motor.getConfigurator().refresh(this.getConfiguration().Slot2);
         }
     }
 
@@ -127,18 +121,18 @@ public class TalonFXConfig {
 
     public TalonFXConfig withFFConstants(double kS, double kV, double kA, double kG, int slot) {
         switch (slot) {
-            case 0:
+            case 0 -> {
                 slot0Configs.withKS(kS).withKV(kV).withKA(kA).withKG(kG);
                 configuration.withSlot0(slot0Configs);
-                break;
-            case 1:
+            }
+            case 1 -> {
                 slot1Configs.withKS(kS).withKV(kV).withKA(kA).withKG(kG);
                 configuration.withSlot1(slot1Configs);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 slot2Configs.withKS(kS).withKV(kV).withKA(kA).withKG(kG);
                 configuration.withSlot2(slot2Configs);
-                break;
+            }
         }
         return this;
     }
@@ -146,18 +140,18 @@ public class TalonFXConfig {
     public TalonFXConfig withStaticFeedforwardSign(
             StaticFeedforwardSignValue staticFeedforwardSign, int slot) {
         switch (slot) {
-            case 0:
+            case 0 -> {
                 slot0Configs.withStaticFeedforwardSign(staticFeedforwardSign);
                 configuration.withSlot0(slot0Configs);
-                break;
-            case 1:
+            }
+            case 1 -> {
                 slot1Configs.withStaticFeedforwardSign(staticFeedforwardSign);
                 configuration.withSlot1(slot1Configs);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 slot2Configs.withStaticFeedforwardSign(staticFeedforwardSign);
                 configuration.withSlot2(slot2Configs);
-                break;
+            }
         }
 
         return this;
@@ -207,24 +201,18 @@ public class TalonFXConfig {
         configuration.withClosedLoopGeneral(closedLoopGeneralConfigs);
 
         switch (slot) {
-            case 0:
-                {
-                    slot0Configs.withGainSchedBehavior(value);
-                    configuration.withSlot0(slot0Configs);
-                }
-                break;
-            case 1:
-                {
-                    slot1Configs.withGainSchedBehavior(value);
-                    configuration.withSlot1(slot1Configs);
-                }
-                break;
-            case 2:
-                {
-                    slot2Configs.withGainSchedBehavior(value);
-                    configuration.withSlot2(slot2Configs);
-                }
-                break;
+            case 0 -> {
+                slot0Configs.withGainSchedBehavior(value);
+                configuration.withSlot0(slot0Configs);
+            }
+            case 1 -> {
+                slot1Configs.withGainSchedBehavior(value);
+                configuration.withSlot1(slot1Configs);
+            }
+            case 2 -> {
+                slot2Configs.withGainSchedBehavior(value);
+                configuration.withSlot2(slot2Configs);
+            }
         }
 
         return this;
