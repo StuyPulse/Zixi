@@ -28,7 +28,7 @@ public class CANCoderConfig {
     // MAGNET SENSOR CONFIGS
 
     public CANCoderConfig withSensorDirection(SensorDirectionValue sensorDirection) {
-        magnetSensorConfigs.SensorDirection = sensorDirection;
+        magnetSensorConfigs.withSensorDirection(sensorDirection);
 
         configuration.withMagnetSensor(magnetSensorConfigs);
 
@@ -36,7 +36,7 @@ public class CANCoderConfig {
     }
 
     public CANCoderConfig withAbsoluteSensorDiscontinuityPoint(double discontinuityPoint) {
-        magnetSensorConfigs.AbsoluteSensorDiscontinuityPoint = discontinuityPoint;
+        magnetSensorConfigs.withAbsoluteSensorDiscontinuityPoint(discontinuityPoint);
 
         configuration.withMagnetSensor(magnetSensorConfigs);
 
@@ -44,7 +44,7 @@ public class CANCoderConfig {
     }
 
     public CANCoderConfig withMagnetOffset(double magnetOffset) {
-        magnetSensorConfigs.MagnetOffset = magnetOffset;
+        magnetSensorConfigs.withMagnetOffset(magnetOffset);
 
         configuration.withMagnetSensor(magnetSensorConfigs);
 
