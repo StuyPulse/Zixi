@@ -83,6 +83,8 @@ dependencies {
 
     def akitJson = new groovy.json.JsonSlurper().parseText(new File(projectDir.getAbsolutePath() + "/vendordeps/AdvantageKit.json").text)
     annotationProcessor "org.littletonrobotics.akit:akit-autolog:$akitJson.version"
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
 }
 
 test {
@@ -142,4 +144,21 @@ spotless {
         )
         removeUnusedImports()
     }
+}
+
+tasks.register("recordLastCommit", JavaExec) {
+    group = "deployment"
+
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = "tools.deployment.RecordLastCommitTask"
+
+    workingDir = project.rootDir
+}
+
+tasks.named("deploy") {
+    dependsOn tasks.named("recordLastCommit")
+}
+
+tasks.named("simulateExternalJava") {
+    dependsOn tasks.named("recordLastCommit")
 }
