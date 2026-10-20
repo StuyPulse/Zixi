@@ -11,7 +11,13 @@ import org.wpilib.command3.Scheduler;
 import org.wpilib.driverstation.Alliance;
 import org.wpilib.driverstation.MatchState;
 import org.wpilib.util.Alert;
+import org.wpilib.system.Filesystem;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -76,7 +82,33 @@ public class Robot extends LoggedRobot {
             }
         }
 
+        logCommitHash();
         Logger.start();
+    }
+
+    private void logCommitHash() {
+        Path commitFile = Filesystem.getDeployDirectory().toPath().resolve("commit.json");
+
+        try {
+            if (Files.exists(commitFile)) {
+                ObjectMapper json = new ObjectMapper();
+                JsonNode object = json.readTree(commitFile.toFile());
+
+                String hash = object.path("hash").asText("unknown");
+                String message = object.path("message").asText("unknown");
+                String description = object.path("description").asText("");
+
+                Logger.recordMetadata("Commit Hash", hash);
+                Logger.recordMetadata("Commit Message", message);
+                if (!description.isBlank()) {
+                    Logger.recordMetadata("Commit Description", description);
+                }
+            } else {
+                Logger.recordMetadata("Commit", "commit.json file missing");
+            }
+        } catch (Exception e) {
+            Logger.recordMetadata("Commit", "JSON parse failed: " + e);
+        }
     }
 
     /*************************/
