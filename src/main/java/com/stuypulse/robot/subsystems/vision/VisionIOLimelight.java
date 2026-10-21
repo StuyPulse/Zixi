@@ -16,7 +16,9 @@ import org.wpilib.networktables.DoubleArraySubscriber;
 import org.wpilib.networktables.DoubleSubscriber;
 import org.wpilib.networktables.IntegerPublisher;
 import org.wpilib.networktables.IntegerSubscriber;
+import org.wpilib.networktables.NetworkTable;
 import org.wpilib.networktables.NetworkTableInstance;
+import org.wpilib.networktables.TimestampedDoubleArray;
 import org.wpilib.system.RobotController;
 
 import java.util.HashSet;
@@ -50,7 +52,7 @@ public class VisionIOLimelight implements VisionIO {
      */
     public VisionIOLimelight(
             String name, Transform3d robotToCamera, Supplier<Rotation2d> rotationSupplier) {
-        var table = NetworkTableInstance.getDefault().getTable(name);
+        NetworkTable table = NetworkTableInstance.getDefault().getTable(name);
         this.rotationSupplier = rotationSupplier;
         orientationPublisher = table.getDoubleArrayTopic("robot_orientation_set").publish();
         cameraPosePublisher = table.getDoubleArrayTopic("camerapose_robotspace_set").publish();
@@ -105,7 +107,7 @@ public class VisionIOLimelight implements VisionIO {
         List<PoseObservation> poseObservations = new LinkedList<>();
 
         if (megaTagMode == MegaTagMode.MEGATAG_1) {
-            for (var rawSample : megatag1Subscriber.readQueue()) {
+            for (TimestampedDoubleArray rawSample : megatag1Subscriber.readQueue()) {
                 if (rawSample.value.length == 0) continue;
                 for (int i = 11; i < rawSample.value.length; i += 7) {
                     tagIds.add((int) rawSample.value[i]);
@@ -135,7 +137,7 @@ public class VisionIOLimelight implements VisionIO {
         }
 
         if (megaTagMode == MegaTagMode.MEGATAG_2) {
-            for (var rawSample : megatag2Subscriber.readQueue()) {
+            for (TimestampedDoubleArray rawSample : megatag2Subscriber.readQueue()) {
                 if (rawSample.value.length == 0) continue;
                 for (int i = 11; i < rawSample.value.length; i += 7) {
                     tagIds.add((int) rawSample.value[i]);

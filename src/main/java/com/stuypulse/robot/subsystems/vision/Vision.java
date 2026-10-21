@@ -9,6 +9,7 @@ import com.stuypulse.robot.constants.FieldConstants;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.Camera;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.CameraData;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.VisionSettings;
+import com.stuypulse.robot.subsystems.vision.VisionIO.PoseObservation;
 import com.stuypulse.robot.subsystems.vision.VisionIO.PoseObservationType;
 import com.stuypulse.robot.subsystems.vision.VisionIO.VisionIOOutputs;
 import com.stuypulse.robot.util.PeriodicSubsystem;
@@ -25,6 +26,7 @@ import org.wpilib.util.Alert;
 import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Map.Entry;
 
 import org.littletonrobotics.junction.Logger;
@@ -97,14 +99,14 @@ public class Vision extends PeriodicSubsystem {
 
             // Add tag poses
             for (int tagId : currentInputs.tagIds) {
-                var tagPose = FieldConstants.FIELD_LAYOUT.getTagPose(tagId);
+                Optional<Pose3d> tagPose = FieldConstants.FIELD_LAYOUT.getTagPose(tagId);
                 if (tagPose.isPresent()) {
                     tagPoses.add(tagPose.get());
                 }
             }
 
             // Loop over pose observations
-            for (var observation : currentInputs.poseObservations) {
+            for (PoseObservation observation : currentInputs.poseObservations) {
                 // Check whether to reject pose
                 boolean rejectPose =
                         observation.tagCount() == 0 // Must have at least one tag
