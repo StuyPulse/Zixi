@@ -4,9 +4,13 @@
 /**************************************************************/
 package com.stuypulse.robot.subsystems.vision;
 
-import static com.stuypulse.robot.subsystems.vision.VisionConstants.*;
+import com.stuypulse.robot.constants.FieldConstants;
 
+import com.stuypulse.robot.subsystems.vision.VisionConstants.Camera;
+import com.stuypulse.robot.subsystems.vision.VisionConstants.CameraData;
+import com.stuypulse.robot.subsystems.vision.VisionConstants.VisionSettings;
 import com.stuypulse.robot.subsystems.vision.VisionIO.PoseObservationType;
+import com.stuypulse.robot.subsystems.vision.VisionIO.VisionIOOutputs;
 import com.stuypulse.robot.util.PeriodicSubsystem;
 
 import org.wpilib.math.geometry.Pose2d;
@@ -18,51 +22,57 @@ import org.wpilib.math.numbers.N1;
 import org.wpilib.math.numbers.N3;
 import org.wpilib.util.Alert;
 
+import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
+
 import org.littletonrobotics.junction.Logger;
 
 public class Vision extends PeriodicSubsystem {
     private final VisionConsumer consumer;
-    private final VisionIO[] io;
-    private final VisionIOInputsAutoLogged[] inputs;
-    private final Alert[] disconnectedAlerts;
+    private final EnumMap<Camera, VisionIO> io;
+    private final EnumMap<Camera, VisionIOInputsAutoLogged> inputs;
+    private final EnumMap<Camera, VisionIOOutputs> outputs;
+    private final EnumMap<Camera, Alert> disconnectedAlerts;
 
-    public Vision(VisionConsumer consumer, VisionIO... io) {
+    public Vision(VisionConsumer consumer, EnumMap<Camera, VisionIO> cameraIOMap) {
         this.consumer = consumer;
-        this.io = io;
+
+        this.io = new EnumMap<>(cameraIOMap);
 
         // Initialize inputs
-        this.inputs = new VisionIOInputsAutoLogged[io.length];
-        for (int i = 0; i < inputs.length; i++) {
-            inputs[i] = new VisionIOInputsAutoLogged();
-        }
+        this.inputs = new EnumMap<>(Camera.class);
+        this.outputs = new EnumMap<>(Camera.class);
 
         // Initialize disconnected alerts
-        this.disconnectedAlerts = new Alert[io.length];
-        for (int i = 0; i < inputs.length; i++) {
-            disconnectedAlerts[i] =
-                    new Alert(
-                            "Camera " + i + " disconnected warning",
-                            "Vision camera " + Integer.toString(i) + " is disconnected.",
-                            Alert.Level.MEDIUM);
+        this.disconnectedAlerts = new EnumMap<>(Camera.class);
+
+        for (Camera camera : Camera.values()) {
+            inputs.put(camera, new VisionIOInputsAutoLogged());
+            outputs.put(camera, new VisionIOOutputs());
+            disconnectedAlerts.put(
+                    camera,
+                    new Alert("Vision " + camera.getName(), "Vision camera " + camera.getName() + " is disconnected.", Alert.Level.MEDIUM));
         }
     }
 
     /**
      * Returns the X angle to the best target, which can be used for simple servoing with vision.
      *
-     * @param cameraIndex The index of the camera to use.
+     * @param camera The camera to use
      */
-    public Rotation2d getTargetX(int cameraIndex) {
-        return inputs[cameraIndex].latestTargetObservation.tx();
+    public Rotation2d getTargetX(Camera camera) {
+        return inputs.get(camera).latestTargetObservation.tx();
     }
 
     @Override
     public void periodic() {
-        for (int i = 0; i < io.length; i++) {
-            io[i].updateInputs(inputs[i]);
-            Logger.processInputs("Vision/Camera" + Integer.toString(i), inputs[i]);
+        for (Entry<Camera, VisionIO> entry : io.entrySet()) {
+            VisionIO currentIO = entry.getValue();
+            VisionIOInputsAutoLogged currentInputs = inputs.get(entry.getKey());
+            currentIO.updateInputs(currentInputs);
+            Logger.processInputs("Vision/" + entry.getKey().getName(), currentInputs);
         }
 
         // Initialize logging values
@@ -72,9 +82,12 @@ public class Vision extends PeriodicSubsystem {
         List<Pose3d> allRobotPosesRejected = new LinkedList<>();
 
         // Loop over cameras
-        for (int cameraIndex = 0; cameraIndex < io.length; cameraIndex++) {
+        for (Entry<Camera, VisionIO> entry : io.entrySet()) {
+            CameraData currentCameraData = entry.getKey().getData();
+            VisionIOInputsAutoLogged currentInputs = inputs.get(entry.getKey());
+
             // Update disconnected alert
-            disconnectedAlerts[cameraIndex].set(!inputs[cameraIndex].connected);
+            disconnectedAlerts.get(entry.getKey()).set(!currentInputs.connected);
 
             // Initialize logging values
             List<Pose3d> tagPoses = new LinkedList<>();
@@ -83,29 +96,29 @@ public class Vision extends PeriodicSubsystem {
             List<Pose3d> robotPosesRejected = new LinkedList<>();
 
             // Add tag poses
-            for (int tagId : inputs[cameraIndex].tagIds) {
-                var tagPose = aprilTagLayout.getTagPose(tagId);
+            for (int tagId : currentInputs.tagIds) {
+                var tagPose = FieldConstants.FIELD_LAYOUT.getTagPose(tagId);
                 if (tagPose.isPresent()) {
                     tagPoses.add(tagPose.get());
                 }
             }
 
             // Loop over pose observations
-            for (var observation : inputs[cameraIndex].poseObservations) {
+            for (var observation : currentInputs.poseObservations) {
                 // Check whether to reject pose
                 boolean rejectPose =
                         observation.tagCount() == 0 // Must have at least one tag
                                 || (observation.tagCount() == 1
                                         && observation.ambiguity()
-                                                > maxAmbiguity) // Cannot be high ambiguity
+                                                > VisionSettings.MAX_AMBIGUITY) // Cannot be high ambiguity
                                 || Math.abs(observation.pose().getZ())
-                                        > maxZError // Must have realistic Z coordinate
+                                        > VisionSettings.MAX_Z_ERROR // Must have realistic Z coordinate
 
                                 // Must be within the field boundaries
                                 || observation.pose().getX() < 0.0
-                                || observation.pose().getX() > aprilTagLayout.getFieldLength()
+                                || observation.pose().getX() > FieldConstants.FIELD_LAYOUT.getFieldLength()
                                 || observation.pose().getY() < 0.0
-                                || observation.pose().getY() > aprilTagLayout.getFieldWidth();
+                                || observation.pose().getY() > FieldConstants.FIELD_LAYOUT.getFieldWidth();
 
                 // Add pose to log
                 robotPoses.add(observation.pose());
@@ -123,16 +136,14 @@ public class Vision extends PeriodicSubsystem {
                 // Calculate standard deviations
                 double stdDevFactor =
                         Math.pow(observation.averageTagDistance(), 2.0) / observation.tagCount();
-                double linearStdDev = linearStdDevBaseline * stdDevFactor;
-                double angularStdDev = angularStdDevBaseline * stdDevFactor;
+                double linearStdDev = VisionSettings.LINEAR_STD_DEV_BASELINE * stdDevFactor;
+                double angularStdDev = VisionSettings.ANGULAR_STD_DEV_BASELINE * stdDevFactor;
                 if (observation.type() == PoseObservationType.MEGATAG_2) {
-                    linearStdDev *= linearStdDevMegatag2Factor;
-                    angularStdDev *= angularStdDevMegatag2Factor;
+                    linearStdDev *= VisionSettings.LINEAR_STD_DEV_MEGATAG_2_FACTOR;
+                    angularStdDev *= VisionSettings.ANGULAR_STD_DEV_MEGATAG_2_FACTOR;
                 }
-                if (cameraIndex < cameraStdDevFactors.length) {
-                    linearStdDev *= cameraStdDevFactors[cameraIndex];
-                    angularStdDev *= cameraStdDevFactors[cameraIndex];
-                }
+                linearStdDev *= currentCameraData.stdDevFactor();
+                angularStdDev *= currentCameraData.stdDevFactor();
 
                 // Send vision observation
                 consumer.accept(
@@ -143,17 +154,17 @@ public class Vision extends PeriodicSubsystem {
 
             // Log camera metadata
             Logger.recordOutput(
-                    "Vision/Camera" + Integer.toString(cameraIndex) + "/TagPoses",
-                    tagPoses.toArray(new Pose3d[0]));
+                    "Vision/Camera" + currentCameraData.name() + "/TagPoses",
+                    tagPoses.toArray(new Pose3d[tagPoses.size()]));
             Logger.recordOutput(
-                    "Vision/Camera" + Integer.toString(cameraIndex) + "/RobotPoses",
-                    robotPoses.toArray(new Pose3d[0]));
+                    "Vision/Camera" + currentCameraData.name() + "/RobotPoses",
+                    robotPoses.toArray(new Pose3d[robotPoses.size()]));
             Logger.recordOutput(
-                    "Vision/Camera" + Integer.toString(cameraIndex) + "/RobotPosesAccepted",
-                    robotPosesAccepted.toArray(new Pose3d[0]));
+                    "Vision/Camera" + currentCameraData.name() + "/RobotPosesAccepted",
+                    robotPosesAccepted.toArray(new Pose3d[robotPosesAccepted.size()]));
             Logger.recordOutput(
-                    "Vision/Camera" + Integer.toString(cameraIndex) + "/RobotPosesRejected",
-                    robotPosesRejected.toArray(new Pose3d[0]));
+                    "Vision/Camera" + currentCameraData.name() + "/RobotPosesRejected",
+                    robotPosesRejected.toArray(new Pose3d[robotPosesRejected.size()]));
             allTagPoses.addAll(tagPoses);
             allRobotPoses.addAll(robotPoses);
             allRobotPosesAccepted.addAll(robotPosesAccepted);

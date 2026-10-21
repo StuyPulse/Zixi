@@ -8,6 +8,8 @@ import org.wpilib.math.geometry.Pose3d;
 import org.wpilib.math.geometry.Rotation2d;
 import org.wpilib.math.geometry.Transform3d;
 
+import com.stuypulse.robot.constants.FieldConstants;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -84,7 +86,7 @@ public class VisionIOPhotonVision implements VisionIO {
                 var target = result.targets.get(0);
 
                 // Calculate robot pose
-                var tagPose = VisionConstants.aprilTagLayout.getTagPose(target.fiducialId);
+                var tagPose = FieldConstants.FIELD_LAYOUT.getTagPose(target.fiducialId);
                 if (tagPose.isPresent()) {
                     Transform3d fieldToTarget =
                             new Transform3d(

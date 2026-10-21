@@ -1,46 +1,83 @@
-/************************ PROJECT ZIXI ************************/
-/* Copyright (c) 2026 StuyPulse Robotics. All rights reserved.*/
-/* This work is licensed under the terms of the MIT license.  */
-/**************************************************************/
+/************************ PROJECT TRIBECBOT *************************/
+/* Copyright (c) 2026 StuyPulse Robotics. All rights reserved. */
+/* Use of this source code is governed by an MIT-style license */
+/* that can be found in the repository LICENSE file.           */
+/***************************************************************/
 package com.stuypulse.robot.subsystems.vision;
 
-import org.wpilib.fields.Field;
-import org.wpilib.fields.Fields;
 import org.wpilib.math.geometry.Rotation3d;
 import org.wpilib.math.geometry.Transform3d;
 
+import static org.wpilib.units.Units.Inches;
+import static org.wpilib.units.Units.Degrees;
+
 public interface VisionConstants {
-    // AprilTag layout
-    Field aprilTagLayout = Fields.DEFAULT_FIELD.loadField();
+    public interface VisionSettings {
+        int RESET_IMU_INDEX = 1;
 
-    // Camera names, must match names configured on coprocessor
-    String camera0Name = "camera_0";
-    String camera1Name = "camera_1";
+        // Basic filtering thresholds
+        double MAX_AMBIGUITY = 0.3;
+        double MAX_Z_ERROR = 0.75;
 
-    // Robot to camera transforms
-    // (Not used by Limelight, configure in web UI instead)
-    Transform3d robotToCamera0 = new Transform3d(0.2, 0.0, 0.2, new Rotation3d(0.0, -0.4, 0.0));
-    Transform3d robotToCamera1 =
-            new Transform3d(-0.2, 0.0, 0.2, new Rotation3d(0.0, -0.4, Math.PI));
+        // Standard deviation baselines, for 1 meter distance and 1 tag
+        // (Adjusted automatically based on distance and # of tags)
+        double LINEAR_STD_DEV_BASELINE = 0.02; // Meters
+        double ANGULAR_STD_DEV_BASELINE = 0.06; // Radians
 
-    // Basic filtering thresholds
-    double maxAmbiguity = 0.3;
-    double maxZError = 0.75;
+        // Multipliers to apply for MegaTag 2 observations
+        double LINEAR_STD_DEV_MEGATAG_2_FACTOR = 0.5; // More stable than full 3D solve
+        double ANGULAR_STD_DEV_MEGATAG_2_FACTOR = Double.POSITIVE_INFINITY; // No rotation data available
 
-    // Standard deviation baselines, for 1 meter distance and 1 tag
-    // (Adjusted automatically based on distance and # of tags)
-    double linearStdDevBaseline = 0.02; // Meters
-    double angularStdDevBaseline = 0.06; // Radians
+        double BUZZ_DEBOUNCE = 0.25;
+    }
 
-    // Standard deviation multipliers for each camera
-    // (Adjust to trust some cameras more than others)
-    double[] cameraStdDevFactors =
-            new double[] {
-                1.0, // Camera 0
-                1.0 // Camera 1
-            };
+    record CameraData(String name, Transform3d robotToCamera, double stdDevFactor) {
+    }
 
-    // Multipliers to apply for MegaTag 2 observations
-    double linearStdDevMegatag2Factor = 0.5; // More stable than full 3D solve
-    double angularStdDevMegatag2Factor = Double.POSITIVE_INFINITY; // No rotation data available
+    public enum Camera{
+        FRONT(
+                "limelight-front",
+                new Transform3d(
+                        Inches.zero(),
+                        Inches.zero(),
+                        Inches.of(26.1),
+                        new Rotation3d(
+                                Degrees.zero(),
+                                Degrees.of(9.764),
+                                Degrees.zero())),
+                1.0),
+        BACK(
+                "limelight-back",
+                new Transform3d(
+                        Inches.of(-12.109),
+                        Inches.of(-7.129),
+                        Inches.of(8.375),
+                        new Rotation3d(
+                                Degrees.of(180),
+                                Degrees.of(28),
+                                Degrees.of(180))),
+                1.0);
+
+        private final CameraData data;
+
+        private Camera(String name, Transform3d robotToCamera, double stdDevFactor) {
+            this.data = new CameraData(name, robotToCamera, stdDevFactor);
+        }
+
+        public String getName() {
+            return data.name();
+        }
+
+        public Transform3d getRobotToCamera() {
+            return data.robotToCamera();
+        }
+
+        public double getStdDevFactor() {
+            return data.stdDevFactor();
+        }
+
+        public CameraData getData() {
+            return data;
+        }
+    }
 }

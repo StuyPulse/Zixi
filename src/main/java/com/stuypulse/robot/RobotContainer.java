@@ -6,7 +6,7 @@ package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.auton.Auton;
 import com.stuypulse.robot.commands.auton.AutonFactory;
-import com.stuypulse.robot.constants.Field;
+import com.stuypulse.robot.constants.FieldConstants;
 import com.stuypulse.robot.constants.GlobalPorts;
 
 import org.wpilib.command3.button.CommandGamepad;
@@ -34,7 +34,7 @@ public class RobotContainer {
         configureButtonBindings();
         configureAutons();
 
-        Tunables.publish("Field", Field.FIELD_2D);
+        Tunables.publish("Field", FieldConstants.FIELD_2D);
     }
 
     /***************/
