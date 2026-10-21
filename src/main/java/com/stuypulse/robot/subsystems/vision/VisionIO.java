@@ -18,14 +18,15 @@ public interface VisionIO {
                 new TargetObservation(Rotation2d.ZERO, Rotation2d.ZERO);
         public PoseObservation[] poseObservations = new PoseObservation[0];
         public int[] tagIds = new int[0];
+        public int currentPipeline = 0;
     }
 
     class VisionIOOutputs {
-      @AutoLogOutput(key = "Vision/MegaTag Mode")
-      public MegaTagMode megaTagMode = MegaTagMode.MEGATAG_1;
+        @AutoLogOutput(key = "Vision/MegaTag Mode")
+        public MegaTagMode megaTagMode = MegaTagMode.MEGATAG_1;
 
-      @AutoLogOutput(key = "Vision/Target Pipeline Index")
-      public int pipeline = 0;
+        @AutoLogOutput(key = "Vision/Target Pipeline Index")
+        public int pipeline = 0;
     }
 
     /** Represents the angle to a simple target, not used for pose estimation. */
@@ -47,8 +48,8 @@ public interface VisionIO {
     }
 
     enum MegaTagMode {
-      MEGATAG_1,
-      MEGATAG_2
+        MEGATAG_1,
+        MEGATAG_2
     }
 
     public default void updateInputs(VisionIOInputs inputs) {}
