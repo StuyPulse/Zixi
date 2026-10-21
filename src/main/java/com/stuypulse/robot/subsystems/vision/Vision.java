@@ -9,11 +9,13 @@ import com.stuypulse.robot.constants.FieldConstants;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.Camera;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.CameraData;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.VisionSettings;
+import com.stuypulse.robot.subsystems.vision.VisionIO.MegaTagMode;
 import com.stuypulse.robot.subsystems.vision.VisionIO.PoseObservation;
 import com.stuypulse.robot.subsystems.vision.VisionIO.PoseObservationType;
 import com.stuypulse.robot.subsystems.vision.VisionIO.VisionIOOutputs;
 import com.stuypulse.robot.util.PeriodicSubsystem;
 
+import org.wpilib.command3.Command;
 import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.math.geometry.Pose3d;
 import org.wpilib.math.geometry.Rotation2d;
@@ -21,6 +23,8 @@ import org.wpilib.math.linalg.Matrix;
 import org.wpilib.math.linalg.VecBuilder;
 import org.wpilib.math.numbers.N1;
 import org.wpilib.math.numbers.N3;
+import org.wpilib.telemetry.Telemetry;
+import org.wpilib.tunable.Tunables;
 import org.wpilib.util.Alert;
 
 import java.util.EnumMap;
@@ -188,5 +192,21 @@ public class Vision extends PeriodicSubsystem {
                 Pose2d visionRobotPoseMeters,
                 double timestampSeconds,
                 Matrix<N3, N1> visionMeasurementStdDevs);
+    }
+
+    public Command setPipeline(int pipeline) {
+        return run(coroutine -> {
+            for (Entry<Camera, VisionIOOutputs> entry : outputs.entrySet()) {
+                entry.getValue().pipeline = pipeline;
+            }
+        }).named("Vision Set Pipeline");
+    }
+
+    public Command setMegaTagMode(MegaTagMode mode) {
+        return run(coroutine -> {
+            for (Entry<Camera, VisionIOOutputs> entry : outputs.entrySet()) {
+                entry.getValue().megaTagMode = mode;
+            }
+        }).named("Vision Set MegaTag Mode");
     }
 }
