@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
 import org.photonvision.PhotonCamera;
 
 /** IO implementation for real PhotonVision hardware. */
@@ -123,5 +124,10 @@ public class VisionIOPhotonVision implements VisionIO {
         for (int id : tagIds) {
             inputs.tagIds[i++] = id;
         }
+    }
+
+    @Override 
+    public void applyOutputs(VisionIOOutputs outputs) {
+      camera.setPipelineIndex(outputs.pipeline);
     }
 }
