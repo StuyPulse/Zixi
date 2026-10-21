@@ -8,6 +8,7 @@ import org.wpilib.math.geometry.Pose3d;
 import org.wpilib.math.geometry.Rotation2d;
 
 import org.littletonrobotics.junction.AutoLog;
+import org.littletonrobotics.junction.AutoLogOutput;
 
 public interface VisionIO {
     @AutoLog
@@ -20,9 +21,11 @@ public interface VisionIO {
     }
 
     class VisionIOOutputs {
-        public MegaTagMode megaTagMode = MegaTagMode.MEGATAG_1;
+      @AutoLogOutput(key = "Vision/MegaTag Mode")
+      public MegaTagMode megaTagMode = MegaTagMode.MEGATAG_1;
 
-        public int pipeline = 0;
+      @AutoLogOutput(key = "Vision/Target Pipeline Index")
+      public int pipeline = 0;
     }
 
     /** Represents the angle to a simple target, not used for pose estimation. */
