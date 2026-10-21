@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.littletonrobotics.junction.LogTable;
 
 public class LogTableUtilTest {
-    private final LogTable BLANK_TABLE = new LogTable(0);
+    private final LogTable LOG_TABLE = new LogTable(0);
 
     @Test
     void testNoPublicConstructor() {
@@ -33,7 +33,7 @@ public class LogTableUtilTest {
         assertThrows(
                 NullPointerException.class,
                 () -> {
-                    LogTableUtil.put(BLANK_TABLE, null, "null");
+                    LogTableUtil.put(LOG_TABLE, null, "null");
                 });
     }
 
@@ -41,7 +41,7 @@ public class LogTableUtilTest {
     void testPutHandlesNullValue() {
         assertDoesNotThrow(
                 () -> {
-                    LogTableUtil.put(BLANK_TABLE, "null", null);
+                    LogTableUtil.put(LOG_TABLE, "null_value", null);
                 });
     }
 
@@ -49,7 +49,7 @@ public class LogTableUtilTest {
     void testPutHandlesNullArrayValue() {
         assertDoesNotThrow(
                 () -> {
-                    LogTableUtil.put(BLANK_TABLE, "null", new Object[] {null});
+                    LogTableUtil.put(LOG_TABLE, "null_array", new Object[] {null});
                 });
     }
 
@@ -63,7 +63,7 @@ public class LogTableUtilTest {
         assertThrows(
                 NullPointerException.class,
                 () -> {
-                    LogTableUtil.get(BLANK_TABLE, null, "null");
+                    LogTableUtil.get(LOG_TABLE, null, "null");
                 });
     }
 
@@ -71,7 +71,7 @@ public class LogTableUtilTest {
     void testGetHandlesNullValue() {
         assertDoesNotThrow(
                 () -> {
-                    LogTableUtil.get(BLANK_TABLE, "null", null);
+                    LogTableUtil.get(LOG_TABLE, "null_value", null);
                 });
     }
 
@@ -79,7 +79,57 @@ public class LogTableUtilTest {
     void testGetHandlesNullArrayValue() {
         assertDoesNotThrow(
                 () -> {
-                    LogTableUtil.get(BLANK_TABLE, "null", new Object[] {null});
+                    LogTableUtil.get(LOG_TABLE, "null_array", new Object[] {null});
+                });
+    }
+
+    public enum TestBlankEnum {
+        FIELD_1,
+        FIELD_2,
+        FIELD_3
+    }
+
+    @Test
+    void testPutHandlesEnumValue() {
+        assertDoesNotThrow(
+                () -> {
+                    LogTableUtil.put(
+                            LOG_TABLE, "enum_value", LogTableUtilTest.TestBlankEnum.FIELD_1);
+                });
+    }
+
+    @Test
+    void testPutHandlesEnumArrayValue() {
+        assertDoesNotThrow(
+                () -> {
+                    LogTableUtil.put(
+                            LOG_TABLE,
+                            "enum_array",
+                            new TestBlankEnum[] {
+                                TestBlankEnum.FIELD_1, TestBlankEnum.FIELD_2, TestBlankEnum.FIELD_3
+                            });
+                });
+    }
+
+    @Test
+    void testGetHandlesEnumValue() {
+        assertDoesNotThrow(
+                () -> {
+                    LogTableUtil.get(
+                            LOG_TABLE, "enum_value", LogTableUtilTest.TestBlankEnum.FIELD_1);
+                });
+    }
+
+    @Test
+    void testGetHandlesEnumArrayValue() {
+        assertDoesNotThrow(
+                () -> {
+                    LogTableUtil.get(
+                            LOG_TABLE,
+                            "enum_array",
+                            new TestBlankEnum[] {
+                                TestBlankEnum.FIELD_1, TestBlankEnum.FIELD_2, TestBlankEnum.FIELD_3
+                            });
                 });
     }
 }
