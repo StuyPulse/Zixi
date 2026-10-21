@@ -1,9 +1,16 @@
+/************************ PROJECT ZIXI ************************/
+/* Copyright (c) 2026 StuyPulse Robotics. All rights reserved.*/
+/* This work is licensed under the terms of the MIT license.  */
+/**************************************************************/
 package com.stuypulse.robot.util.talonfx.logged;
 
 import org.wpilib.units.Measure;
+import org.wpilib.util.Color;
 import org.wpilib.util.WPISerializable;
 import org.wpilib.util.struct.StructSerializable;
-import org.wpilib.util.Color;
+
+import java.util.Arrays;
+import java.util.Objects;
 import org.littletonrobotics.junction.LogTable;
 
 /**
@@ -32,31 +39,22 @@ public final class LogTableUtil {
      *     will be converted to a string.
      */
     public static void put(LogTable table, String key, Object value) {
-        if (value != null && value.getClass().isArray()) {
-            putArray(table, key, value);
-        } else if (value instanceof Measure<?> measure) {
-            table.putMeasure(key, measure);
-        } else if (value instanceof WPISerializable serializable) {
-            table.put(key, serializable);
-        } else if (value instanceof Color color) {
-            table.put(key, color);
-        } else if (value instanceof Boolean) {
-            table.put(key, (Boolean) value);
-        } else if (value instanceof Double) {
-            table.put(key, (Double) value);
-        } else if (value instanceof Integer) {
-            table.put(key, (Integer) value);
-        } else if (value instanceof Long) {
-            table.put(key, (Long) value);
-        } else if (value instanceof String) {
-            table.put(key, (String) value);
-        } else if (value instanceof Enum<?> enumerator) {
-            putEnum(table, key, enumerator);
-        } else if (value != null && value.getClass().isRecord()) {
-            table.put(key, (Record) value);
-        } else {
-            // turn into string for unsupported types, can't be replayed tho.
-            table.put(key, value == null ? "null" : value.toString());
+        Objects.requireNonNull(table, "LogTable cannot be null");
+        Objects.requireNonNull(key, "Logging key cannot be null");
+        switch (value) {
+            case Object _ when value.getClass().isArray() -> putArray(table, key, value);
+            case Measure<?> measure -> table.putMeasure(key, measure);
+            case WPISerializable serializable -> table.put(key, serializable);
+            case Color color -> table.put(key, color);
+            case Boolean b -> table.put(key, b);
+            case Double d -> table.put(key, d);
+            case Integer i -> table.put(key, i);
+            case Long l -> table.put(key, l);
+            case String s -> table.put(key, s);
+            case Enum<?> enumerator -> putEnum(table, key, enumerator);
+            case Record record -> table.put(key, record);
+            case null -> table.put(key, "null");
+            default -> table.put(key, value.toString());
         }
     }
 
@@ -66,33 +64,26 @@ public final class LogTableUtil {
      * Measure} or boxed wrapper types.
      */
     private static void putArray(LogTable table, String key, Object array) {
-        if (array instanceof boolean[] booleanArray) {
-            table.put(key, booleanArray);
-        } else if (array instanceof int[] intArray) {
-            table.put(key, intArray);
-        } else if (array instanceof long[] longArray) {
-            table.put(key, longArray);
-        } else if (array instanceof float[] floatArray) {
-            table.put(key, floatArray);
-        } else if (array instanceof double[] doubleArray) {
-            table.put(key, doubleArray);
-        } else if (array instanceof String[] StringArray) {
-            table.put(key, StringArray);
-        } else if (array instanceof byte[] byteArray) {
-            table.put(key, byteArray);
-        } else if (array instanceof Enum<?>[] enumArray) {
-            putEnumArray(table, key, enumArray);
-        } else if (array instanceof StructSerializable[] structSerializableArray) {
-            table.put(key, structSerializableArray);
-        } else if (array.getClass().getComponentType().isRecord()) {
-            table.put(key, (Record[]) array);
-        } else {
-            Object[] boxed = (Object[]) array;
-            String[] strings = new String[boxed.length];
-            for (int i = 0; i < boxed.length; i++) {
-                strings[i] = String.valueOf(boxed[i]);
-            }
-            table.put(key, strings);
+        switch (array) {
+            case boolean[] bools -> table.put(key, bools);
+            case int[] ints -> table.put(key, ints);
+            case long[] longs -> table.put(key, longs);
+            case float[] floats -> table.put(key, floats);
+            case double[] doubles -> table.put(key, doubles);
+            case String[] strings -> table.put(key, strings);
+            case byte[] bytes -> table.put(key, bytes);
+            case Object enums when enums instanceof Enum<?>[] ->
+                    putEnumArray(table, key, (Enum<?>[]) enums);
+            case StructSerializable[] serializables -> table.put(key, serializables);
+            case Record[] records -> table.put(key, records);
+            case Object[] objects ->
+                    table.put(
+                            key,
+                            Arrays.stream(objects).map(String::valueOf).toArray(String[]::new));
+            case null, default ->
+                    throw new IllegalArgumentException(
+                            "Unsupported or invalid array type: "
+                                    + (array == null ? "null" : array.getClass().getName()));
         }
     }
 
@@ -104,36 +95,30 @@ public final class LogTableUtil {
      * @param table The {@code LogTable} to get the value from.
      * @param key The key where the valid is stored.
      * @param defaultValue The default value to return if the key does not exist in the {@code
-     *     LogTable}.
+     *     LogTable} .
      * @return The value from the {@code LogTable} if it exists, otherwise the default value.
      */
     @SuppressWarnings({"unchecked"})
     public static <T> T get(LogTable table, String key, T defaultValue) {
-        if (defaultValue != null && defaultValue.getClass().isArray()) {
-            return (T) getArray(table, key, defaultValue);
-        } else if (defaultValue instanceof Measure<?> measure) {
-            return ((T) table.getMeasure(key, measure));
-        } else if (defaultValue instanceof WPISerializable serializable) {
-            return ((T) table.get(key, serializable));
-        } else if (defaultValue instanceof Color color) {
-            return ((T) table.get(key, color));
-        } else if (defaultValue instanceof Boolean bool) {
-            return ((T) Boolean.valueOf(table.get(key, bool)));
-        } else if (defaultValue instanceof Double dbl) {
-            return ((T) Double.valueOf(table.get(key, dbl)));
-        } else if (defaultValue instanceof Integer integer) {
-            return ((T) Integer.valueOf(table.get(key, integer)));
-        } else if (defaultValue instanceof Long lng) {
-            return ((T) Long.valueOf(table.get(key, lng)));
-        } else if (defaultValue instanceof String string) {
-            return ((T) table.get(key, string));
-        } else if (defaultValue instanceof Enum<?> enumerator) {
-            return ((T) getEnum(table, key, enumerator));
-        } else if (defaultValue != null && defaultValue.getClass().isRecord()) {
-            return ((T) table.get(key, ((Record) defaultValue)));
-        }
-
-        return defaultValue;
+        Objects.requireNonNull(table, "LogTable cannot be null");
+        Objects.requireNonNull(key, "Logging key cannot be null");
+        return (T)
+                switch (defaultValue) {
+                    case Object _ when defaultValue.getClass().isArray() ->
+                            getArray(table, key, defaultValue);
+                    case Measure<?> measure -> table.getMeasure(key, measure);
+                    case WPISerializable serializable -> table.get(key, serializable);
+                    case Color color -> table.get(key, color);
+                    case Boolean b -> Boolean.valueOf(table.get(key, b));
+                    case Double d -> Double.valueOf(table.get(key, d));
+                    case Integer i -> Integer.valueOf(table.get(key, i));
+                    case Long l -> Long.valueOf(table.get(key, l));
+                    case String s -> table.get(key, s);
+                    case Object enumerator when enumerator instanceof Enum<?> ->
+                            getEnum(table, key, (Enum<?>) enumerator);
+                    case Record record -> table.get(key, record);
+                    case null, default -> defaultValue;
+                };
     }
 
     /**
@@ -142,29 +127,24 @@ public final class LogTableUtil {
      * replayable, so the default array is returned back.
      */
     private static Object getArray(LogTable table, String key, Object defaultArray) {
-        if (defaultArray instanceof boolean[] booleanArray) {
-            return table.get(key, booleanArray);
-        } else if (defaultArray instanceof int[] intArray) {
-            return table.get(key, intArray);
-        } else if (defaultArray instanceof long[] longArray) {
-            return table.get(key, longArray);
-        } else if (defaultArray instanceof float[] floatArray) {
-            return table.get(key, floatArray);
-        } else if (defaultArray instanceof double[] doubleArray) {
-            return table.get(key, doubleArray);
-        } else if (defaultArray instanceof String[] stringArray) {
-            return table.get(key, stringArray);
-        } else if (defaultArray instanceof byte[] byteArray) {
-            return table.get(key, byteArray);
-        } else if (defaultArray instanceof Enum<?>[] enumArray) {
-            return getEnumArray(table, key, enumArray);
-        } else if (defaultArray instanceof StructSerializable[] structSerializableArray) {
-            return table.get(key, structSerializableArray);
-        } else if (defaultArray.getClass().getComponentType().isRecord()) {
-            return table.get(key, (Record[]) defaultArray);
-        }
-
-        return defaultArray;
+        return switch (defaultArray) {
+            case boolean[] bools -> table.get(key, bools);
+            case int[] ints -> table.get(key, ints);
+            case long[] longs -> table.get(key, longs);
+            case float[] floats -> table.get(key, floats);
+            case double[] doubles -> table.get(key, doubles);
+            case String[] strings -> table.get(key, strings);
+            case byte[] bytes -> table.get(key, bytes);
+            case Object enums when enums instanceof Enum<?>[] ->
+                    getEnumArray(table, key, (Enum<?>[]) enums);
+            case StructSerializable[] serializables -> table.get(key, serializables);
+            case Record[] records -> table.get(key, records);
+            case Object[] objects ->
+                    table.get(
+                            key,
+                            Arrays.stream(objects).map(String::valueOf).toArray(String[]::new));
+            case null, default -> defaultArray;
+        };
     }
 
     @SuppressWarnings("unchecked")
@@ -199,27 +179,39 @@ public final class LogTableUtil {
         if (value == null) {
             return false;
         }
+
         if (value.getClass().isArray()) {
-            return value instanceof boolean[]
-                    || value instanceof int[]
-                    || value instanceof long[]
-                    || value instanceof float[]
-                    || value instanceof double[]
-                    || value instanceof String[]
-                    || value instanceof byte[]
-                    || value instanceof Enum<?>[]
-                    || value instanceof StructSerializable[]
-                    || value.getClass().getComponentType().isRecord();
+            return isSupportedArrayType(value);
         }
-        return value instanceof Measure<?>
-                || value instanceof WPISerializable
-                || value instanceof Color
-                || value instanceof Boolean
-                || value instanceof Double
-                || value instanceof Integer
-                || value instanceof Long
-                || value instanceof String
-                || value instanceof Enum<?>
-                || value.getClass().isRecord();
+
+        return switch (value) {
+            case Measure<?> _ -> true;
+            case WPISerializable _ -> true;
+            case Color _ -> true;
+            case Boolean _ -> true;
+            case Double _ -> true;
+            case Integer _ -> true;
+            case Long _ -> true;
+            case String _ -> true;
+            case Enum<?> _ -> true;
+            case Record _ -> true;
+            case null, default -> false;
+        };
+    }
+
+    private static boolean isSupportedArrayType(Object value) {
+        return switch (value) {
+            case boolean[] _ -> true;
+            case int[] _ -> true;
+            case long[] _ -> true;
+            case float[] _ -> true;
+            case double[] _ -> true;
+            case byte[] _ -> true;
+            case String[] _ -> true;
+            case Object _ when value instanceof Enum<?>[] _ -> true;
+            case StructSerializable[] _ -> true;
+            case Object[] array -> array.getClass().getComponentType().isRecord();
+            case null, default -> false;
+        };
     }
 }
