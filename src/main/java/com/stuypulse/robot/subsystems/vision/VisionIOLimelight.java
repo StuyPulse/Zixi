@@ -31,6 +31,7 @@ public class VisionIOLimelight implements VisionIO {
     private final DoubleArrayPublisher orientationPublisher;
     private final IntegerPublisher pipelinePublisher;
     private final DoubleArrayPublisher cameraPosePublisher;
+    private final DoubleArrayPublisher aprilTagWhitelistPublisher;
 
     private final DoubleSubscriber latencySubscriber;
     private final DoubleSubscriber txSubscriber;
@@ -54,6 +55,7 @@ public class VisionIOLimelight implements VisionIO {
         orientationPublisher = table.getDoubleArrayTopic("robot_orientation_set").publish();
         cameraPosePublisher = table.getDoubleArrayTopic("camerapose_robotspace_set").publish();
         pipelinePublisher = table.getIntegerTopic("pipeline").publish();
+        aprilTagWhitelistPublisher = table.getDoubleArrayTopic("fiducial_id_filters_set").publish();
         latencySubscriber = table.getDoubleTopic("tl").subscribe(0.0);
         txSubscriber = table.getDoubleTopic("tx").subscribe(0.0);
         tySubscriber = table.getDoubleTopic("ty").subscribe(0.0);
@@ -191,5 +193,7 @@ public class VisionIOLimelight implements VisionIO {
         pipelinePublisher.accept(outputs.pipeline);
 
         this.megaTagMode = outputs.megaTagMode;
+
+        aprilTagWhitelistPublisher.accept(outputs.aprilTagWhitelist);
     }
 }

@@ -27,6 +27,9 @@ public interface VisionIO {
 
         @AutoLogOutput(key = "Vision/Target Pipeline Index")
         public int pipeline = 0;
+
+        @AutoLogOutput(key = "Vision/AprilTag Whitelist")
+        public double[] aprilTagWhitelist = new double[0];
     }
 
     /** Represents the angle to a simple target, not used for pose estimation. */
