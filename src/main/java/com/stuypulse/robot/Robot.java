@@ -10,12 +10,11 @@ import com.stuypulse.robot.constants.GlobalSettings;
 import org.wpilib.command3.Scheduler;
 import org.wpilib.driverstation.Alliance;
 import org.wpilib.driverstation.MatchState;
-import org.wpilib.util.Alert;
 import org.wpilib.system.Filesystem;
+import org.wpilib.util.Alert;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -34,7 +33,12 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
  * specific states of the robot.
  */
 public class Robot extends LoggedRobot {
-    private static final Alert allianceMissing = new Alert("MissingAllianceWarning", "Alliance optional has no value present", Alert.Level.MEDIUM);
+    private static final Alert allianceMissing =
+            new Alert(
+                    "MissingAllianceWarning",
+                    "Alliance optional has no value present",
+                    Alert.Level.MEDIUM);
+
     /**
      * Checks the alliance the robot is on
      *
