@@ -1,17 +1,11 @@
-/************************ PROJECT ZIXI ************************/
-/* Copyright (c) 2026 StuyPulse Robotics. All rights reserved.*/
-/* This work is licensed under the terms of the MIT license.  */
-/**************************************************************/
 package com.stuypulse.robot.util.talonfx.logged;
-
-import org.wpilib.units.measure.*;
-import org.wpilib.util.Alert;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.TalonFX;
-
+import org.wpilib.units.measure.*;
+import org.wpilib.util.Alert;
 import java.util.ArrayList;
 import java.util.List;
 

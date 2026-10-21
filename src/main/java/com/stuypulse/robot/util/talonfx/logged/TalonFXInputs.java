@@ -7,7 +7,6 @@ package com.stuypulse.robot.util.talonfx.logged;
 import static org.wpilib.units.Units.*;
 
 import org.wpilib.units.measure.*;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
