@@ -45,7 +45,8 @@ public class PathPlannerAuton implements Auton {
                 FieldConstants.FIELD_2D
                         .getObject("path: " + subPaths.get(i).name)
                         .setPoses(
-                                FieldConstants.transformToOppositeAlliance(subPaths.get(i).getPathPoses()));
+                                FieldConstants.transformToOppositeAlliance(
+                                        subPaths.get(i).getPathPoses()));
             }
         }
     }

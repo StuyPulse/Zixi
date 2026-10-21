@@ -4,10 +4,10 @@
 /**************************************************************/
 package com.stuypulse.robot.subsystems.vision;
 
+import com.stuypulse.robot.constants.FieldConstants;
+
 import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.math.geometry.Transform3d;
-
-import com.stuypulse.robot.constants.FieldConstants;
 
 import java.util.function.Supplier;
 import org.photonvision.simulation.PhotonCameraSim;

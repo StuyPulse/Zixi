@@ -4,11 +4,11 @@
 /**************************************************************/
 package com.stuypulse.robot.subsystems.vision;
 
+import com.stuypulse.robot.constants.FieldConstants;
+
 import org.wpilib.math.geometry.Pose3d;
 import org.wpilib.math.geometry.Rotation2d;
 import org.wpilib.math.geometry.Transform3d;
-
-import com.stuypulse.robot.constants.FieldConstants;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -90,7 +90,8 @@ public class VisionIOPhotonVision implements VisionIO {
                 PhotonTrackedTarget target = result.targets.get(0);
 
                 // Calculate robot pose
-                Optional<Pose3d> tagPose = FieldConstants.FIELD_LAYOUT.getTagPose(target.fiducialId);
+                Optional<Pose3d> tagPose =
+                        FieldConstants.FIELD_LAYOUT.getTagPose(target.fiducialId);
                 if (tagPose.isPresent()) {
                     Transform3d fieldToTarget =
                             new Transform3d(

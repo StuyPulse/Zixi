@@ -5,7 +5,6 @@
 package com.stuypulse.robot.subsystems.vision;
 
 import com.stuypulse.robot.constants.FieldConstants;
-
 import com.stuypulse.robot.subsystems.vision.VisionConstants.Camera;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.CameraData;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.VisionSettings;
@@ -23,16 +22,13 @@ import org.wpilib.math.linalg.Matrix;
 import org.wpilib.math.linalg.VecBuilder;
 import org.wpilib.math.numbers.N1;
 import org.wpilib.math.numbers.N3;
-import org.wpilib.telemetry.Telemetry;
-import org.wpilib.tunable.Tunables;
 import org.wpilib.util.Alert;
 
 import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Map.Entry;
-
+import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
 
 public class Vision extends PeriodicSubsystem {
@@ -59,7 +55,10 @@ public class Vision extends PeriodicSubsystem {
             outputs.put(camera, new VisionIOOutputs());
             disconnectedAlerts.put(
                     camera,
-                    new Alert("Vision " + camera.getName(), "Vision camera " + camera.getName() + " is disconnected.", Alert.Level.MEDIUM));
+                    new Alert(
+                            "Vision " + camera.getName(),
+                            "Vision camera " + camera.getName() + " is disconnected.",
+                            Alert.Level.MEDIUM));
         }
     }
 
@@ -116,15 +115,19 @@ public class Vision extends PeriodicSubsystem {
                         observation.tagCount() == 0 // Must have at least one tag
                                 || (observation.tagCount() == 1
                                         && observation.ambiguity()
-                                                > VisionSettings.MAX_AMBIGUITY) // Cannot be high ambiguity
+                                                > VisionSettings
+                                                        .MAX_AMBIGUITY) // Cannot be high ambiguity
                                 || Math.abs(observation.pose().getZ())
-                                        > VisionSettings.MAX_Z_ERROR // Must have realistic Z coordinate
+                                        > VisionSettings
+                                                .MAX_Z_ERROR // Must have realistic Z coordinate
 
                                 // Must be within the field boundaries
                                 || observation.pose().getX() < 0.0
-                                || observation.pose().getX() > FieldConstants.FIELD_LAYOUT.getFieldLength()
+                                || observation.pose().getX()
+                                        > FieldConstants.FIELD_LAYOUT.getFieldLength()
                                 || observation.pose().getY() < 0.0
-                                || observation.pose().getY() > FieldConstants.FIELD_LAYOUT.getFieldWidth();
+                                || observation.pose().getY()
+                                        > FieldConstants.FIELD_LAYOUT.getFieldWidth();
 
                 // Add pose to log
                 robotPoses.add(observation.pose());
@@ -196,17 +199,19 @@ public class Vision extends PeriodicSubsystem {
 
     public Command setPipeline(int pipeline) {
         return run(coroutine -> {
-            for (Entry<Camera, VisionIOOutputs> entry : outputs.entrySet()) {
-                entry.getValue().pipeline = pipeline;
-            }
-        }).named("Vision Set Pipeline");
+                    for (Entry<Camera, VisionIOOutputs> entry : outputs.entrySet()) {
+                        entry.getValue().pipeline = pipeline;
+                    }
+                })
+                .named("Vision Set Pipeline");
     }
 
     public Command setMegaTagMode(MegaTagMode mode) {
         return run(coroutine -> {
-            for (Entry<Camera, VisionIOOutputs> entry : outputs.entrySet()) {
-                entry.getValue().megaTagMode = mode;
-            }
-        }).named("Vision Set MegaTag Mode");
+                    for (Entry<Camera, VisionIOOutputs> entry : outputs.entrySet()) {
+                        entry.getValue().megaTagMode = mode;
+                    }
+                })
+                .named("Vision Set MegaTag Mode");
     }
 }

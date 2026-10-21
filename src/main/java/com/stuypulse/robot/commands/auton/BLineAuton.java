@@ -51,7 +51,9 @@ public class BLineAuton implements Auton {
     @Override
     public void clearPaths() {
         for (Path path : displayedPaths) {
-            FieldConstants.FIELD_2D.getObject(BLineField.drawPath(FieldConstants.FIELD_2D, path)).setPoses();
+            FieldConstants.FIELD_2D
+                    .getObject(BLineField.drawPath(FieldConstants.FIELD_2D, path))
+                    .setPoses();
         }
     }
 

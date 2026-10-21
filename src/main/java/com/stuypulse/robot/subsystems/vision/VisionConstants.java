@@ -1,15 +1,14 @@
-/************************ PROJECT TRIBECBOT *************************/
-/* Copyright (c) 2026 StuyPulse Robotics. All rights reserved. */
-/* Use of this source code is governed by an MIT-style license */
-/* that can be found in the repository LICENSE file.           */
-/***************************************************************/
+/************************ PROJECT ZIXI ************************/
+/* Copyright (c) 2026 StuyPulse Robotics. All rights reserved.*/
+/* This work is licensed under the terms of the MIT license.  */
+/**************************************************************/
 package com.stuypulse.robot.subsystems.vision;
+
+import static org.wpilib.units.Units.Degrees;
+import static org.wpilib.units.Units.Inches;
 
 import org.wpilib.math.geometry.Rotation3d;
 import org.wpilib.math.geometry.Transform3d;
-
-import static org.wpilib.units.Units.Inches;
-import static org.wpilib.units.Units.Degrees;
 
 public interface VisionConstants {
     public interface VisionSettings {
@@ -26,25 +25,22 @@ public interface VisionConstants {
 
         // Multipliers to apply for MegaTag 2 observations
         double LINEAR_STD_DEV_MEGATAG_2_FACTOR = 0.5; // More stable than full 3D solve
-        double ANGULAR_STD_DEV_MEGATAG_2_FACTOR = Double.POSITIVE_INFINITY; // No rotation data available
+        double ANGULAR_STD_DEV_MEGATAG_2_FACTOR =
+                Double.POSITIVE_INFINITY; // No rotation data available
 
         double BUZZ_DEBOUNCE = 0.25;
     }
 
-    record CameraData(String name, Transform3d robotToCamera, double stdDevFactor) {
-    }
+    record CameraData(String name, Transform3d robotToCamera, double stdDevFactor) {}
 
-    public enum Camera{
+    public enum Camera {
         FRONT(
                 "limelight-front",
                 new Transform3d(
                         Inches.zero(),
                         Inches.zero(),
                         Inches.of(26.1),
-                        new Rotation3d(
-                                Degrees.zero(),
-                                Degrees.of(9.764),
-                                Degrees.zero())),
+                        new Rotation3d(Degrees.zero(), Degrees.of(9.764), Degrees.zero())),
                 1.0),
         BACK(
                 "limelight-back",
@@ -52,10 +48,7 @@ public interface VisionConstants {
                         Inches.of(-12.109),
                         Inches.of(-7.129),
                         Inches.of(8.375),
-                        new Rotation3d(
-                                Degrees.of(180),
-                                Degrees.of(28),
-                                Degrees.of(180))),
+                        new Rotation3d(Degrees.of(180), Degrees.of(28), Degrees.of(180))),
                 1.0);
 
         private final CameraData data;
