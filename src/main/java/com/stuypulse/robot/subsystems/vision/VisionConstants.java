@@ -10,8 +10,14 @@ import static org.wpilib.units.Units.Inches;
 import org.wpilib.math.geometry.Rotation3d;
 import org.wpilib.math.geometry.Transform3d;
 
+import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean;
+
 public interface VisionConstants {
     public interface VisionSettings {
+        LoggedNetworkBoolean HDR_ENABLED = new LoggedNetworkBoolean("Vision/HDR Enabled", false);
+
+        double HDR_SWITCHING_INTERVAL = 0.5;
+
         int RESET_IMU_INDEX = 1;
 
         // Basic filtering thresholds
@@ -71,6 +77,21 @@ public interface VisionConstants {
 
         public CameraData getData() {
             return data;
+        }
+    }
+
+    public enum Pipeline {
+        HIGH_SUN(0),
+        LOW_SUN(1);
+
+        private final int index;
+
+        private Pipeline(int index) {
+            this.index = index;
+        }
+
+        public int getIndex() {
+            return index;
         }
     }
 }

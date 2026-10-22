@@ -8,6 +8,7 @@ import com.stuypulse.robot.constants.FieldConstants;
 import com.stuypulse.robot.constants.GlobalSettings;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.Camera;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.CameraData;
+import com.stuypulse.robot.subsystems.vision.VisionConstants.Pipeline;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.VisionSettings;
 import com.stuypulse.robot.subsystems.vision.VisionIO.MegaTagMode;
 import com.stuypulse.robot.subsystems.vision.VisionIO.PoseObservation;
@@ -23,6 +24,7 @@ import org.wpilib.math.linalg.Matrix;
 import org.wpilib.math.linalg.VecBuilder;
 import org.wpilib.math.numbers.N1;
 import org.wpilib.math.numbers.N3;
+import org.wpilib.system.Timer;
 import org.wpilib.util.Alert;
 
 import java.util.EnumMap;
@@ -39,6 +41,8 @@ public class Vision extends PeriodicSubsystem {
     private final EnumMap<Camera, VisionIOOutputs> outputs;
     private final EnumMap<Camera, Alert> disconnectedAlerts;
 
+    private final Timer hdrTimer;
+
     public Vision(VisionConsumer consumer, EnumMap<Camera, VisionIO> cameraIOMap) {
         this.consumer = consumer;
 
@@ -51,6 +55,8 @@ public class Vision extends PeriodicSubsystem {
         // Initialize disconnected alerts
         this.disconnectedAlerts = new EnumMap<>(Camera.class);
 
+        this.hdrTimer = new Timer();
+
         for (Camera camera : Camera.values()) {
             inputs.put(camera, new VisionIOInputsAutoLogged());
             outputs.put(camera, new VisionIOOutputs());
@@ -61,6 +67,8 @@ public class Vision extends PeriodicSubsystem {
                             "Vision camera " + camera.getName() + " is disconnected.",
                             Alert.Level.MEDIUM));
         }
+
+        hdrTimer.start();
     }
 
     /**
@@ -70,6 +78,10 @@ public class Vision extends PeriodicSubsystem {
      */
     public Rotation2d getTargetX(Camera camera) {
         return inputs.get(camera).latestTargetObservation.tx();
+    }
+
+    public int getPipeline() {
+        return inputs.values().iterator().next().currentPipeline;
     }
 
     @Override
@@ -83,6 +95,20 @@ public class Vision extends PeriodicSubsystem {
 
         if (!GlobalSettings.EnabledSubsystems.VISION.get()) {
             return;
+        }
+
+        if (hdrTimer.hasElapsed(VisionConstants.VisionSettings.HDR_SWITCHING_INTERVAL)
+                && VisionConstants.VisionSettings.HDR_ENABLED.get()) {
+            Pipeline nextPipeline =
+                    getPipeline() == Pipeline.HIGH_SUN.getIndex()
+                            ? Pipeline.LOW_SUN
+                            : Pipeline.HIGH_SUN;
+
+            for (Entry<Camera, VisionIO> entry : io.entrySet()) {
+                outputs.get(entry.getKey()).pipeline = nextPipeline.getIndex();
+            }
+
+            hdrTimer.reset();
         }
 
         // Initialize logging values
