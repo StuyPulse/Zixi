@@ -230,30 +230,34 @@ public class Vision extends PeriodicSubsystem {
 
     public Command setVisionEnabled() {
         return run(coroutine -> {
-            this.enable();
-        }).named("Vision Set Enabled");
+                    this.enable();
+                })
+                .named("Vision Set Enabled");
     }
 
     public Command setVisionDisabled() {
         return run(coroutine -> {
-            this.disable();
-        }).named("Vision Set Enabled");
+                    this.disable();
+                })
+                .named("Vision Set Enabled");
     }
 
     public Command setAprilTagWhitelist(int[] whitelist) {
         return run(coroutine -> {
-            for (VisionIOOutputs output : outputs.values()) {
-                output.aprilTagWhitelist = whitelist.clone();
-            }
-        }).named("Vision Set April Tag Whitelist");
+                    for (VisionIOOutputs output : outputs.values()) {
+                        output.aprilTagWhitelist = whitelist.clone();
+                    }
+                })
+                .named("Vision Set April Tag Whitelist");
     }
 
     private Command setIMUMode(int imuMode, String name) {
         return run(coroutine -> {
-            for (VisionIOOutputs output : outputs.values()) {
-                output.imuMode = imuMode;
-            }
-        }).named(name);
+                    for (VisionIOOutputs output : outputs.values()) {
+                        output.imuMode = imuMode;
+                    }
+                })
+                .named(name);
     }
 
     public Command setIMUMode(int imuMode) {
