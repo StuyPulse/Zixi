@@ -202,6 +202,14 @@ public class Vision extends PeriodicSubsystem {
                 Matrix<N3, N1> visionMeasurementStdDevs);
     }
 
+    public void enable() {
+        GlobalSettings.EnabledSubsystems.VISION.set(true);
+    }
+
+    public void disable() {
+        GlobalSettings.EnabledSubsystems.VISION.set(false);
+    }
+
     public Command setPipeline(int pipeline) {
         return run(coroutine -> {
                     for (Entry<Camera, VisionIOOutputs> entry : outputs.entrySet()) {
@@ -218,5 +226,17 @@ public class Vision extends PeriodicSubsystem {
                     }
                 })
                 .named("Vision Set MegaTag Mode");
+    }
+
+    public Command setVisionEnabled() {
+        return run(coroutine -> {
+            this.enable();
+        }).named("Vision Set Enabled");
+    }
+
+    public Command setVisionDisabled() {
+        return run(coroutine -> {
+            this.disable();
+        }).named("Vision Set Enabled");
     }
 }
