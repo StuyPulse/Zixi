@@ -239,4 +239,28 @@ public class Vision extends PeriodicSubsystem {
             this.disable();
         }).named("Vision Set Enabled");
     }
+
+    public Command setAprilTagWhitelist(int[] whitelist) {
+        return run(coroutine -> {
+            for (VisionIOOutputs output : outputs.values()) {
+                output.aprilTagWhitelist = whitelist.clone();
+            }
+        }).named("Vision Set April Tag Whitelist");
+    }
+
+    private Command setIMUMode(int imuMode, String name) {
+        return run(coroutine -> {
+            for (VisionIOOutputs output : outputs.values()) {
+                output.imuMode = imuMode;
+            }
+        }).named(name);
+    }
+
+    public Command setIMUMode(int imuMode) {
+        return setIMUMode(imuMode, "Vision Set IMU Mode");
+    }
+
+    public Command resetIMU() {
+        return setIMUMode(VisionSettings.RESET_IMU_INDEX, "Vision Reset IMU");
+    }
 }

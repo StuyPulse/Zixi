@@ -29,7 +29,10 @@ public interface VisionIO {
         public int pipeline = 0;
 
         @AutoLogOutput(key = "Vision/AprilTag Whitelist")
-        public double[] aprilTagWhitelist = new double[0];
+        public int[] aprilTagWhitelist = new int[0];
+
+        @AutoLogOutput(key = "Vision/IMU Mode")
+        public int imuMode = 1;
     }
 
     /** Represents the angle to a simple target, not used for pose estimation. */

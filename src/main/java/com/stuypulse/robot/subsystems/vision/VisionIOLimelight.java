@@ -21,6 +21,7 @@ import org.wpilib.networktables.NetworkTableInstance;
 import org.wpilib.networktables.TimestampedDoubleArray;
 import org.wpilib.system.RobotController;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class VisionIOLimelight implements VisionIO {
     private final DoubleArrayPublisher orientationPublisher;
     private final IntegerPublisher pipelinePublisher;
     private final DoubleArrayPublisher cameraPosePublisher;
+    private final IntegerPublisher imuModePublisher;
     private final DoubleArrayPublisher aprilTagWhitelistPublisher;
 
     private final DoubleSubscriber latencySubscriber;
@@ -57,6 +59,7 @@ public class VisionIOLimelight implements VisionIO {
         orientationPublisher = table.getDoubleArrayTopic("robot_orientation_set").publish();
         cameraPosePublisher = table.getDoubleArrayTopic("camerapose_robotspace_set").publish();
         pipelinePublisher = table.getIntegerTopic("pipeline").publish();
+        imuModePublisher = table.getIntegerTopic("imumode_set").publish();
         aprilTagWhitelistPublisher = table.getDoubleArrayTopic("fiducial_id_filters_set").publish();
         latencySubscriber = table.getDoubleTopic("tl").subscribe(0.0);
         txSubscriber = table.getDoubleTopic("tx").subscribe(0.0);
@@ -196,6 +199,7 @@ public class VisionIOLimelight implements VisionIO {
 
         this.megaTagMode = outputs.megaTagMode;
 
-        aprilTagWhitelistPublisher.accept(outputs.aprilTagWhitelist);
+        aprilTagWhitelistPublisher.accept(Arrays.stream(outputs.aprilTagWhitelist).asDoubleStream().toArray());
+        imuModePublisher.accept(outputs.imuMode);
     }
 }
