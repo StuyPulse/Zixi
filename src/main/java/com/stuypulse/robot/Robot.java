@@ -7,11 +7,12 @@ package com.stuypulse.robot;
 import com.stuypulse.robot.commands.auton.Auton;
 import com.stuypulse.robot.constants.GlobalSettings;
 
-import org.wpilib.command3.Scheduler;
-import org.wpilib.driverstation.Alliance;
-import org.wpilib.driverstation.MatchState;
-import org.wpilib.system.Filesystem;
-import org.wpilib.util.Alert;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.Alert;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,7 +38,7 @@ public class Robot extends LoggedRobot {
             new Alert(
                     "MissingAllianceWarning",
                     "Alliance optional has no value present",
-                    Alert.Level.MEDIUM);
+                    AlertType.kWarning);
 
     /**
      * Checks the alliance the robot is on
@@ -46,10 +47,10 @@ public class Robot extends LoggedRobot {
      *     and false if alliance cannot be determined.
      */
     public static boolean isBlue() {
-        final Optional<Alliance> alliance = MatchState.getAlliance();
+        final Optional<Alliance> alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
             allianceMissing.set(false);
-            return alliance.get() == Alliance.BLUE;
+            return alliance.get() == Alliance.Blue;
         } else {
             allianceMissing.set(true);
         }
@@ -57,12 +58,12 @@ public class Robot extends LoggedRobot {
     }
 
     private final RobotContainer robot;
-    private final Scheduler defaultScheduler;
+    private final CommandScheduler defaultScheduler;
     private Auton auto;
 
     public Robot() {
         robot = new RobotContainer();
-        defaultScheduler = Scheduler.getDefault();
+        defaultScheduler = CommandScheduler.getInstance();
 
         switch (GlobalSettings.CURRENT_MODE) {
             case REAL -> {
@@ -195,13 +196,13 @@ public class Robot extends LoggedRobot {
     /*************************/
 
     @Override
-    public void utilityInit() {
+    public void testInit() {
         defaultScheduler.cancelAll();
     }
 
     @Override
-    public void utilityPeriodic() {}
+    public void testPeriodic() {}
 
     @Override
-    public void utilityExit() {}
+    public void testExit() {}
 }

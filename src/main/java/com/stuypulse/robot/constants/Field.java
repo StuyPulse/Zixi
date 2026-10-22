@@ -4,8 +4,8 @@
 /**************************************************************/
 package com.stuypulse.robot.constants;
 
-import org.wpilib.math.geometry.Pose2d;
-import org.wpilib.smartdashboard.Field2d;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 import com.pathplanner.lib.util.FlippingUtil;
 import java.util.List;

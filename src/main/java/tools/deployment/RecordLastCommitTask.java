@@ -31,7 +31,7 @@ public class RecordLastCommitTask {
                 description = parts[2];
             }
         } catch (Exception e) {
-            IO.println("Failed to get git commit info: ");
+            System.out.println("Failed to get git commit info: ");
             e.printStackTrace();
         }
 
@@ -50,7 +50,7 @@ public class RecordLastCommitTask {
             String content = json.writerWithDefaultPrettyPrinter().writeValueAsString(object);
             Files.writeString(commitPath, content, StandardCharsets.UTF_8);
         } catch (Exception e) {
-            IO.println("Failed to write git commit info to commit.json: ");
+            System.out.println("Failed to write git commit info to commit.json: ");
             e.printStackTrace();
         }
     }

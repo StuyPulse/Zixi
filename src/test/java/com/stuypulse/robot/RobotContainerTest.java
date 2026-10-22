@@ -6,7 +6,7 @@ package com.stuypulse.robot;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import org.wpilib.hardware.hal.HAL;
+import edu.wpi.first.hal.HAL;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 public class RobotContainerTest {
     @BeforeEach
     public void setup() {
-        assert HAL.initialize();
+        assert HAL.initialize(500, 0);
     }
 
     @Test

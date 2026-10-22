@@ -4,9 +4,9 @@
 /**************************************************************/
 package com.stuypulse.robot.util.talonfx.config;
 
-import static org.wpilib.units.Units.*;
+import static edu.wpi.first.units.Units.*;
 
-import org.wpilib.units.measure.*;
+import edu.wpi.first.units.measure.*;
 
 import com.ctre.phoenix6.configs.*;
 import com.ctre.phoenix6.hardware.TalonFX;

@@ -4,8 +4,8 @@
 /**************************************************************/
 package com.stuypulse.robot.util.talonfx.sim;
 
-import org.wpilib.system.RobotController;
-import org.wpilib.units.measure.*;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.units.measure.*;
 
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;

@@ -4,13 +4,13 @@
 /**************************************************************/
 package com.stuypulse.robot.util.talonfx.sim;
 
-import static org.wpilib.units.Units.*;
+import static edu.wpi.first.units.Units.*;
 
-import org.wpilib.simulation.DCMotorSim;
-import org.wpilib.simulation.ElevatorSim;
-import org.wpilib.simulation.FlywheelSim;
-import org.wpilib.simulation.SingleJointedArmSim;
-import org.wpilib.units.measure.*;
+import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import edu.wpi.first.wpilibj.simulation.ElevatorSim;
+import edu.wpi.first.wpilibj.simulation.FlywheelSim;
+import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
+import edu.wpi.first.units.measure.*;
 
 /**
  *
@@ -70,12 +70,12 @@ public interface SystemSim<T> {
 
             @Override
             public Angle getMechanismPosition() {
-                return Radians.of(dcMotorSim.getAngularPosition());
+                return dcMotorSim.getAngularPosition();
             }
 
             @Override
             public AngularVelocity getMechanismVelocity() {
-                return RadiansPerSecond.of(dcMotorSim.getAngularVelocity());
+                return dcMotorSim.getAngularVelocity();
             }
 
             @Override
@@ -98,8 +98,7 @@ public interface SystemSim<T> {
             public void update(Time dt) {
                 flywheelSim.update(dt.in(Seconds));
                 position =
-                        position.plus(
-                                RadiansPerSecond.of(flywheelSim.getAngularVelocity()).times(dt));
+                        position.plus(flywheelSim.getAngularVelocity().times(dt));
             }
 
             @Override
@@ -109,7 +108,7 @@ public interface SystemSim<T> {
 
             @Override
             public AngularVelocity getMechanismVelocity() {
-                return RadiansPerSecond.of(flywheelSim.getAngularVelocity());
+                return flywheelSim.getAngularVelocity();
             }
 
             @Override
@@ -133,12 +132,12 @@ public interface SystemSim<T> {
 
             @Override
             public Angle getMechanismPosition() {
-                return Radians.of(armSim.getAngle());
+                return Radians.of(armSim.getAngleRads());
             }
 
             @Override
             public AngularVelocity getMechanismVelocity() {
-                return RadiansPerSecond.of(armSim.getVelocity());
+                return RadiansPerSecond.of(armSim.getVelocityRadPerSec());
             }
 
             @Override
@@ -162,12 +161,12 @@ public interface SystemSim<T> {
 
             @Override
             public Angle getMechanismPosition() {
-                return Radians.of(elevatorSim.getPosition() / drumRadius.in(Meters));
+                return Radians.of(elevatorSim.getPositionMeters() / drumRadius.in(Meters));
             }
 
             @Override
             public AngularVelocity getMechanismVelocity() {
-                return RadiansPerSecond.of(elevatorSim.getVelocity() / drumRadius.in(Meters));
+                return RadiansPerSecond.of(elevatorSim.getVelocityMetersPerSecond() / drumRadius.in(Meters));
             }
 
             @Override

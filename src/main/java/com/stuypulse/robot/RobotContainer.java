@@ -9,22 +9,21 @@ import com.stuypulse.robot.commands.auton.AutonFactory;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.GlobalPorts;
 
-import org.wpilib.command3.button.CommandGamepad;
-import org.wpilib.tunable.Tunables;
-
-import org.littletonrobotics.junction.networktables.LoggedNetworkChooser;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 public class RobotContainer {
 
     // Gamepads
-    public final CommandGamepad driver =
-            new CommandGamepad(GlobalPorts.Gamepad.DRIVER); // model-agnostic controller
+    public final CommandXboxController driver =
+            new CommandXboxController(GlobalPorts.Gamepad.DRIVER); // model-agnostic controller
     // public final CommandGamepad operator = new CommandGamepad(GlobalPorts.Gamepad.OPERATOR);
 
     // Subsystems
 
     // Autons
-    private LoggedNetworkChooser<Auton> autonChooser = new LoggedNetworkChooser<>("Auton");
+    private SendableChooser<Auton> autonChooser = new SendableChooser<>();
 
     // Robot container
 
@@ -34,7 +33,7 @@ public class RobotContainer {
         configureButtonBindings();
         configureAutons();
 
-        Tunables.publish("Field", Field.FIELD_2D);
+        SmartDashboard.putData("Field", Field.FIELD_2D);
     }
 
     /***************/
@@ -62,7 +61,7 @@ public class RobotContainer {
     public void configureAutons() {
         AutonFactory autonFactory = new AutonFactory();
 
-        autonChooser.addDefault("Do Nothing", autonFactory.doNothingAuton());
+        autonChooser.addOption("Do Nothing", autonFactory.doNothingAuton());
     }
 
     /**

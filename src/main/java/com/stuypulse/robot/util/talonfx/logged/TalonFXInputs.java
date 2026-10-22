@@ -4,9 +4,9 @@
 /**************************************************************/
 package com.stuypulse.robot.util.talonfx.logged;
 
-import static org.wpilib.units.Units.*;
+import static edu.wpi.first.units.Units.*;
 
-import org.wpilib.units.measure.*;
+import edu.wpi.first.units.measure.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;

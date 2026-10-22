@@ -7,10 +7,10 @@ package com.stuypulse.robot.commands.auton;
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Field;
 
-import org.wpilib.command3.Command;
-
-import bline.field.BLineField;
-import bline.path.Path;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.lib.BLine.BLineField;
+import frc.robot.lib.BLine.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,17 +32,16 @@ public class BLineAuton implements Auton {
             displayedPaths.add(path.copy());
         }
 
-        this.command = Command.sequence(commands).named(name);
+        this.command = Commands.sequence(commands);
     }
 
     @Override
     public void displayPaths() {
         for (Path path : displayedPaths) {
             if (Robot.isBlue()) {
-                path.setFlipped(false);
                 BLineField.drawPath(Field.FIELD_2D, path);
             } else {
-                path.setFlipped(true);
+                path.flip();
                 BLineField.drawPath(Field.FIELD_2D, path);
             }
         }

@@ -4,7 +4,7 @@
 /**************************************************************/
 package com.stuypulse.robot;
 
-import org.wpilib.framework.RobotBase;
+import edu.wpi.first.wpilibj.RobotBase;
 
 /**
  * Main Class

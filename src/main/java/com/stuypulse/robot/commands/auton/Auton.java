@@ -6,7 +6,8 @@ package com.stuypulse.robot.commands.auton;
 
 import com.stuypulse.robot.RobotContainer;
 
-import org.wpilib.command3.Command;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 /**
  *
@@ -34,7 +35,7 @@ public interface Auton {
      * @return The auton command to be scheduled
      */
     public default Command getCommand() {
-        return Command.sequence().named("Do Nothing");
+        return Commands.sequence();
     }
 
     /**
