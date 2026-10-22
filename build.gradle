@@ -1,7 +1,8 @@
 plugins {
     id "java"
     id "application"
-    id "org.wpilib.GradleRIO" version "2027.0.0-alpha-7"
+    id "edu.wpilib.first.GradleRIO" version "2026.2.1"
+    id "com.peterabeles.gversion" version "1.10"
     id "com.diffplug.spotless" version "8.9.0"
 }
 
@@ -12,11 +13,11 @@ java {
 
 def ROBOT_MAIN_CLASS = "com.stuypulse.robot.Main"
 
-// Define my targets (SystemCore) and artifacts (deployable files)
+// Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project DeployUtils.
 deploy {
     targets {
-        systemcore(getTargetTypeClass('SystemCore')) {
+        roborio(getTargetTypeClass('RoboRIO')) {
             // Team number is loaded either from the .wpilib/wpilib_preferences.json
             // or from command line. If not found an exception will be thrown.
             // You can use getTeamOrDefault(team) instead of getTeamNumber if you
@@ -24,7 +25,6 @@ deploy {
             team = project.wpilib.getTeamNumber()
             // Use the default systemcore host name. This must be called after setting team
             // as happens on the line above
-            useDefaultSystemcoreHostName()
             debug = project.wpilib.getDebugOrDefault(false)
 
             artifacts {
