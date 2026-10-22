@@ -5,6 +5,7 @@
 package com.stuypulse.robot.subsystems.vision;
 
 import com.stuypulse.robot.constants.FieldConstants;
+import com.stuypulse.robot.constants.GlobalSettings;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.Camera;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.CameraData;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.VisionSettings;
@@ -78,6 +79,10 @@ public class Vision extends PeriodicSubsystem {
             VisionIOInputsAutoLogged currentInputs = inputs.get(entry.getKey());
             currentIO.updateInputs(currentInputs);
             Logger.processInputs("Vision/" + entry.getKey().getName(), currentInputs);
+        }
+
+        if (!GlobalSettings.EnabledSubsystems.VISION.get()) {
+            return;
         }
 
         // Initialize logging values
