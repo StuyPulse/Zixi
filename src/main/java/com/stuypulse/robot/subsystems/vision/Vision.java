@@ -86,15 +86,15 @@ public class Vision extends PeriodicSubsystem {
 
     @Override
     public void periodic() {
+	if (!GlobalSettings.EnabledSubsystems.VISION.get()) {
+	    return;
+	}
+
         for (Entry<Camera, VisionIO> entry : io.entrySet()) {
             VisionIO currentIO = entry.getValue();
             VisionIOInputsAutoLogged currentInputs = inputs.get(entry.getKey());
             currentIO.updateInputs(currentInputs);
             Logger.processInputs("Vision/" + entry.getKey().getName(), currentInputs);
-        }
-
-        if (!GlobalSettings.EnabledSubsystems.VISION.get()) {
-            return;
         }
 
         if (hdrTimer.hasElapsed(VisionConstants.VisionSettings.HDR_SWITCHING_INTERVAL)
