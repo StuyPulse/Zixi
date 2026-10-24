@@ -94,4 +94,11 @@ public interface VisionConstants {
             return index;
         }
     }
+
+    public enum VisionMode {
+        LIMELIGHT,
+        PHOTONVISION
+    }
+
+    VisionMode VISION_MODE = VisionMode.LIMELIGHT;
 }
