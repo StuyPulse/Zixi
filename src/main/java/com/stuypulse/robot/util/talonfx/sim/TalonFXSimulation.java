@@ -4,14 +4,15 @@
 /**************************************************************/
 package com.stuypulse.robot.util.talonfx.sim;
 
+import com.stuypulse.robot.util.talonfx.config.TalonFXConfig;
+import com.stuypulse.robot.util.talonfx.logged.LoggedTalonFX;
+
 import org.wpilib.system.RobotController;
 import org.wpilib.units.measure.*;
 
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.sim.TalonFXSimState;
-import com.stuypulse.robot.util.talonfx.config.TalonFXConfig;
-import com.stuypulse.robot.util.talonfx.logged.LoggedTalonFX;
 
 /**
  *
