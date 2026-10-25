@@ -6,9 +6,11 @@ package com.stuypulse.robot.subsystems.vision;
 
 import static org.wpilib.units.Units.Degrees;
 import static org.wpilib.units.Units.Inches;
+import static org.wpilib.units.Units.Seconds;
 
 import org.wpilib.math.geometry.Rotation3d;
 import org.wpilib.math.geometry.Transform3d;
+import org.wpilib.units.measure.Time;
 
 import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean;
 
@@ -16,7 +18,7 @@ public interface VisionConstants {
     public interface VisionSettings {
         LoggedNetworkBoolean HDR_ENABLED = new LoggedNetworkBoolean("Vision/HDR Enabled", false);
 
-        double HDR_SWITCHING_INTERVAL = 0.5;
+        Time HDR_SWITCHING_INTERVAL = Seconds.of(0.5);
 
         int RESET_IMU_INDEX = 1;
 

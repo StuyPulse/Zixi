@@ -104,8 +104,8 @@ public class Vision extends PeriodicSubsystem {
                             ? Pipeline.LOW_SUN
                             : Pipeline.HIGH_SUN;
 
-            for (VisionIOOutputs outputs: outputs.values()){
-		outputs.pipeline = nextPipeline.getIndex();
+            for (VisionIOOutputs outputs : outputs.values()) {
+                outputs.pipeline = nextPipeline.getIndex();
             }
 
             hdrTimer.reset();
@@ -238,8 +238,8 @@ public class Vision extends PeriodicSubsystem {
 
     public Command setPipeline(int pipeline) {
         return run(coroutine -> {
-                    for (VisionIOOutputs output: outputs.values()){
-			output.pipeline = pipeline;
+                    for (VisionIOOutputs output : outputs.values()) {
+                        output.pipeline = pipeline;
                     }
                 })
                 .named("Vision Set Pipeline");
@@ -247,8 +247,8 @@ public class Vision extends PeriodicSubsystem {
 
     public Command setMegaTagMode(MegaTagMode mode) {
         return run(coroutine -> {
-                    for (VisionIOOutputs output: outputs.values()){
-			output.megaTagMode = mode;
+                    for (VisionIOOutputs output : outputs.values()) {
+                        output.megaTagMode = mode;
                     }
                 })
                 .named("Vision Set MegaTag Mode");
