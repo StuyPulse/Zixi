@@ -86,9 +86,9 @@ public class Vision extends PeriodicSubsystem {
 
     @Override
     public void periodic() {
-	if (!GlobalSettings.EnabledSubsystems.VISION.get()) {
-	    return;
-	}
+        if (!GlobalSettings.EnabledSubsystems.VISION.get()) {
+            return;
+        }
 
         for (Entry<Camera, VisionIO> entry : io.entrySet()) {
             VisionIO currentIO = entry.getValue();
