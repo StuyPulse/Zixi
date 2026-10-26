@@ -4,6 +4,11 @@
 /**************************************************************/
 package com.stuypulse.robot.subsystems.swerve;
 
+import static org.wpilib.units.Units.Amps;
+import static org.wpilib.units.Units.Radians;
+import static org.wpilib.units.Units.RadiansPerSecond;
+import static org.wpilib.units.Units.Volts;
+
 import org.wpilib.math.controller.PIDController;
 import org.wpilib.math.geometry.Rotation2d;
 import org.wpilib.math.system.DCMotor;
@@ -11,6 +16,7 @@ import org.wpilib.math.system.Models;
 import org.wpilib.math.util.Units;
 import org.wpilib.simulation.DCMotorSim;
 import org.wpilib.system.Timer;
+import org.wpilib.units.measure.Angle;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -92,10 +98,10 @@ public class ModuleIOSim implements ModuleIO {
 
         // Update drive inputs
         inputs.driveConnected = true;
-        inputs.drivePositionRad = driveSim.getAngularPosition();
-        inputs.driveVelocityRadPerSec = driveSim.getAngularVelocity();
-        inputs.driveAppliedVolts = driveAppliedVolts;
-        inputs.driveCurrentAmps = Math.abs(driveSim.getCurrentDraw());
+        inputs.drivePosition = Radians.of(driveSim.getAngularPosition());
+        inputs.driveVelocity = RadiansPerSecond.of(driveSim.getAngularVelocity());
+        inputs.driveAppliedVolts = Volts.of(driveAppliedVolts);
+        inputs.driveCurrentAmps = Amps.of(Math.abs(driveSim.getCurrentDraw()));
 
         // Update turn inputs
         inputs.turnConnected = true;
@@ -109,32 +115,33 @@ public class ModuleIOSim implements ModuleIO {
         // Update odometry inputs (50Hz because high-frequency odometry in sim doesn't
         // matter)
         inputs.odometryTimestamps = new double[] {Timer.getMonotonicTimestamp()};
-        inputs.odometryDrivePositionsRad = new double[] {inputs.drivePositionRad};
+        inputs.odometryDrivePositions = new Angle[] {inputs.drivePosition};
         inputs.odometryTurnPositions = new Rotation2d[] {inputs.turnPosition};
     }
 
     @Override
-    public void setDriveOpenLoop(double output) {
-        driveClosedLoop = false;
-        driveAppliedVolts = output;
-    }
-
-    @Override
-    public void setTurnOpenLoop(double output) {
-        turnClosedLoop = false;
-        turnAppliedVolts = output;
-    }
-
-    @Override
-    public void setDriveVelocity(double velocityRadPerSec) {
-        driveClosedLoop = true;
-        driveFFVolts = DRIVE_KS * Math.signum(velocityRadPerSec) + DRIVE_KV * velocityRadPerSec;
-        driveController.setSetpoint(velocityRadPerSec);
-    }
-
-    @Override
-    public void setTurnPosition(Rotation2d rotation) {
-        turnClosedLoop = true;
-        turnController.setSetpoint(rotation.getRadians());
+    public void applyOutputs(ModuleIOOutputs outputs) {
+        switch (outputs.driveOutputMode) {
+            case VELOCITY -> {
+                driveClosedLoop = true;
+                double velocityRadPerSec = outputs.driveTargetVelocity.in(RadiansPerSecond);
+                driveFFVolts = DRIVE_KS * Math.signum(velocityRadPerSec) + DRIVE_KV * velocityRadPerSec;
+                driveController.setSetpoint(velocityRadPerSec);
+            }
+            case OPEN_LOOP -> {
+                driveClosedLoop = false;
+                driveAppliedVolts = outputs.driveTargetOpenLoop;
+            }
+        }
+        switch (outputs.turnOutputMode) {
+            case POSITION -> {
+                turnClosedLoop = true;
+                turnController.setSetpoint(outputs.turnTargetPosition.in(Radians));
+            }
+            case OPEN_LOOP -> {
+                turnClosedLoop = false;
+                turnAppliedVolts = outputs.turnTargetOpenLoop;
+            }
+        }
     }
 }

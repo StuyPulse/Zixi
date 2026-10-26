@@ -5,17 +5,29 @@
 package com.stuypulse.robot.subsystems.swerve;
 
 import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.units.measure.Angle;
+import org.wpilib.units.measure.AngularVelocity;
+import org.wpilib.units.measure.Current;
+import org.wpilib.units.measure.Voltage;
+
+import com.ctre.phoenix6.swerve.SwerveModuleConstants;
+
+import static org.wpilib.units.Units.Amps;
+import static org.wpilib.units.Units.Radians;
+import static org.wpilib.units.Units.RotationsPerSecond;
+import static org.wpilib.units.Units.Volts;
 
 import org.littletonrobotics.junction.AutoLog;
+import org.littletonrobotics.junction.AutoLogOutput;
 
 public interface ModuleIO {
     @AutoLog
     public static class ModuleIOInputs {
         public boolean driveConnected = false;
-        public double drivePositionRad = 0.0;
-        public double driveVelocityRadPerSec = 0.0;
-        public double driveAppliedVolts = 0.0;
-        public double driveCurrentAmps = 0.0;
+        public Angle drivePosition = Radians.zero();
+        public AngularVelocity driveVelocity = RotationsPerSecond.zero();
+        public Voltage driveAppliedVolts = Volts.zero();
+        public Current driveCurrentAmps = Amps.zero();
 
         public boolean turnConnected = false;
         public boolean turnEncoderConnected = false;
@@ -26,22 +38,38 @@ public interface ModuleIO {
         public double turnCurrentAmps = 0.0;
 
         public double[] odometryTimestamps = new double[] {};
-        public double[] odometryDrivePositionsRad = new double[] {};
+        public Angle[] odometryDrivePositions = new Angle[] {};
         public Rotation2d[] odometryTurnPositions = new Rotation2d[] {};
     }
 
     /** Updates the set of loggable inputs. */
     public default void updateInputs(ModuleIOInputs inputs) {}
 
-    /** Run the drive motor at the specified open loop value. */
-    public default void setDriveOpenLoop(double output) {}
+    enum DriveOutputMode {
+        VELOCITY,
+        OPEN_LOOP
+    }
 
-    /** Run the turn motor at the specified open loop value. */
-    public default void setTurnOpenLoop(double output) {}
+    enum TurnOutputMode {
+        POSITION,
+        OPEN_LOOP
+    }
 
-    /** Run the drive motor at the specified velocity. */
-    public default void setDriveVelocity(double velocityRadPerSec) {}
+    class ModuleIOOutputs {
+        DriveOutputMode driveOutputMode = DriveOutputMode.VELOCITY;
+        /**
+         * Either amps or volts, depending on {@link SwerveModuleConstants#DriveMotorClosedLoopOutput}
+         */
+        double driveTargetOpenLoop = 0.0;
+        AngularVelocity driveTargetVelocity = RotationsPerSecond.zero();
 
-    /** Run the turn motor to the specified rotation. */
-    public default void setTurnPosition(Rotation2d rotation) {}
+        TurnOutputMode turnOutputMode = TurnOutputMode.POSITION;
+        /**
+         * Either amps or volts, depending on {@link SwerveModuleConstants#DriveMotorClosedLoopOutput}
+         */
+        double turnTargetOpenLoop = 0.0;
+        Angle turnTargetPosition = Radians.zero();
+    }
+
+    public default void applyOutputs(ModuleIOOutputs outputs) {}
 }

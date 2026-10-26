@@ -212,6 +212,13 @@ public class Swerve extends PeriodicSubsystem {
                 !gyroInputs.connected && GlobalSettings.CURRENT_MODE != RobotMode.SIM);
     }
 
+    @Override
+    public void periodicAfterScheduler() {
+        for (Module module : modules) {
+            module.periodicAfterScheduler();
+        }
+    }
+
     /**
      * Runs the drive at the desired velocity.
      *

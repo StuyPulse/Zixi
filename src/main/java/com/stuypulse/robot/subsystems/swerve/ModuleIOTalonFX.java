@@ -34,6 +34,8 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 
+import static org.wpilib.units.Units.Rotations;
+
 import java.util.Queue;
 import java.util.function.Supplier;
 
@@ -206,10 +208,10 @@ public class ModuleIOTalonFX implements ModuleIO {
 
         // Update drive inputs
         inputs.driveConnected = driveConnectedDebounce.calculate(driveStatus.isOK());
-        inputs.drivePositionRad = Units.rotationsToRadians(drivePosition.getValueAsDouble());
-        inputs.driveVelocityRadPerSec = Units.rotationsToRadians(driveVelocity.getValueAsDouble());
-        inputs.driveAppliedVolts = driveAppliedVolts.getValueAsDouble();
-        inputs.driveCurrentAmps = driveCurrent.getValueAsDouble();
+        inputs.drivePosition = drivePosition.getValue();
+        inputs.driveVelocity = driveVelocity.getValue();
+        inputs.driveAppliedVolts = driveAppliedVolts.getValue();
+        inputs.driveCurrentAmps = driveCurrent.getValue();
 
         // Update turn inputs
         inputs.turnConnected = turnConnectedDebounce.calculate(turnStatus.isOK());
@@ -225,10 +227,10 @@ public class ModuleIOTalonFX implements ModuleIO {
         // Update odometry inputs
         inputs.odometryTimestamps =
                 timestampQueue.stream().mapToDouble((Double value) -> value).toArray();
-        inputs.odometryDrivePositionsRad =
+        inputs.odometryDrivePositions =
                 drivePositionQueue.stream()
-                        .mapToDouble((Double value) -> Units.rotationsToRadians(value))
-                        .toArray();
+                        .map((Double value) -> Rotations.of(value))
+                        .toArray(Angle[]::new);
         inputs.odometryTurnPositions =
                 turnPositionQueue.stream()
                         .map((Double value) -> Rotation2d.fromRotations(value))
@@ -239,41 +241,40 @@ public class ModuleIOTalonFX implements ModuleIO {
     }
 
     @Override
-    public void setDriveOpenLoop(double output) {
-        driveTalon.setControl(
-                switch (constants.DriveMotorClosedLoopOutput) {
-                    case Voltage -> voltageRequest.withOutput(output);
-                    case TorqueCurrentFOC -> torqueCurrentRequest.withOutput(output);
-                });
-    }
-
-    @Override
-    public void setTurnOpenLoop(double output) {
-        turnTalon.setControl(
-                switch (constants.SteerMotorClosedLoopOutput) {
-                    case Voltage -> voltageRequest.withOutput(output);
-                    case TorqueCurrentFOC -> torqueCurrentRequest.withOutput(output);
-                });
-    }
-
-    @Override
-    public void setDriveVelocity(double velocityRadPerSec) {
-        double velocityRotPerSec = Units.radiansToRotations(velocityRadPerSec);
-        driveTalon.setControl(
-                switch (constants.DriveMotorClosedLoopOutput) {
-                    case Voltage -> velocityVoltageRequest.withVelocity(velocityRotPerSec);
-                    case TorqueCurrentFOC ->
-                            velocityTorqueCurrentRequest.withVelocity(velocityRotPerSec);
-                });
-    }
-
-    @Override
-    public void setTurnPosition(Rotation2d rotation) {
-        turnTalon.setControl(
-                switch (constants.SteerMotorClosedLoopOutput) {
-                    case Voltage -> positionVoltageRequest.withPosition(rotation.getRotations());
-                    case TorqueCurrentFOC ->
-                            positionTorqueCurrentRequest.withPosition(rotation.getRotations());
-                });
+    public void applyOutputs(ModuleIOOutputs outputs) {
+        switch (outputs.driveOutputMode) {
+            case VELOCITY -> {
+                driveTalon.setControl(
+                    switch (constants.DriveMotorClosedLoopOutput) {
+                        case Voltage -> velocityVoltageRequest.withVelocity(outputs.driveTargetVelocity);
+                        case TorqueCurrentFOC ->
+                                velocityTorqueCurrentRequest.withVelocity(outputs.driveTargetVelocity);
+                    });
+            }
+            case OPEN_LOOP -> {
+                driveTalon.setControl(
+                    switch (constants.DriveMotorClosedLoopOutput) {
+                        case Voltage -> voltageRequest.withOutput(outputs.driveTargetOpenLoop);
+                        case TorqueCurrentFOC -> torqueCurrentRequest.withOutput(outputs.driveTargetOpenLoop);
+                    });
+            }
+        }
+        switch (outputs.turnOutputMode) {
+            case POSITION -> {
+                turnTalon.setControl(
+                    switch (constants.SteerMotorClosedLoopOutput) {
+                        case Voltage -> positionVoltageRequest.withPosition(outputs.turnTargetPosition);
+                        case TorqueCurrentFOC ->
+                            positionTorqueCurrentRequest.withPosition(outputs.turnTargetPosition);
+                    });
+            }
+            case OPEN_LOOP -> {
+                turnTalon.setControl(
+                    switch (constants.SteerMotorClosedLoopOutput) {
+                        case Voltage -> voltageRequest.withOutput(outputs.turnTargetOpenLoop);
+                        case TorqueCurrentFOC -> torqueCurrentRequest.withOutput(outputs.turnTargetOpenLoop);
+                    });
+            }
+        }
     }
 }
