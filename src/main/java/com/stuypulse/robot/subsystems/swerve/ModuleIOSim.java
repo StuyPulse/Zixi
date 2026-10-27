@@ -125,7 +125,8 @@ public class ModuleIOSim implements ModuleIO {
             case VELOCITY -> {
                 driveClosedLoop = true;
                 double velocityRadPerSec = outputs.driveTargetVelocity.in(RadiansPerSecond);
-                driveFFVolts = DRIVE_KS * Math.signum(velocityRadPerSec) + DRIVE_KV * velocityRadPerSec;
+                driveFFVolts =
+                        DRIVE_KS * Math.signum(velocityRadPerSec) + DRIVE_KV * velocityRadPerSec;
                 driveController.setSetpoint(velocityRadPerSec);
             }
             case OPEN_LOOP -> {

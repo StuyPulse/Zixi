@@ -4,6 +4,11 @@
 /**************************************************************/
 package com.stuypulse.robot.subsystems.swerve;
 
+import static org.wpilib.units.Units.Amps;
+import static org.wpilib.units.Units.Radians;
+import static org.wpilib.units.Units.RotationsPerSecond;
+import static org.wpilib.units.Units.Volts;
+
 import org.wpilib.math.geometry.Rotation2d;
 import org.wpilib.units.measure.Angle;
 import org.wpilib.units.measure.AngularVelocity;
@@ -12,13 +17,7 @@ import org.wpilib.units.measure.Voltage;
 
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 
-import static org.wpilib.units.Units.Amps;
-import static org.wpilib.units.Units.Radians;
-import static org.wpilib.units.Units.RotationsPerSecond;
-import static org.wpilib.units.Units.Volts;
-
 import org.littletonrobotics.junction.AutoLog;
-import org.littletonrobotics.junction.AutoLogOutput;
 
 public interface ModuleIO {
     @AutoLog
@@ -57,17 +56,23 @@ public interface ModuleIO {
 
     class ModuleIOOutputs {
         DriveOutputMode driveOutputMode = DriveOutputMode.VELOCITY;
+
         /**
-         * Either amps or volts, depending on {@link SwerveModuleConstants#DriveMotorClosedLoopOutput}
+         * Either amps or volts, depending on {@link
+         * SwerveModuleConstants#DriveMotorClosedLoopOutput}
          */
         double driveTargetOpenLoop = 0.0;
+
         AngularVelocity driveTargetVelocity = RotationsPerSecond.zero();
 
         TurnOutputMode turnOutputMode = TurnOutputMode.POSITION;
+
         /**
-         * Either amps or volts, depending on {@link SwerveModuleConstants#DriveMotorClosedLoopOutput}
+         * Either amps or volts, depending on {@link
+         * SwerveModuleConstants#DriveMotorClosedLoopOutput}
          */
         double turnTargetOpenLoop = 0.0;
+
         Angle turnTargetPosition = Radians.zero();
     }
 

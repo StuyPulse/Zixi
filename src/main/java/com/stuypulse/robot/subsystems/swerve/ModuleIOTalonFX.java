@@ -4,6 +4,8 @@
 /**************************************************************/
 package com.stuypulse.robot.subsystems.swerve;
 
+import static org.wpilib.units.Units.Rotations;
+
 import com.stuypulse.robot.generated.TunerConstants;
 
 import org.wpilib.math.filter.Debouncer;
@@ -33,8 +35,6 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
-
-import static org.wpilib.units.Units.Rotations;
 
 import java.util.Queue;
 import java.util.function.Supplier;
@@ -245,35 +245,42 @@ public class ModuleIOTalonFX implements ModuleIO {
         switch (outputs.driveOutputMode) {
             case VELOCITY -> {
                 driveTalon.setControl(
-                    switch (constants.DriveMotorClosedLoopOutput) {
-                        case Voltage -> velocityVoltageRequest.withVelocity(outputs.driveTargetVelocity);
-                        case TorqueCurrentFOC ->
-                                velocityTorqueCurrentRequest.withVelocity(outputs.driveTargetVelocity);
-                    });
+                        switch (constants.DriveMotorClosedLoopOutput) {
+                            case Voltage ->
+                                    velocityVoltageRequest.withVelocity(
+                                            outputs.driveTargetVelocity);
+                            case TorqueCurrentFOC ->
+                                    velocityTorqueCurrentRequest.withVelocity(
+                                            outputs.driveTargetVelocity);
+                        });
             }
             case OPEN_LOOP -> {
                 driveTalon.setControl(
-                    switch (constants.DriveMotorClosedLoopOutput) {
-                        case Voltage -> voltageRequest.withOutput(outputs.driveTargetOpenLoop);
-                        case TorqueCurrentFOC -> torqueCurrentRequest.withOutput(outputs.driveTargetOpenLoop);
-                    });
+                        switch (constants.DriveMotorClosedLoopOutput) {
+                            case Voltage -> voltageRequest.withOutput(outputs.driveTargetOpenLoop);
+                            case TorqueCurrentFOC ->
+                                    torqueCurrentRequest.withOutput(outputs.driveTargetOpenLoop);
+                        });
             }
         }
         switch (outputs.turnOutputMode) {
             case POSITION -> {
                 turnTalon.setControl(
-                    switch (constants.SteerMotorClosedLoopOutput) {
-                        case Voltage -> positionVoltageRequest.withPosition(outputs.turnTargetPosition);
-                        case TorqueCurrentFOC ->
-                            positionTorqueCurrentRequest.withPosition(outputs.turnTargetPosition);
-                    });
+                        switch (constants.SteerMotorClosedLoopOutput) {
+                            case Voltage ->
+                                    positionVoltageRequest.withPosition(outputs.turnTargetPosition);
+                            case TorqueCurrentFOC ->
+                                    positionTorqueCurrentRequest.withPosition(
+                                            outputs.turnTargetPosition);
+                        });
             }
             case OPEN_LOOP -> {
                 turnTalon.setControl(
-                    switch (constants.SteerMotorClosedLoopOutput) {
-                        case Voltage -> voltageRequest.withOutput(outputs.turnTargetOpenLoop);
-                        case TorqueCurrentFOC -> torqueCurrentRequest.withOutput(outputs.turnTargetOpenLoop);
-                    });
+                        switch (constants.SteerMotorClosedLoopOutput) {
+                            case Voltage -> voltageRequest.withOutput(outputs.turnTargetOpenLoop);
+                            case TorqueCurrentFOC ->
+                                    torqueCurrentRequest.withOutput(outputs.turnTargetOpenLoop);
+                        });
             }
         }
     }

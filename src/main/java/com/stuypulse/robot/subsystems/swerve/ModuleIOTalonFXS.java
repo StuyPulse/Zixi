@@ -4,6 +4,8 @@
 /**************************************************************/
 package com.stuypulse.robot.subsystems.swerve;
 
+import static org.wpilib.units.Units.Rotations;
+
 import com.stuypulse.robot.generated.TunerConstants;
 
 import org.wpilib.math.filter.Debouncer;
@@ -31,8 +33,6 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorArrangementValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
-
-import static org.wpilib.units.Units.Rotations;
 
 import java.util.Queue;
 import java.util.function.Supplier;
@@ -246,12 +246,19 @@ public class ModuleIOTalonFXS implements ModuleIO {
     @Override
     public void applyOutputs(ModuleIOOutputs outputs) {
         switch (outputs.driveOutputMode) {
-            case VELOCITY -> driveTalon.setControl(velocityVoltageRequest.withVelocity(outputs.driveTargetVelocity));
-            case OPEN_LOOP -> driveTalon.setControl(voltageRequest.withOutput(outputs.driveTargetOpenLoop));
+            case VELOCITY ->
+                    driveTalon.setControl(
+                            velocityVoltageRequest.withVelocity(outputs.driveTargetVelocity));
+            case OPEN_LOOP ->
+                    driveTalon.setControl(voltageRequest.withOutput(outputs.driveTargetOpenLoop));
         }
         switch (outputs.turnOutputMode) {
-            case POSITION -> turnTalon.setControl(positionVoltageRequest.withPosition(outputs.turnTargetPosition.in(Rotations)));
-            case OPEN_LOOP -> turnTalon.setControl(voltageRequest.withOutput(outputs.turnTargetOpenLoop));
+            case POSITION ->
+                    turnTalon.setControl(
+                            positionVoltageRequest.withPosition(
+                                    outputs.turnTargetPosition.in(Rotations)));
+            case OPEN_LOOP ->
+                    turnTalon.setControl(voltageRequest.withOutput(outputs.turnTargetOpenLoop));
         }
     }
 }
