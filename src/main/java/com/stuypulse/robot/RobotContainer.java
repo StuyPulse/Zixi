@@ -16,10 +16,19 @@ import com.stuypulse.robot.subsystems.swerve.ModuleIO;
 import com.stuypulse.robot.subsystems.swerve.ModuleIOSim;
 import com.stuypulse.robot.subsystems.swerve.ModuleIOTalonFX;
 import com.stuypulse.robot.subsystems.swerve.Swerve;
+import com.stuypulse.robot.subsystems.vision.Vision;
+import com.stuypulse.robot.subsystems.vision.VisionConstants;
+import com.stuypulse.robot.subsystems.vision.VisionConstants.Camera;
+import com.stuypulse.robot.subsystems.vision.VisionConstants.VisionMode;
+import com.stuypulse.robot.subsystems.vision.VisionIO;
+import com.stuypulse.robot.subsystems.vision.VisionIOLimelight;
+import com.stuypulse.robot.subsystems.vision.VisionIOPhotonVision;
+import com.stuypulse.robot.subsystems.vision.VisionIOPhotonVisionSim;
 
 import org.wpilib.command3.button.CommandGamepad;
 import org.wpilib.tunable.Tunables;
 
+import java.util.EnumMap;
 import org.littletonrobotics.junction.networktables.LoggedNetworkChooser;
 
 public class RobotContainer {
@@ -31,12 +40,14 @@ public class RobotContainer {
 
     // Subsystems
     private final Swerve swerve;
+    private final Vision vision;
     // Autons
     private LoggedNetworkChooser<Auton> autonChooser = new LoggedNetworkChooser<>("Auton");
 
     // Robot container
 
     public RobotContainer() {
+        EnumMap<Camera, VisionIO> visionIOMap = new EnumMap<>(Camera.class);
         switch (GlobalSettings.CURRENT_MODE) {
             case REAL -> {
                 swerve =
@@ -46,6 +57,17 @@ public class RobotContainer {
                                 new ModuleIOTalonFX(TunerConstants.FrontRight),
                                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                                 new ModuleIOTalonFX(TunerConstants.BackRight));
+                for (Camera camera : VisionConstants.Camera.values()) {
+                    visionIOMap.put(
+                            camera,
+                            VisionConstants.VISION_MODE == VisionMode.LIMELIGHT
+                                    ? new VisionIOLimelight(
+                                            camera.name(),
+                                            camera.getRobotToCamera(),
+                                            swerve::getRotation)
+                                    : new VisionIOPhotonVision(
+                                            camera.name(), camera.getRobotToCamera()));
+                }
             }
 
             case SIM -> {
@@ -56,6 +78,12 @@ public class RobotContainer {
                                 new ModuleIOSim(TunerConstants.FrontRight),
                                 new ModuleIOSim(TunerConstants.BackLeft),
                                 new ModuleIOSim(TunerConstants.BackRight));
+                for (Camera camera : Camera.values()) {
+                    visionIOMap.put(
+                            camera,
+                            new VisionIOPhotonVisionSim(
+                                    camera.getName(), camera.getRobotToCamera(), swerve::getPose));
+                }
             }
 
             default -> {
@@ -66,8 +94,12 @@ public class RobotContainer {
                                 new ModuleIO() {},
                                 new ModuleIO() {},
                                 new ModuleIO() {});
+                for (Camera camera : Camera.values()) {
+                    visionIOMap.put(camera, new VisionIO() {});
+                }
             }
         }
+        vision = new Vision(swerve.visionConsumer, visionIOMap);
 
         configureLogging();
         configureDefaultCommands();
