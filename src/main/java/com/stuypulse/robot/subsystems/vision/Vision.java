@@ -56,12 +56,11 @@ public class Vision extends PeriodicSubsystem {
         this.disconnectedAlerts = new EnumMap<>(Camera.class);
 
         this.hdrTimer = new Timer();
-
-        for (Camera camera : Camera.values()) {
+        for (Camera camera: io.keySet()) { 
             inputs.put(camera, new VisionIOInputsAutoLogged());
             outputs.put(camera, new VisionIOOutputs());
             disconnectedAlerts.put(
-                    camera,
+                    camera, 
                     new Alert(
                             "Vision " + camera.getName(),
                             "Vision camera " + camera.getName() + " is disconnected.",
