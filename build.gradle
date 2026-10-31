@@ -161,8 +161,27 @@ spotless {
     }
 }
 
-// Create version file
-project.compileJava.dependsOn(createVersionFile)
+def patchToolDir = layout.buildDirectory.dir("tmp/patchBuildTool")
+
+def compilePatchTool = tasks.register("compilePatchBuildTool", JavaCompile) {
+    source(file("src/main/java/tools/deployment/PatchBuildConstants.java"))
+    classpath = configurations.runtimeClasspath
+    destinationDirectory = patchToolDir
+}
+
+def patchBuildConstants = tasks.register("patchBuildConstants", JavaExec) {
+    dependsOn compilePatchTool
+    dependsOn tasks.named("createVersionFile")
+
+    classpath = files(patchToolDir) + configurations.runtimeClasspath
+    mainClass = "tools.deployment.PatchBuildConstants"
+
+    doFirst {
+        args(file(gversion.srcDir).absolutePath, gversion.classPackage, gversion.className, gversion.indent, file(".git").absolutePath)
+    }
+}
+
+project.compileJava.dependsOn(patchBuildConstants)
 
 gversion {
     srcDir       = "src/main/java/"
@@ -171,37 +190,4 @@ gversion {
     dateFormat   = "yyyy-MM-dd HH:mm:ss z"
     timeZone     = "America/New_York"
     indent       = "  "
-}
-
-tasks.named("createVersionFile") {
-    doLast {
-        def toolSrc = file("src/main/java/tools/deployment/PatchBuildConstants.java")
-        def compileDir = file("$buildDir/tmp/patchBuildTool").tap { mkdirs() }
-
-        ant.javac(
-            srcdir: toolSrc.parentFile.absolutePath,
-            destdir: compileDir.absolutePath,
-            includes: toolSrc.name,
-            includeantruntime: false,
-            classpath: sourceSets.main.runtimeClasspath.asPath,
-            source: "25",
-            target: "25"
-        )
-
-        ant.java(
-            classname: "tools.deployment.PatchBuildConstants",
-            fork: true,
-            failonerror: true
-        ) {
-            classpath {
-                pathelement(location: compileDir.absolutePath)
-                sourceSets.main.runtimeClasspath.each { pathelement(location: it.absolutePath) }
-            }
-            arg(value: file(gversion.srcDir).absolutePath)
-            arg(value: gversion.classPackage)
-            arg(value: gversion.className)
-            arg(value: gversion.indent)
-            arg(value: file(".git").absolutePath)
-        }
-    }
 }

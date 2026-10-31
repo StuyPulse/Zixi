@@ -37,15 +37,21 @@ public class PatchBuildConstants {
         PushStatus pushStatus = PushStatus.UNKNOWN;
 
         try {
-            String[] argSchema = new String[] { "srcDir", "classPackage", "className", "indent", "gitDir" };
-            argSchema = Arrays.stream(argSchema).map(str -> String.valueOf("<" + str + ">")).toArray(String[]::new);
+            String[] argSchema =
+                    new String[] {"srcDir", "classPackage", "className", "indent", "gitDir"};
+            argSchema =
+                    Arrays.stream(argSchema)
+                            .map(str -> String.valueOf("<" + str + ">"))
+                            .toArray(String[]::new);
             if (args == null || args.length < argSchema.length) {
-                throw new IllegalArgumentException("Expected arguments: " + String.join(" ", argSchema));
+                throw new IllegalArgumentException(
+                        "Expected arguments: " + String.join(" ", argSchema));
             }
 
             for (int i = 0; i < argSchema.length; i++) {
                 if (args[i] == null) {
-                    throw new IllegalArgumentException("Missing required argument #" + i + ": " + argSchema[i]);
+                    throw new IllegalArgumentException(
+                            "Missing required argument #" + i + ": " + argSchema[i]);
                 }
             }
 
@@ -104,7 +110,7 @@ public class PatchBuildConstants {
     }
 
     private static void patchWithNewFields(
-        Path targetPath, String indent, Map<String, String> fields) throws IOException {
+            Path targetPath, String indent, Map<String, String> fields) throws IOException {
         String content = Files.readString(targetPath);
 
         StringBuilder newFields = new StringBuilder();
@@ -142,9 +148,10 @@ public class PatchBuildConstants {
         String shortMessage = lastCommit.getShortMessage();
         String longMessage = lastCommit.getFullMessage();
 
-        boolean hasDescription = longMessage != null
-                && longMessage.length() > shortMessage.length()
-                && !longMessage.substring(shortMessage.length()).isBlank();
+        boolean hasDescription =
+                longMessage != null
+                        && longMessage.length() > shortMessage.length()
+                        && !longMessage.substring(shortMessage.length()).isBlank();
 
         return lastCommit.getShortMessage() + (hasDescription ? "..." : "");
     }
