@@ -74,24 +74,14 @@ public class PatchBuildConstants {
     }
 
     private static String getCommitMessage() throws IOException, InterruptedException {
-        Process process =
-                new ProcessBuilder(
-                                "git",
-                                "log",
-                                "-1",
-                                constructFormat("%s", "%b")) // %s is message, %b is description
-                        .redirectErrorStream(true)
-                        .start();
-
-        String output;
-        try (InputStream stream = process.getInputStream()) {
-            output = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-        }
-
-        int exitCode = process.waitFor();
-
-        if (exitCode != 0) {
-            throw new RuntimeException("Git failed: " + output);
+        String output =
+                runCommand(
+                        "git",
+                        "log",
+                        "-1",
+                        constructFormat("%s", "%b")); // %s is message, %b is description
+        if (output.isBlank()) {
+            throw new RuntimeException("Could not determine last commit message and description");
         }
 
         String[] parts = output.split("\u0000", 2);
@@ -103,30 +93,15 @@ public class PatchBuildConstants {
     }
 
     private static String getCommitLink() throws IOException, InterruptedException {
-        Process getRemoteProcess =
-                new ProcessBuilder("git", "config", "--get", "remote.origin.url").start();
-
-        Process getHashProcess =
-                new ProcessBuilder("git", "log", "-1", constructFormat("%H")) // %H is long hash
-                        .redirectErrorStream(true)
-                        .start();
-
-        String remoteURL;
-        try (InputStream stream = getRemoteProcess.getInputStream()) {
-            remoteURL = new String(stream.readAllBytes(), StandardCharsets.UTF_8).trim();
-        }
-
-        String longHash; // i prefer not to do reflection to get the hash from BuildConstants might
-        // as well just calculate it again
-        try (InputStream stream = getHashProcess.getInputStream()) {
-            longHash = new String(stream.readAllBytes(), StandardCharsets.UTF_8).trim();
-        }
-
-        if (getRemoteProcess.waitFor() != 0 || remoteURL.isBlank()) {
+        String remoteURL = runCommand("git", "config", "--get", "remote.origin.url");
+        if (remoteURL.isBlank()) {
             throw new RuntimeException("Could not determine Git remote URL");
         }
 
-        if (getHashProcess.waitFor() != 0 || longHash.isBlank()) {
+        // i prefer not to do reflection to get the hash from BuildConstants might
+        // as well just calculate it again
+        String longHash = runCommand("git", "log", "-1", constructFormat("%H")); // %H is long hash
+        if (longHash.isBlank()) {
             throw new RuntimeException("Could not determine Git hash of last commit");
         }
 
@@ -139,5 +114,19 @@ public class PatchBuildConstants {
         }
 
         return remoteURL + "/commit/" + longHash;
+    }
+
+    private static String runCommand(String... command) throws IOException, InterruptedException {
+        Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
+
+        try (InputStream stream = process.getInputStream()) {
+            String output = new String(stream.readAllBytes(), StandardCharsets.UTF_8).trim();
+
+            if (process.waitFor() != 0) {
+                return "";
+            }
+
+            return output;
+        }
     }
 }
