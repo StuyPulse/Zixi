@@ -19,11 +19,8 @@ import com.stuypulse.robot.subsystems.swerve.Swerve;
 import com.stuypulse.robot.subsystems.vision.Vision;
 import com.stuypulse.robot.subsystems.vision.VisionConstants;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.Camera;
-import com.stuypulse.robot.subsystems.vision.VisionConstants.VisionMode;
 import com.stuypulse.robot.subsystems.vision.VisionIO;
 import com.stuypulse.robot.subsystems.vision.VisionIOLimelight;
-import com.stuypulse.robot.subsystems.vision.VisionIOPhotonVision;
-import com.stuypulse.robot.subsystems.vision.VisionIOPhotonVisionSim;
 
 import org.wpilib.command3.button.CommandGamepad;
 import org.wpilib.tunable.Tunables;
@@ -60,13 +57,8 @@ public class RobotContainer {
                 for (Camera camera : VisionConstants.Camera.values()) {
                     visionIOMap.put(
                             camera,
-                            VisionConstants.VISION_MODE == VisionMode.LIMELIGHT
-                                    ? new VisionIOLimelight(
-                                            camera.name(),
-                                            camera.getRobotToCamera(),
-                                            swerve::getRotation)
-                                    : new VisionIOPhotonVision(
-                                            camera.name(), camera.getRobotToCamera()));
+                            new VisionIOLimelight(
+                                    camera.name(), camera.getRobotToCamera(), swerve::getRotation));
                 }
             }
 
@@ -79,10 +71,7 @@ public class RobotContainer {
                                 new ModuleIOSim(TunerConstants.BackLeft),
                                 new ModuleIOSim(TunerConstants.BackRight));
                 for (Camera camera : Camera.values()) {
-                    visionIOMap.put(
-                            camera,
-                            new VisionIOPhotonVisionSim(
-                                    camera.getName(), camera.getRobotToCamera(), swerve::getPose));
+                    visionIOMap.put(camera, new VisionIO() {});
                 }
             }
 

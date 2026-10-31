@@ -109,7 +109,7 @@ public class Vision extends PeriodicSubsystem {
                             : Pipeline.HIGH_SUN.getIndex();
 
             for (VisionIOOutputs outputs : outputs.values()) {
-                outputs.pipeline = nextPipeline; 
+                outputs.pipeline = nextPipeline;
             }
 
             hdrTimer.reset();
