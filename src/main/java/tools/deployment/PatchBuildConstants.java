@@ -26,7 +26,7 @@ public class PatchBuildConstants {
 
         try {
             message = getCommitMessage();
-            commitLink = getCommitLink();
+            commitLink = isCommitPushed() ? getCommitLink() : "";
         } catch (Exception e) {
             IO.println("Failed to get git commit info: ");
             e.printStackTrace();
@@ -128,5 +128,13 @@ public class PatchBuildConstants {
 
             return output;
         }
+    }
+
+    private static boolean isCommitPushed() throws IOException, InterruptedException {
+        runCommand("git", "fetch", "origin");
+
+        String result = runCommand("git", "branch", "-r", "--contains", "HEAD");
+
+        return !result.isBlank();
     }
 }

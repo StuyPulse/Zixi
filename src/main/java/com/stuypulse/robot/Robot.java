@@ -90,7 +90,10 @@ public class Robot extends LoggedRobot {
         Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
         Logger.recordMetadata("GitCommitMessage", BuildConstants.GIT_MESSAGE);
         if (!BuildConstants.GIT_LINK.isBlank()) {
+            Logger.recordMetadata("GitCommitPushed", "true");
             Logger.recordMetadata("GitCommitLink", BuildConstants.GIT_LINK);
+        } else {
+            Logger.recordMetadata("GitCommitPushed", "false");
         }
         Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
         Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
