@@ -26,6 +26,7 @@ public class PatchBuildConstants {
 
         try {
             message = getCommitMessage();
+            message = escapeJavaString(message);
             commitLink = isCommitPushed() ? getCommitLink() : "";
         } catch (Exception e) {
             IO.println("Failed to get git commit info: ");
@@ -63,7 +64,13 @@ public class PatchBuildConstants {
     }
 
     private static String escapeJavaString(String value) {
-        return value.replace("\\", "").replace("\"", "").replace("\n", "").replace("\t", "");
+        return value.replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r")
+                .replace("\t", "\\t")
+                .replace("\b", "\\b")
+                .replace("\f", "\\f");
     }
 
     // Use NUL character deliminator so that characters in commit message don't conflict with
