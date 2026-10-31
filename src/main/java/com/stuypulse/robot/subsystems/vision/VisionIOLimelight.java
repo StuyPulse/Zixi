@@ -33,7 +33,6 @@ public class VisionIOLimelight implements VisionIO {
     private final Supplier<Rotation2d> rotationSupplier;
     private final DoubleArrayPublisher orientationPublisher;
     private final IntegerPublisher pipelinePublisher;
-    private final DoubleArrayPublisher cameraPosePublisher;
     private final IntegerPublisher imuModePublisher;
     private final DoubleArrayPublisher aprilTagWhitelistPublisher;
 
@@ -57,7 +56,6 @@ public class VisionIOLimelight implements VisionIO {
         NetworkTable table = NetworkTableInstance.getDefault().getTable(name);
         this.rotationSupplier = rotationSupplier;
         orientationPublisher = table.getDoubleArrayTopic("robot_orientation_set").publish();
-        cameraPosePublisher = table.getDoubleArrayTopic("camerapose_robotspace_set").publish();
         pipelinePublisher = table.getIntegerTopic("pipeline").publish();
         imuModePublisher = table.getIntegerTopic("imumode_set").publish();
         aprilTagWhitelistPublisher = table.getDoubleArrayTopic("fiducial_id_filters_set").publish();
@@ -72,7 +70,7 @@ public class VisionIOLimelight implements VisionIO {
 
         megaTagMode = MegaTagMode.MEGATAG_1;
 
-        cameraPosePublisher.accept(
+        table.getDoubleArrayTopic("camerapose_robotspace_set").publish().accept(
                 new double[] {
                     robotToCamera.getX(),
                     robotToCamera.getY(),
