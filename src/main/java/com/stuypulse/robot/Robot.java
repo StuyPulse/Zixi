@@ -93,14 +93,13 @@ public class Robot extends LoggedRobot {
             Logger.recordMetadata("GitCommitLink", BuildConstants.GIT_LINK);
         }
         Logger.recordMetadata(
-            "GitPushStatus",
-            switch (BuildConstants.GIT_PUSH_STATUS) {
-                case "PUSHED" -> "Commit pushed to remote repository";
-                case "NOT_PUSHED" -> "Local commit not pushed to remote repository";
-                case "NO_NETWORK" -> "Could not verify push status (no network connection)";
-                default -> "unknown";
-            }
-        );
+                "GitPushStatus",
+                switch (BuildConstants.GIT_PUSH_STATUS) {
+                    case "PUSHED" -> "Commit pushed to remote repository";
+                    case "NOT_PUSHED" -> "Local commit not pushed to remote repository";
+                    case "NO_NETWORK" -> "Could not verify push status (no network connection)";
+                    default -> "unknown";
+                });
         Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
         Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
         Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);

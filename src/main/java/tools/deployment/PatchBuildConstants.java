@@ -10,7 +10,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand.ListMode;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -61,23 +64,12 @@ public class PatchBuildConstants {
 
         if (Files.exists(targetPath)) {
             try {
-                String content = Files.readString(targetPath, StandardCharsets.UTF_8);
-                String newFields =
-                        indent
-                                + "public static final String GIT_MESSAGE = \""
-                                + message
-                                + "\";\n"
-                                + indent
-                                + "public static final String GIT_LINK = \""
-                                + commitLink
-                                + "\";\n"
-                                + "public static final String GIT_PUSH_STATUS = \""
-                                + pushStatus.toString()
-                                + "\";\n"
-                                + "}";
+                Map<String, String> fields = new LinkedHashMap<>();
+                fields.put("GIT_MESSAGE", message);
+                fields.put("GIT_LINK", commitLink);
+                fields.put("GIT_PUSH_STATUS", pushStatus.toString());
+                patchWithNewFields(targetPath, indent, fields);
 
-                content = content.replaceAll("}\\s*$", newFields);
-                Files.writeString(targetPath, content, StandardCharsets.UTF_8);
                 System.out.println(
                         "[Patch] Successfully injected Git metadata into "
                                 + targetPath.getFileName());
@@ -88,6 +80,26 @@ public class PatchBuildConstants {
         } else {
             System.out.println("Could not find file at " + targetPath.getFileName());
         }
+    }
+
+    private static void patchWithNewFields(Path targetPath, String indent, Map<String, String> fields) throws IOException {
+        String content = Files.readString(targetPath);
+
+        StringBuilder newFields = new StringBuilder();
+
+        for (Entry<String, String> entry : fields.entrySet()) {
+            newFields
+                    .append(indent)
+                    .append("public static final String ")
+                    .append(entry.getKey())
+                    .append(" = \"")
+                    .append(entry.getValue())
+                    .append("\";\n");
+        }
+        newFields.append("}");
+
+        content = content.replaceAll("}\\s*$", newFields.toString());
+        Files.writeString(targetPath, content, StandardCharsets.UTF_8);
     }
 
     private static String escapeJavaString(String value) {
