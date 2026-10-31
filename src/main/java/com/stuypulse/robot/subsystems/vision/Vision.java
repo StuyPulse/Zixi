@@ -28,6 +28,7 @@ import org.wpilib.system.Timer;
 import org.wpilib.util.Alert;
 
 import java.util.EnumMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -79,8 +80,9 @@ public class Vision extends PeriodicSubsystem {
         return inputs.get(camera).latestTargetObservation.tx();
     }
 
-    public int getPipeline() {
-        return inputs.values().iterator().next().currentPipeline;
+    public Optional<Integer> getPipeline() {
+        Iterator<VisionIOInputsAutoLogged> iterator = inputs.values().iterator();
+        return iterator.hasNext() ? Optional.of(iterator.next().currentPipeline) : Optional.empty();
     }
 
     @Override
@@ -96,10 +98,13 @@ public class Vision extends PeriodicSubsystem {
             Logger.processInputs("Vision/" + entry.getKey().getName(), currentInputs);
         }
 
+        Optional<Integer> pipeline = getPipeline();
+
         if (hdrTimer.hasElapsed(VisionConstants.VisionSettings.HDR_SWITCHING_INTERVAL)
-                && VisionConstants.VisionSettings.HDR_ENABLED.get()) {
+                && VisionConstants.VisionSettings.HDR_ENABLED.get()
+                && pipeline.isPresent()) {
             Pipeline nextPipeline =
-                    getPipeline() == Pipeline.HIGH_SUN.getIndex()
+                    pipeline.get() == Pipeline.HIGH_SUN.getIndex()
                             ? Pipeline.LOW_SUN
                             : Pipeline.HIGH_SUN;
 
