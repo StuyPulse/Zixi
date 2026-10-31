@@ -71,6 +71,9 @@ public class PatchBuildConstants {
                                 + "public static final String GIT_LINK = \""
                                 + commitLink
                                 + "\";\n"
+                                + "public static final String GIT_PUSH_STATUS = \""
+                                + pushStatus.toString()
+                                + "\";\n"
                                 + "}";
 
                 content = content.replaceAll("}\\s*$", newFields);
