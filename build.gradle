@@ -2,6 +2,7 @@ plugins {
     id "java"
     id "application"
     id "org.wpilib.GradleRIO" version "2027.0.0-alpha-7"
+    id "com.peterabeles.gversion" version "1.10"
     id "com.diffplug.spotless" version "8.9.0"
 }
 
@@ -155,19 +156,31 @@ spotless {
     }
 }
 
-tasks.register("recordLastCommit", JavaExec) {
-    group = "deployment"
+// Create version file
+project.compileJava.dependsOn(createVersionFile)
 
-    classpath = sourceSets.main.runtimeClasspath
-    mainClass = "tools.deployment.RecordLastCommitTask"
-
-    workingDir = project.rootDir
+gversion {
+    srcDir       = "src/main/java/"
+    classPackage = "com.stuypulse.robot"
+    className    = "BuildConstants"
+    dateFormat   = "yyyy-MM-dd HH:mm:ss z"
+    timeZone     = "America/New_York"
+    indent       = "  "
 }
 
-tasks.named("deploy") {
-    dependsOn tasks.named("recordLastCommit")
-}
+tasks.named("createVersionFile") {
+    doLast {
+        def toolSrc = file("src/main/java/tools/deployment/PatchBuildConstants.java")
 
-tasks.named("simulateExternalJava") {
-    dependsOn tasks.named("recordLastCommit")
+        def result = providers.exec {
+            commandLine "java",
+                toolSrc.absolutePath,
+                file(gversion.srcDir).absolutePath,
+                gversion.classPackage,
+                gversion.className,
+                gversion.indent
+        }
+
+        result.result.get()
+    }
 }
