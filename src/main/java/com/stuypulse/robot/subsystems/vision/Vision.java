@@ -57,11 +57,11 @@ public class Vision extends PeriodicSubsystem {
         this.disconnectedAlerts = new EnumMap<>(Camera.class);
 
         this.hdrTimer = new Timer();
-        for (Camera camera: io.keySet()) { 
+        for (Camera camera : io.keySet()) {
             inputs.put(camera, new VisionIOInputsAutoLogged());
             outputs.put(camera, new VisionIOOutputs());
             disconnectedAlerts.put(
-                    camera, 
+                    camera,
                     new Alert(
                             "Vision " + camera.getName(),
                             "Vision camera " + camera.getName() + " is disconnected.",
@@ -103,13 +103,13 @@ public class Vision extends PeriodicSubsystem {
         if (hdrTimer.hasElapsed(VisionConstants.VisionSettings.HDR_SWITCHING_INTERVAL)
                 && VisionConstants.VisionSettings.HDR_ENABLED.get()
                 && pipeline.isPresent()) {
-            Pipeline nextPipeline =
+            int nextPipeline =
                     pipeline.get() == Pipeline.HIGH_SUN.getIndex()
-                            ? Pipeline.LOW_SUN
-                            : Pipeline.HIGH_SUN;
+                            ? Pipeline.LOW_SUN.getIndex()
+                            : Pipeline.HIGH_SUN.getIndex();
 
             for (VisionIOOutputs outputs : outputs.values()) {
-                outputs.pipeline = nextPipeline.getIndex();
+                outputs.pipeline = nextPipeline; 
             }
 
             hdrTimer.reset();
