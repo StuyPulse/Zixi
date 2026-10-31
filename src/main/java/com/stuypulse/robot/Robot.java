@@ -6,6 +6,7 @@ package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.auton.Auton;
 import com.stuypulse.robot.constants.GlobalSettings;
+import com.stuypulse.robot.util.PeriodicSubsystem;
 
 import org.wpilib.command3.Scheduler;
 import org.wpilib.driverstation.Alliance;
@@ -122,6 +123,7 @@ public class Robot extends LoggedRobot {
     @Override
     public void robotPeriodic() {
         defaultScheduler.run();
+        PeriodicSubsystem.runAllPeriodicAfterScheduler();
     }
 
     /*********************/
