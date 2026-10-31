@@ -97,8 +97,8 @@ public class Robot extends LoggedRobot {
                 switch (BuildConstants.GIT_PUSH_STATUS) {
                     case "PUSHED" -> "Commit pushed to remote repository";
                     case "NOT_PUSHED" -> "Local commit not pushed to remote repository";
-                    case "NO_NETWORK" -> "Could not verify push status (no network connection)";
-                    default -> "unknown";
+                    case "STALE" -> "Could not verify push status. Cached information may be stale";
+                    default -> "Unable to determine commit push status";
                 });
         Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
         Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);

@@ -10,10 +10,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand.ListMode;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -69,16 +71,12 @@ public class PatchBuildConstants {
                 fields.put("GIT_LINK", commitLink);
                 fields.put("GIT_PUSH_STATUS", pushStatus.toString());
                 patchWithNewFields(targetPath, indent, fields);
-
-                System.out.println(
-                        "[Patch] Successfully injected Git metadata into "
-                                + targetPath.getFileName());
             } catch (Exception e) {
                 IO.println("Failed to write commit info to " + targetPath.getFileName());
                 e.printStackTrace();
             }
         } else {
-            System.out.println("Could not find file at " + targetPath.getFileName());
+            IO.println("Could not find file at " + targetPath.getFileName());
         }
     }
 
@@ -148,30 +146,46 @@ public class PatchBuildConstants {
     enum PushStatus {
         PUSHED,
         NOT_PUSHED,
-        NO_NETWORK,
+        STALE,
         UNKNOWN
     }
 
-    private static PushStatus getCommitPushStatus() throws Exception {
+    private static PushStatus getCommitPushStatus() {
         try {
             git.fetch().setRemote("origin").setTimeout(5).call();
+
         } catch (TransportException e) {
-            return PushStatus.NO_NETWORK;
+            return PushStatus.STALE;
+        } catch (Exception e) {
+            IO.println("Failed to fetch remote Git information: ");
+            e.printStackTrace();
+            return PushStatus.UNKNOWN;
         }
 
         try (RevWalk walk = new RevWalk(git.getRepository())) {
-            RevCommit localCommitContext = walk.parseCommit(lastCommit.getId());
+            RevCommit localCommit = walk.parseCommit(lastCommit.getId());
 
-            List<Ref> remoteBranches = git.branchList().setListMode(ListMode.REMOTE).call();
+            List<Ref> remoteBranches =
+                    git.branchList().setListMode(ListMode.REMOTE).call();
+
             for (Ref remoteRef : remoteBranches) {
-                RevCommit tipCommit = walk.parseCommit(remoteRef.getObjectId());
+                if (remoteRef.getObjectId() == null) {
+                    continue;
+                }
 
-                if (walk.isMergedInto(localCommitContext, tipCommit)) {
+                RevCommit remoteCommit = walk.parseCommit(remoteRef.getObjectId());
+
+                if (walk.isMergedInto(localCommit, remoteCommit)) {
                     return PushStatus.PUSHED;
                 }
             }
-        }
 
-        return PushStatus.NOT_PUSHED;
+            return PushStatus.NOT_PUSHED;
+
+        } catch (Exception e) {
+            IO.println("Failed to determine Git push status: ");
+            e.printStackTrace();
+            return PushStatus.UNKNOWN;
+        }
     }
 }
