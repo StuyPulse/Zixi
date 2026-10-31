@@ -224,6 +224,13 @@ public class Vision extends PeriodicSubsystem {
                 "Vision/Summary/RobotPosesRejected", allRobotPosesRejected.toArray(new Pose3d[0]));
     }
 
+    @Override 
+    public void periodicAfterScheduler() {
+        for (var entry: io.entrySet()) {
+           entry.getValue().applyOutputs(outputs.get(entry.getKey()));
+        } 
+    }
+
     @FunctionalInterface
     public static interface VisionConsumer {
         public void accept(
