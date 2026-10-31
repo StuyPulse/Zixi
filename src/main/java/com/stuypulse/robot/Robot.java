@@ -89,8 +89,8 @@ public class Robot extends LoggedRobot {
         Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
         Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
         Logger.recordMetadata("GitCommitMessage", BuildConstants.GIT_MESSAGE);
-        if (!BuildConstants.GIT_DESCRIPTION.isBlank()) {
-            Logger.recordMetadata("GitDescription", BuildConstants.GIT_DESCRIPTION);
+        if (!BuildConstants.GIT_LINK.isBlank()) {
+            Logger.recordMetadata("GitCommitLink", BuildConstants.GIT_LINK);
         }
         Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
         Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);

@@ -19,34 +19,20 @@ public class PatchBuildConstants {
         String indent = args.length > 3 ? args[3] : "  ";
 
         String message = "unknown";
-        String description = "unknown";
+        String commitLink = "unknown";
+
+        String packagePath = classPackage.replace(".", "/");
+        Path targetPath = Paths.get(srcDir, packagePath, className + ".java");
 
         try {
-            String[] parts = getCommitInfo();
-            if (parts.length >= 1 && !parts[0].isBlank()) {
-                message = parts[0];
-            }
-            if (parts.length >= 2) {
-                description = !parts[1].isBlank() ? parts[1] : "";
-            }
+            message = getCommitMessage();
+            commitLink = getCommitLink();
         } catch (Exception e) {
             IO.println("Failed to get git commit info: ");
             e.printStackTrace();
         }
 
         message = escapeJavaString(message);
-
-        // dude
-        description =
-                description
-                        .replace("\r\n", "\n")
-                        .replace("\r", "\n")
-                        .replaceAll("\n{2,}", "\n")
-                        .trim();
-        description = escapeJavaString(description);
-
-        String packagePath = classPackage.replace(".", "/");
-        Path targetPath = Paths.get(srcDir, packagePath, className + ".java");
 
         if (Files.exists(targetPath)) {
             try {
@@ -57,8 +43,8 @@ public class PatchBuildConstants {
                                 + message
                                 + "\";\n"
                                 + indent
-                                + "public static final String GIT_DESCRIPTION = \""
-                                + description
+                                + "public static final String GIT_LINK = \""
+                                + commitLink
                                 + "\";\n"
                                 + "}";
 
@@ -87,11 +73,13 @@ public class PatchBuildConstants {
         return "--format=" + String.join(NUL, formatters);
     }
 
-    private static String[] getCommitInfo() throws IOException, InterruptedException {
-        String message = "%s";
-        String description = "%b";
+    private static String getCommitMessage() throws IOException, InterruptedException {
         Process process =
-                new ProcessBuilder("git", "log", "-1", constructFormat(message, description))
+                new ProcessBuilder(
+                                "git",
+                                "log",
+                                "-1",
+                                constructFormat("%s", "%b")) // %s is message, %b is description
                         .redirectErrorStream(true)
                         .start();
 
@@ -106,8 +94,50 @@ public class PatchBuildConstants {
             throw new RuntimeException("Git failed: " + output);
         }
 
-        // \u0000 is java unicode escape character for the NUL character
-        String[] parts = output.strip().split("\u0000", 3);
-        return parts;
+        String[] parts = output.split("\u0000", 2);
+
+        String message = parts[0].trim();
+        boolean hasDescription = parts.length > 1 && !parts[1].isBlank();
+
+        return message + (hasDescription ? "..." : "");
+    }
+
+    private static String getCommitLink() throws IOException, InterruptedException {
+        Process getRemoteProcess =
+                new ProcessBuilder("git", "config", "--get", "remote.origin.url").start();
+
+        Process getHashProcess =
+                new ProcessBuilder("git", "log", "-1", constructFormat("%H")) // %H is long hash
+                        .redirectErrorStream(true)
+                        .start();
+
+        String remoteURL;
+        try (InputStream stream = getRemoteProcess.getInputStream()) {
+            remoteURL = new String(stream.readAllBytes(), StandardCharsets.UTF_8).trim();
+        }
+
+        String longHash; // i prefer not to do reflection to get the hash from BuildConstants might
+        // as well just calculate it again
+        try (InputStream stream = getHashProcess.getInputStream()) {
+            longHash = new String(stream.readAllBytes(), StandardCharsets.UTF_8).trim();
+        }
+
+        if (getRemoteProcess.waitFor() != 0 || remoteURL.isBlank()) {
+            throw new RuntimeException("Could not determine Git remote URL");
+        }
+
+        if (getHashProcess.waitFor() != 0 || longHash.isBlank()) {
+            throw new RuntimeException("Could not determine Git hash of last commit");
+        }
+
+        if (remoteURL.startsWith("git@github.com:")) {
+            remoteURL = remoteURL.replace("git@github.com:", "https://github.com/");
+        }
+
+        if (remoteURL.endsWith(".git")) {
+            remoteURL = remoteURL.substring(0, remoteURL.length() - 4);
+        }
+
+        return remoteURL + "/commit/" + longHash;
     }
 }
