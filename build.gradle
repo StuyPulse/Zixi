@@ -6,6 +6,10 @@ plugins {
     id "com.diffplug.spotless" version "8.9.0"
 }
 
+repositories {
+    mavenCentral()
+}
+
 java {
     sourceCompatibility = JavaVersion.VERSION_25
     targetCompatibility = JavaVersion.VERSION_25
@@ -86,6 +90,7 @@ dependencies {
     annotationProcessor "org.littletonrobotics.akit:akit-autolog:$akitJson.version"
 
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r'
 }
 
 test {
@@ -171,16 +176,32 @@ gversion {
 tasks.named("createVersionFile") {
     doLast {
         def toolSrc = file("src/main/java/tools/deployment/PatchBuildConstants.java")
+        def compileDir = file("$buildDir/tmp/patchBuildTool").tap { mkdirs() }
 
-        def result = providers.exec {
-            commandLine "java",
-                toolSrc.absolutePath,
-                file(gversion.srcDir).absolutePath,
-                gversion.classPackage,
-                gversion.className,
-                gversion.indent
+        ant.javac(
+            srcdir: toolSrc.parentFile.absolutePath,
+            destdir: compileDir.absolutePath,
+            includes: toolSrc.name,
+            includeantruntime: false,
+            classpath: sourceSets.main.runtimeClasspath.asPath,
+            source: "25",
+            target: "25"
+        )
+
+        ant.java(
+            classname: "tools.deployment.PatchBuildConstants",
+            fork: true,
+            failonerror: true
+        ) {
+            classpath {
+                pathelement(location: compileDir.absolutePath)
+                sourceSets.main.runtimeClasspath.each { pathelement(location: it.absolutePath) }
+            }
+            arg(value: file(gversion.srcDir).absolutePath)
+            arg(value: gversion.classPackage)
+            arg(value: gversion.className)
+            arg(value: gversion.indent)
+            arg(value: file(".git").absolutePath)
         }
-
-        result.result.get()
     }
 }

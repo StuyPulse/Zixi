@@ -4,15 +4,33 @@
 /**************************************************************/
 package tools.deployment;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.ListBranchCommand.ListMode;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.TransportException;
+import org.eclipse.jgit.lib.Config;
+import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
 
 public class PatchBuildConstants {
-    public static void main(String[] args) throws IOException, InterruptedException {
+    private static Git git;
+    private static RevCommit lastCommit;
+
+    public static void main(String[] args) throws IOException, GitAPIException {
+        String gitDirectory = args.length > 4 ? args[4] : null;
+        if (gitDirectory != null) {
+            git = Git.open(new File(gitDirectory));
+            lastCommit = git.log().call().iterator().next();
+        }
+
         String srcDir = args.length > 0 ? args[0] : "src/main/java/";
         String classPackage = args.length > 1 ? args[1] : "com.stuypulse.robot";
         String className = args.length > 2 ? args[2] : "BuildConstants";
@@ -20,20 +38,26 @@ public class PatchBuildConstants {
 
         String message = "unknown";
         String commitLink = "unknown";
+        PushStatus pushStatus = PushStatus.UNKNOWN;
 
         String packagePath = classPackage.replace(".", "/");
         Path targetPath = Paths.get(srcDir, packagePath, className + ".java");
 
-        try {
-            message = getCommitMessage();
-            message = escapeJavaString(message);
-            commitLink = isCommitPushed() ? getCommitLink() : "";
-        } catch (Exception e) {
-            IO.println("Failed to get git commit info: ");
-            e.printStackTrace();
-        }
+        if (gitDirectory != null) {
+            try {
+                message = getCommitMessage();
+                message = escapeJavaString(message);
+                commitLink = "";
+                pushStatus = getCommitPushStatus();
+                if (pushStatus == PushStatus.PUSHED) {
+                    commitLink = getCommitLink();
+                }
 
-        message = escapeJavaString(message);
+            } catch (Exception e) {
+                IO.println("Failed to get git commit info: ");
+                e.printStackTrace();
+            }
+        }
 
         if (Files.exists(targetPath)) {
             try {
@@ -73,75 +97,66 @@ public class PatchBuildConstants {
                 .replace("\f", "\\f");
     }
 
-    // Use NUL character deliminator so that characters in commit message don't conflict with
-    // separators
-    private static String constructFormat(String... formatters) {
-        String NUL = "%x00";
-        return "--format=" + String.join(NUL, formatters);
+    private static String getCommitMessage() {
+        if (lastCommit == null) {
+            return "";
+        }
+
+        String shortMessage = lastCommit.getShortMessage();
+        String longMessage = lastCommit.getFullMessage();
+
+        boolean hasDescription =
+                longMessage != null
+                        && longMessage.length() > shortMessage.length()
+                        && !longMessage.substring(shortMessage.length()).isBlank();
+
+        return lastCommit.getShortMessage() + (hasDescription ? "..." : "");
     }
 
-    private static String getCommitMessage() throws IOException, InterruptedException {
-        String output =
-                runCommand(
-                        "git",
-                        "log",
-                        "-1",
-                        constructFormat("%s", "%b")); // %s is message, %b is description
-        if (output.isBlank()) {
-            throw new RuntimeException("Could not determine last commit message and description");
+    private static String getCommitLink() {
+        Config config = git.getRepository().getConfig();
+        String repoLink = config.getString("remote", "origin", "url");
+
+        if (repoLink.startsWith("git@github.com:")) {
+            repoLink = repoLink.replace("git@github.com:", "https://github.com");
         }
 
-        String[] parts = output.split("\u0000", 2);
+        if (repoLink.endsWith(".git")) {
+            repoLink = repoLink.substring(0, repoLink.lastIndexOf(".git"));
+        }
 
-        String message = parts[0].trim();
-        boolean hasDescription = parts.length > 1 && !parts[1].isBlank();
+        String commitHash = lastCommit.getName();
 
-        return message + (hasDescription ? "..." : "");
+        return repoLink + "/commit/" + commitHash;
     }
 
-    private static String getCommitLink() throws IOException, InterruptedException {
-        String remoteURL = runCommand("git", "config", "--get", "remote.origin.url");
-        if (remoteURL.isBlank()) {
-            throw new RuntimeException("Could not determine Git remote URL");
-        }
-
-        // i prefer not to do reflection to get the hash from BuildConstants might
-        // as well just calculate it again
-        String longHash = runCommand("git", "log", "-1", constructFormat("%H")); // %H is long hash
-        if (longHash.isBlank()) {
-            throw new RuntimeException("Could not determine Git hash of last commit");
-        }
-
-        if (remoteURL.startsWith("git@github.com:")) {
-            remoteURL = remoteURL.replace("git@github.com:", "https://github.com/");
-        }
-
-        if (remoteURL.endsWith(".git")) {
-            remoteURL = remoteURL.substring(0, remoteURL.length() - 4);
-        }
-
-        return remoteURL + "/commit/" + longHash;
+    enum PushStatus {
+        PUSHED,
+        NOT_PUSHED,
+        NO_NETWORK,
+        UNKNOWN
     }
 
-    private static String runCommand(String... command) throws IOException, InterruptedException {
-        Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
+    private static PushStatus getCommitPushStatus() throws Exception {
+        try {
+            git.fetch().setRemote("origin").setTimeout(5).call();
+        } catch (TransportException e) {
+            return PushStatus.NO_NETWORK;
+        }
 
-        try (InputStream stream = process.getInputStream()) {
-            String output = new String(stream.readAllBytes(), StandardCharsets.UTF_8).trim();
+        try (RevWalk walk = new RevWalk(git.getRepository())) {
+            RevCommit localCommitContext = walk.parseCommit(lastCommit.getId());
 
-            if (process.waitFor() != 0) {
-                return "";
+            List<Ref> remoteBranches = git.branchList().setListMode(ListMode.REMOTE).call();
+            for (Ref remoteRef : remoteBranches) {
+                RevCommit tipCommit = walk.parseCommit(remoteRef.getObjectId());
+
+                if (walk.isMergedInto(localCommitContext, tipCommit)) {
+                    return PushStatus.PUSHED;
+                }
             }
-
-            return output;
         }
-    }
 
-    private static boolean isCommitPushed() throws IOException, InterruptedException {
-        runCommand("git", "fetch", "origin");
-
-        String result = runCommand("git", "branch", "-r", "--contains", "HEAD");
-
-        return !result.isBlank();
+        return PushStatus.NOT_PUSHED;
     }
 }
