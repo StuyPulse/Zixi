@@ -271,7 +271,7 @@ class Handler(BaseHTTPRequestHandler):
         except (ValueError, json.JSONDecodeError):
             return self.respond(400, {"error": "Invalid JSON"})
 
-        except (Exception as error):
+        except Exception as error:
             print(error, flush=True)
             return self.respond(500, {"error": "Internal server error"})
 
