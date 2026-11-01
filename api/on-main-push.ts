@@ -1,4 +1,5 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
+import { GithubPushSchema } from "../schemas/github-push";
 
 const POST = async (request: Request) => {
     const secret = process.env.GITHUB_WEBHOOK_SECRET;
@@ -23,7 +24,13 @@ const POST = async (request: Request) => {
         return Response.json({ error: "Invalid signature" }, { status: 401 });
     }
 
-    const payload = JSON.parse(body);
+    const parsed = GithubPushSchema.safeParse(JSON.parse(body));
+
+    if (!parsed.success) {
+        return Response.json({ error: "Invalid payload" }, { status: 400 });
+    }
+
+    const payload = parsed.data;
     if (payload.ref !== "refs/head/main") {
         return Response.json({ message: "Only main pushes are detected" });
     }
