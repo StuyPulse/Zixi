@@ -39,10 +39,26 @@ public interface VisionConstants {
 
     record CameraData(String name, Transform3d robotToCamera, double stdDevFactor) {}
 
+    /**
+     * Represents a camera from its physical position and identified by name.
+     * 
+     * <p>
+     * An constant of this enum looks like this
+     * <code>
+     * NAME("detailed name", new Transform3d(x, y, z), 1.0);
+     * </code>
+     * </p>
+     */
     public enum Camera {
         ;
         private final CameraData data;
 
+        /**
+         * Internal constructor to setup a camera with a {@link CameraData} instance
+         * @param name name of the camera, can be more detailed than its simple enum constant's name
+         * @param robotToCamera transformation from the robot origin to the camera's position
+         * @param stdDevFactor scalar factor to multiply the camrea's standard deviations by
+         */
         private Camera(String name, Transform3d robotToCamera, double stdDevFactor) {
             this.data = new CameraData(name, robotToCamera, stdDevFactor);
         }
