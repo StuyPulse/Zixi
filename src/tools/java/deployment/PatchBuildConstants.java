@@ -2,7 +2,7 @@
 /* Copyright (c) 2026 StuyPulse Robotics. All rights reserved.*/
 /* This work is licensed under the terms of the MIT license.  */
 /**************************************************************/
-package tools.deployment;
+package deployment; // relative to src/tools/java/
 
 import java.io.File;
 import java.io.IOException;
