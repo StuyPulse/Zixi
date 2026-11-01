@@ -52,7 +52,8 @@ public class TalonFXInputs implements LoggableInputs, Cloneable {
     /**
      * Records additional StatusSignals to be logged.
      *
-     * @param signals The signals to log.
+     * @param name The name of the signal to log.
+     * @param value The value of the signal to log.
      */
     void recordAdditionalSignal(String name, Object value) {
         this.additionalSignalValues.put(name, value);

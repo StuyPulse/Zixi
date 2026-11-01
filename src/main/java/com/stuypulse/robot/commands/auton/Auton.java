@@ -22,6 +22,8 @@ import org.wpilib.command3.Command;
  *
  * <p>Auton routines without paths like characterization routines can be constructed using the
  * {@link #noPaths} method
+ *
+ * @author Aiden Zhang (https://github.com/aidenzhang21345)
  */
 public interface Auton {
     /** Display auton path trajectories on elastic */
@@ -51,3 +53,4 @@ public interface Auton {
         };
     }
 }
+

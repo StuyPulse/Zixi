@@ -191,7 +191,7 @@ public class TalonFXConfig {
      *
      * @param value Gains scheduling behavior, see {@link
      *     com.ctre.phoenix6.signals.GainSchedBehaviorValue}.
-     * @param thresholdRotations The position closed-loop error threshold for gain scheduling.
+     * @param threshold The position closed-loop error threshold for gain scheduling.
      * @param slot Slot to apply gains scheduling behavior to.
      * @return Itself for method-chaining.
      */
@@ -239,7 +239,8 @@ public class TalonFXConfig {
     /**
      * Modifies this configuration's velocity filter's time constant.
      *
-     * @param filterTime The configurable time constant in seconds of the Kalman velocity filter.
+     * @param filterTimeSeconds The configurable time constant in seconds of the Kalman velocity
+     *     filter.
      * @return Itself for easier method-chaining
      */
     public TalonFXConfig withVelocityTimeFilter(double filterTimeSeconds) {
@@ -293,7 +294,7 @@ public class TalonFXConfig {
      *
      * <br>
      *
-     * @param rampRateSeconds Time for the motor to reach peak output from 0
+     * @param rampRate Time for the motor to reach peak output from 0
      * @return Itself for easy method chaining
      */
     public TalonFXConfig withRampRate(Time rampRate) {
@@ -315,10 +316,10 @@ public class TalonFXConfig {
     /**
      * Modifies this configuration's supply current lower limit.
      *
-     * @param currentLowerLimit The amount of supply current in amperes allowed after the regular
-     *     {@link CurrentLimitsConfigs#SupplyCurrentLimit} is active for longer than the time
-     *     parameter.
-     * @param time The amount of time in seconds that the regular {@link
+     * @param currentLowerLimitAmps The amount of supply current in amperes allowed after the
+     *     regular {@link CurrentLimitsConfigs#SupplyCurrentLimit} is active for longer than the
+     *     time parameter.
+     * @param timeSeconds The amount of time in seconds that the regular {@link
      *     CurrentLimitsConfigs#SupplyCurrentLimit} can be active before lowring it to the
      *     currentLowerLimit parameter.
      * @return
@@ -351,7 +352,7 @@ public class TalonFXConfig {
     /**
      * Modifies this configuration's supply current limit and enables it.
      *
-     * @param currentLimit Maximum allowed current in amperes drawn from the battery.
+     * @param currentLimitAmps Maximum allowed current in amperes drawn from the battery.
      * @return Itself for easier method-chaining.
      */
     public TalonFXConfig withSupplyCurrentLimit(double currentLimitAmps) {
@@ -384,7 +385,7 @@ public class TalonFXConfig {
     /**
      * Modifies this configuration's stator current limit and enables it.
      *
-     * @param currentLimit Amount of current in amperes allowed in the motor (motoring and regen
+     * @param currentLimitAmps Amount of current in amperes allowed in the motor (motoring and regen
      *     current).
      * @return Itself for easier method chaining.
      */
@@ -419,10 +420,10 @@ public class TalonFXConfig {
      * Modifies this configuration's torque current limits. Limits apply during torque current
      * control modes.
      *
-     * @param peakForwardTorqueCurrent Maximum forward torque current output in amperes.
-     * @param peakReverseTorqueCurrent Maximum reverse torque current output in amperes.
-     * @param neutralTolerance Current range in amperes where requested torque current will result
-     *     in zero bridge output.
+     * @param peakForwardTorqueCurrentAmps Maximum forward torque current output in amperes.
+     * @param peakReverseTorqueCurrentAmps Maximum reverse torque current output in amperes.
+     * @param neutralToleranceAmps Current range in amperes where requested torque current will
+     *     result in zero bridge output.
      * @return Itself for easier method-chaining.
      */
     public TalonFXConfig withTorqueCurrentLimits(
@@ -463,8 +464,8 @@ public class TalonFXConfig {
     /**
      * Modifies this configuration's voltage limits. Limits apply during voltage control modes.
      *
-     * @param peakForwardVoltage Maximum forward voltage output in volts.
-     * @param peakReverseVoltage Maximum reverse voltage output in volts.
+     * @param peakForwardVolts Maximum forward voltage output in volts.
+     * @param peakReverseVolts Maximum reverse voltage output in volts.
      * @return Itself for easier method chaining.
      */
     public TalonFXConfig withVoltageLimits(double peakForwardVolts, double peakReverseVolts) {
@@ -495,10 +496,10 @@ public class TalonFXConfig {
      *     forward threshold.
      * @param reverseEnable Whether to set the motor output to neutral if its position exceeds the
      *     reverse threshold.
-     * @param forwardThreshold The threshold angle in rotations for the application of the forward
-     *     limit.
-     * @param reverseThreshold The threshold angle in rotations for the application of the reverse
-     *     limit.
+     * @param forwardThresholdRotations The threshold angle in rotations for the application of the
+     *     forward limit.
+     * @param reverseThresholdRotations The threshold angle in rotations for the application of the
+     *     reverse limit.
      * @return Itself for easier method-chaining.
      */
     public TalonFXConfig withSoftLimits(
@@ -543,9 +544,10 @@ public class TalonFXConfig {
     /**
      * Modifies this configuration's motion magic profile.
      *
-     * @param maxVelocity Maximum/cruise velocity of the motion profile in rotations per second.
-     * @param maxAcceleration Maximum acceleration of the motion profile in rotations per second
-     *     squared.
+     * @param maxVelocityRotPerSec Maximum/cruise velocity of the motion profile in rotations per
+     *     second.
+     * @param maxAccelerationRotPerSecSquared Maximum acceleration of the motion profile in
+     *     rotations per second squared.
      * @return Itself for method-chaining.
      */
     public TalonFXConfig withMotionProfile(
