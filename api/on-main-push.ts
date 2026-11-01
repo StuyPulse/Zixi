@@ -31,7 +31,7 @@ const POST = async (request: Request) => {
     }
 
     const payload = parsed.data;
-    if (payload.ref !== "refs/head/main") {
+    if (payload.ref !== "refs/heads/main") {
         return Response.json({ message: "Only main pushes are detected" });
     }
 
