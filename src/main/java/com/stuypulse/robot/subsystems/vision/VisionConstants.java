@@ -16,7 +16,7 @@ import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean;
 
 public interface VisionConstants {
     public interface VisionSettings {
-        LoggedNetworkBoolean HDR_ENABLED = new LoggedNetworkBoolean("Vision/HDR Enabled", false);
+        LoggedNetworkBoolean HDR_ENABLED = new LoggedNetworkBoolean("/Tuning/Vision/HDR Enabled", false);
 
         Time HDR_SWITCHING_INTERVAL = Seconds.of(0.5);
 
@@ -42,23 +42,7 @@ public interface VisionConstants {
     record CameraData(String name, Transform3d robotToCamera, double stdDevFactor) {}
 
     public enum Camera {
-        FRONT(
-                "limelight-front",
-                new Transform3d(
-                        Inches.zero(),
-                        Inches.zero(),
-                        Inches.of(26.1),
-                        new Rotation3d(Degrees.zero(), Degrees.of(9.764), Degrees.zero())),
-                1.0),
-        BACK(
-                "limelight-back",
-                new Transform3d(
-                        Inches.of(-12.109),
-                        Inches.of(-7.129),
-                        Inches.of(8.375),
-                        new Rotation3d(Degrees.of(180), Degrees.of(28), Degrees.of(180))),
-                1.0);
-
+        EXAMPLE("example", new Transform3d(), 1.0);
         private final CameraData data;
 
         private Camera(String name, Transform3d robotToCamera, double stdDevFactor) {
