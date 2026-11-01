@@ -9,9 +9,13 @@ plugins {
     id("java")
     id("application")
     id("org.wpilib.GradleRIO").version("2027.0.0-alpha-8")
+    id("com.peterabeles.gversion").version("1.10")
     id("com.diffplug.spotless").version("8.9.0")
 }
 
+repositories {
+    mavenCentral()
+}
 
 java {
     sourceCompatibility = JavaVersion.VERSION_25;
@@ -191,20 +195,54 @@ spotless {
         removeUnusedImports();
     }
 }
+sourceSets { // isolated sourceset to avoid circular dep
+    val buildTools = create("buildTools") {
+        java {
+            srcDir("src/main/java");
+            include("tools/deployment/**");
+        }
+    }
 
-tasks.register<JavaExec>("recordLastCommit") {
-    group = "deployment";
-
-    classpath = sourceSets["main"].runtimeClasspath;
-    mainClass = "tools.deployment.RecordLastCommitTask";
-
-    workingDir = project.rootDir;
+    main {
+        java {
+            exclude("tools/deployment/**");
+        }
+    }
 }
 
-tasks.named("deploy") {
-    dependsOn(tasks.named("recordLastCommit"));
+dependencies {
+    "buildToolsImplementation"("org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r");
 }
 
-tasks.named("simulateExternalJava") {
-    dependsOn(tasks.named("recordLastCommit"));
+val patchToolDir = layout.buildDirectory.dir("tmp/patchBuildTool")
+
+val compilePatchTool = tasks.register<JavaCompile>("compilePatchBuildTool") {
+    source(File("src/main/java/tools/deployment/PatchBuildConstants.java"));
+    classpath = sourceSets.getByName("buildTools").compileClasspath;
+    destinationDirectory = patchToolDir;
+}
+
+gversion {
+    srcDir       = "src/main/java/"
+    classPackage = "com.stuypulse.robot"
+    className    = "BuildConstants"
+    dateFormat   = "yyyy-MM-dd HH:mm:ss z"
+    timeZone     = "America/New_York"
+    indent       = "  "
+}
+
+val patchBuildConstants = tasks.register<JavaExec>("patchBuildConstants") {
+    dependsOn(compilePatchTool);
+    dependsOn(tasks.named("createVersionFile"));
+
+    classpath = sourceSets.getByName("buildTools").runtimeClasspath;
+    mainClass = "tools.deployment.PatchBuildConstants";
+
+    doFirst {
+        args(file(gversion.srcDir).absolutePath, gversion.classPackage, gversion.className, gversion.indent, file(".git").absolutePath)
+    }
+}
+
+tasks.compileJava {
+    dependsOn(patchBuildConstants);
 }
