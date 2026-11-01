@@ -1,6 +1,5 @@
 FROM eclipse-temurin:25-jdk
 
-# Install Git, Python, and Node.js 22
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     git \
@@ -13,10 +12,7 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-# Copy the worker server
 COPY worker/server.py ./server.py
-
-# Copy custom Javadoc assets and patcher
 COPY assets/ ./assets/
 COPY scripts/ ./scripts/
 
