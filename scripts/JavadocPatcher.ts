@@ -1,0 +1,163 @@
+import process from "node:process";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const projectDirectory = process.argv[2];
+
+if (!projectDirectory) {
+    throw new Error("Missing project directory argument");
+}
+
+const javadocDirectory = path.join(
+    projectDirectory,
+    "build/docs/javadoc"
+);
+
+const assetsDirectory = path.join(
+    path.dirname(fileURLToPath(import.meta.url)),
+    "../assets"
+);
+
+const getRelativePath = (filePath: string) => {
+    return path.relative(__dirname, filePath);
+}
+
+const getRelativePathBetweenFiles = (fromFile: string, toFile: string) => {
+    const relativePath = path.relative(
+        path.dirname(fromFile),
+        toFile
+    );
+
+    return relativePath.replaceAll("\\", "/");
+}
+
+type TextColor = "green" | "yellow" | "red";
+const log = (message: string, color: TextColor = "yellow") => {
+    const RESET_ANSI = "\x1b[0m";
+
+    const colorCode = (() => {
+        if (color === "green") {
+            return "\x1b[32m";
+        }
+        if (color === "yellow") {
+            return "\x1b[33m";
+        }
+        if (color === "red") {
+            return "\x1b[31m";
+        }
+    })();
+
+    console.log(`${colorCode}${message}${RESET_ANSI}`);
+}
+
+const fileWalker = (directory: string) => {
+    const files = fs.readdirSync(directory, { withFileTypes: true });
+
+    for (const file of files) {
+        const filePath = path.join(directory, file.name);
+
+        if (file.isDirectory()) {
+            fileWalker(filePath);
+        } else if (file.isFile()) {
+            if (filePath.endsWith(".html")) {
+                htmlPatcher(filePath);
+            }
+        }
+    }
+}
+
+// Patch the script.js file because of the scroll position bug that comes with older versions of Javadoc.
+const scriptJsPatcher = (filePath: string) => {
+    const text = fs.readFileSync(filePath, "utf-8");
+
+    const newText = (() => {
+        let updatedText = text.replace(
+            /^(\s*)var contentDiv = document\.querySelector\("div\.flex-content"\);/m,
+            `$1var timeoutID;\n$1var contentDiv = document.querySelector("div.flex-content");`
+        )
+
+        updatedText = updatedText.replace(
+            /(contentDiv\.addEventListener\("scroll", function\(e\) {\s*)var timeoutID;\s*/m,
+            "$1"
+        )
+
+        return updatedText;
+    })();
+
+    if (newText === text) {
+        log(`Failed to patch ${getRelativePath(filePath)}`, "red");
+        return;
+    }
+
+    fs.writeFileSync(filePath, newText, "utf-8");
+    log(`Patched ${getRelativePath(filePath)}`);
+};
+
+const htmlPatcher = (filePath: string) => {
+    const text = fs.readFileSync(filePath, "utf-8");
+
+    const javadocsFile = path.join(javadocDirectory, "javadocs.js");
+    const svgsFile = path.join(javadocDirectory, "svgs.js");
+    const utilsFile = path.join(javadocDirectory, "utils.js");
+    const themeFile = path.join(javadocDirectory, "theme.js");
+
+    const faviconFile = path.join(javadocDirectory, "favicon.ico");
+
+    const inlineThemeScript = `<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script>`
+    const stylesheetFile = path.join(javadocDirectory, "betterjdocs.css");
+
+    const replacement =
+        inlineThemeScript +
+        `<link rel="stylesheet" href="${getRelativePathBetweenFiles(filePath, stylesheetFile)}">` +
+        `<script defer type="module" src="${getRelativePathBetweenFiles(filePath, javadocsFile)}"></script>` +
+        `<script defer type="module" src="${getRelativePathBetweenFiles(filePath, svgsFile)}"></script>` +
+        `<script defer type="module" src="${getRelativePathBetweenFiles(filePath, utilsFile)}"></script>` +
+        `<script defer type="module" src="${getRelativePathBetweenFiles(filePath, themeFile)}"></script>` +
+        `<link rel="icon" href="${getRelativePathBetweenFiles(filePath, faviconFile)}?t=${Date.now()}" type="image/x-icon"></head>`;
+
+    const newText = text.replace(
+        "</head>",
+        replacement
+    );
+
+    if (newText === text) {
+        log(`Failed to patch ${getRelativePath(filePath)}`, "red");
+        return;
+    }
+
+    fs.writeFileSync(filePath, newText, "utf-8");
+    log(`Patched ${getRelativePath(filePath)}`);
+}
+
+const javadocAssets = [
+    "javadoc/betterjdocs.css",
+    "javadoc/favicon.ico",
+    "javadoc/javadocs.js",
+    "javadoc/svgs.js",
+    "javadoc/utils.js",
+    "javadoc/theme.js",
+    "logos/StuyPulseLogo.png"
+]
+const addJavadocAssets = () => {
+    for (const asset of javadocAssets) {
+        const sourcePath = path.join(assetsDirectory, asset);
+        const assetName = path.basename(asset);
+        const destPath = path.join(javadocDirectory, assetName);
+        fs.copyFileSync(sourcePath, destPath);
+        log(`Copied ${getRelativePath(sourcePath)} to javadoc directory`);
+    }
+}
+
+const checkpointFile = path.join(javadocDirectory, ".patched");
+
+if (fs.existsSync(checkpointFile)) {
+    log("Javadoc already patched, skipping patcher", "green"); 
+} else {
+    scriptJsPatcher(path.join(javadocDirectory, "script.js"));
+    fileWalker(javadocDirectory);
+    addJavadocAssets();
+
+    log("Patcher complete", "green");
+    fs.writeFileSync(checkpointFile, "done", "utf-8");
+}
