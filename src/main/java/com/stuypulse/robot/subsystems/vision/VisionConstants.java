@@ -40,7 +40,7 @@ public interface VisionConstants {
     record CameraData(String name, Transform3d robotToCamera, double stdDevFactor) {}
 
     public enum Camera {
-        EXAMPLE("example", new Transform3d(), 1.0);
+        ;
         private final CameraData data;
 
         private Camera(String name, Transform3d robotToCamera, double stdDevFactor) {
