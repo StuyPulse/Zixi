@@ -11,6 +11,9 @@ repositories {
 }
 
 java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
     sourceCompatibility = JavaVersion.VERSION_25
     targetCompatibility = JavaVersion.VERSION_25
 }
@@ -190,4 +193,12 @@ gversion {
     dateFormat   = "yyyy-MM-dd HH:mm:ss z"
     timeZone     = "America/New_York"
     indent       = "  "
+}
+
+tasks.javadoc {
+    options.addBooleanOption("linksource", true)
+    options.addBooleanOption("private", true)
+    options.addBooleanOption("-allow-script-in-comments", true)
+
+    options.addStringOption("doctitle", "Zixi")
 }
