@@ -70,15 +70,17 @@ public class VisionIOLimelight implements VisionIO {
 
         megaTagMode = MegaTagMode.MEGATAG_1;
 
-        table.getDoubleArrayTopic("camerapose_robotspace_set").publish().accept(
-                new double[] {
-                    robotToCamera.getX(),
-                    robotToCamera.getY(),
-                    robotToCamera.getZ(),
-                    robotToCamera.getRotation().getMeasureX().in(Degrees),
-                    robotToCamera.getRotation().getMeasureY().in(Degrees),
-                    robotToCamera.getRotation().getMeasureZ().in(Degrees)
-                });
+        table.getDoubleArrayTopic("camerapose_robotspace_set")
+                .publish()
+                .accept(
+                        new double[] {
+                            robotToCamera.getX(),
+                            robotToCamera.getY(),
+                            robotToCamera.getZ(),
+                            robotToCamera.getRotation().getMeasureX().in(Degrees),
+                            robotToCamera.getRotation().getMeasureY().in(Degrees),
+                            robotToCamera.getRotation().getMeasureZ().in(Degrees)
+                        });
     }
 
     @Override
