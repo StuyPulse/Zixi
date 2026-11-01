@@ -6,6 +6,7 @@ package com.stuypulse.robot.subsystems.vision;
 
 import static org.wpilib.units.Units.Seconds;
 
+import org.wpilib.math.geometry.Rotation3d;
 import org.wpilib.math.geometry.Transform3d;
 import org.wpilib.units.measure.Time;
 
@@ -45,7 +46,7 @@ public interface VisionConstants {
      * <p>
      * An constant of this enum looks like this
      * <code>
-     * NAME("detailed name", new Transform3d(x, y, z), 1.0);
+     * NAME("detailed name", {@link Transform3d#Transform3d(double, double, double, Rotation3d) new Transform3d(x, y, z, rotation)}, 1.0);
      * </code>
      * </p>
      */
@@ -75,6 +76,10 @@ public interface VisionConstants {
             return data.stdDevFactor();
         }
 
+        /**
+         * Gets the backing data object
+         * @return The corresponding {@link CameraData} instance
+         */
         public CameraData getData() {
             return data;
         }
