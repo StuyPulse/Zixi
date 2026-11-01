@@ -5,7 +5,7 @@
 package com.stuypulse.robot.commands.auton;
 
 import com.stuypulse.robot.Robot;
-import com.stuypulse.robot.constants.Field;
+import com.stuypulse.robot.constants.FieldConstants;
 
 import org.wpilib.command3.Command;
 
@@ -38,14 +38,15 @@ public class PathPlannerAuton implements Auton {
     public void displayPaths() {
         for (int i = 0; i < subPaths.size(); i++) {
             if (Robot.isBlue()) {
-                Field.FIELD_2D
+                FieldConstants.FIELD_2D
                         .getObject("path: " + subPaths.get(i).name)
                         .setPoses(subPaths.get(i).getPathPoses());
             } else {
-                Field.FIELD_2D
+                FieldConstants.FIELD_2D
                         .getObject("path: " + subPaths.get(i).name)
                         .setPoses(
-                                Field.transformToOppositeAlliance(subPaths.get(i).getPathPoses()));
+                                FieldConstants.transformToOppositeAlliance(
+                                        subPaths.get(i).getPathPoses()));
             }
         }
     }
@@ -53,7 +54,7 @@ public class PathPlannerAuton implements Auton {
     @Override
     public void clearPaths() {
         for (int i = 0; i < subPaths.size(); i++) {
-            Field.FIELD_2D.getObject("path: " + subPaths.get(i).name).setPoses();
+            FieldConstants.FIELD_2D.getObject("path: " + subPaths.get(i).name).setPoses();
         }
     }
 
