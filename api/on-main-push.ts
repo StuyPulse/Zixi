@@ -1,18 +1,40 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
-import { GithubPushSchema } from "../schemas/github-push";
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-const POST = async (request: Request) => {
-    const secret = process.env.GITHUB_WEBHOOK_SECRET;
+import { GithubPushSchema } from "../schemas/github-push.js";
 
-    if (!secret) {
-        return Response.json({ error: "App not configured properly" }, { status: 500 });
+const config = {
+    api: {
+        bodyParser: false,
+    },
+};
+
+const handler = async (req: VercelRequest, res: VercelResponse) => {
+    if (req.method !== "POST") {
+        return res.status(405).json({ error: "Only POST requests are allowed" });
     }
 
-    const body = await request.text();
-    const signature = request.headers.get("x-hub-signature-256");
+    const secret = process.env.GITHUB_WEBHOOK_SECRET;
+    if (!secret) {
+        return res.status(500).json({ error: "Secret not setup" });
+    }
 
-    if (!signature) {
-        return Response.json({ error: "Missing signature" }, { status: 401 });
+    const chunks: Buffer[] = [];
+
+    for await (const chunk of req) {
+        chunks.push(Buffer.from(chunk));
+    }
+
+    const body = Buffer.concat(chunks);
+
+    if (req.headers["x-github-event"] !== "push") {
+        return res.status(400).json({ error: "Unexpected event" });
+    }
+
+    const signature = req.headers["x-hub-signature-256"];
+
+    if (typeof signature !== "string") {
+        return res.status(401).json({ error: "Missing signature" });
     }
 
     const expected = "sha256=" + createHmac("sha256", secret).update(body).digest("hex");
@@ -21,23 +43,73 @@ const POST = async (request: Request) => {
     const correctBuffer = Buffer.from(expected);
 
     if (givenBuffer.length !== correctBuffer.length || !timingSafeEqual(givenBuffer, correctBuffer)) {
-        return Response.json({ error: "Invalid signature" }, { status: 401 });
+        return res.status(401).json({ error: "Invalid signature" });
     }
 
-    const parsed = GithubPushSchema.safeParse(JSON.parse(body));
+    let json: unknown;
+
+    try {
+        json = JSON.parse(body.toString("utf8"));
+    } catch {
+        return res.status(400).json({ error: "Invalid JSON" });
+    }
+
+    const parsed = GithubPushSchema.safeParse(json);
 
     if (!parsed.success) {
-        return Response.json({ error: "Invalid payload" }, { status: 400 });
+        console.error(parsed.error);
+
+        return res.status(400).json({ error: "Invalid GitHub payload" });
     }
 
     const payload = parsed.data;
-    if (payload.ref !== "refs/heads/main") {
-        return Response.json({ message: "Only main pushes are detected" });
+
+    if (payload.repository.full_name !== "StuyPulse/Zixi") {
+        return res.status(403).json({ error: "Expected StuyPulse/Zixi repository" });
     }
 
-    console.log("Main branch pushed to ", "Commit", payload.after);
+    if (payload.ref !== "refs/heads/main") {
+        return res.status(200).json({ message: "Only main pushes are detected" });
+    }
 
-    return Response.json({ success: true });
+    const workerUrl = process.env.WORKER_URL;
+    const workerSecret = process.env.WORKER_SECRET;
+
+    if (!workerUrl || !workerSecret) {
+        return res.status(500).json({ error: "Worker configuration not setup" });
+    }
+
+    try {
+        const workerResponse = await fetch(workerUrl, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${workerSecret}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                after: payload.after,
+            }),
+        });
+
+        if (!workerResponse.ok) {
+            const error = await workerResponse.text();
+
+            console.error("Worker rejected request:", error);
+
+            return res.status(502).json({ error: "Could not queue documentation generation" });
+        }
+
+        const job = await workerResponse.json();
+
+        console.log("Documentation job queued:", job);
+
+        return res.status(202).json({ success: true, job });
+    } catch (error) {
+        console.error("Worker request failed:", error);
+
+        return res.status(502).json({ error: "Worker unavailable" });
+    }
 }
 
-export { POST };
+export { config };
+export default handler;
