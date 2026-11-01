@@ -1,9 +1,7 @@
-import org.wpilib.gradlerio.deploy.systemcore.SystemCore;
-import org.wpilib.gradlerio.deploy.systemcore.WPILibJavaArtifact;
-import org.wpilib.deployutils.deploy.artifact.FileTreeArtifact;
-import org.wpilib.toolchain.NativePlatforms;
-import java.io.File;
-import org.gradle.api.tasks.compile.JavaCompile;
+import org.wpilib.deployutils.deploy.artifact.FileTreeArtifact
+import org.wpilib.gradlerio.deploy.systemcore.SystemCore
+import org.wpilib.gradlerio.deploy.systemcore.WPILibJavaArtifact
+import org.wpilib.toolchain.NativePlatforms
 
 plugins {
     id("java")
@@ -22,44 +20,9 @@ java {
     targetCompatibility = JavaVersion.VERSION_25;
 }
 
-val ROBOT_MAIN_CLASS = "com.stuypulse.robot.Main";
-
-// Define my targets (SystemCore) and artifacts (deployable files)
-// This is added by GradleRIO's backing project DeployUtils.
-// deploy {
-//     targets {
-//         register<SystemCore>(deploy.getTargetTypeClass("SystemCore")) {
-//             // Team number is loaded either from the .wpilib/wpilib_preferences.json
-//             // or from command line. If not found an exception will be thrown.
-//             // You can use getTeamOrDefault(team) instead of getTeamNumber if you
-//             // want to store a team number in this file.
-//             setProperty("team", project.wpilib.getTeamNumber());
-//             // Use the default systemcore host name. This must be called after setting team
-//             // as happens on the line above
-//             "useDefaultSystemcoreHostName"();
-//             setProperty("debug", project.wpilib.getDebugOrDefault(false));
-
-//             "artifacts" {
-//                 // First part is artifact name, 2nd is artifact type
-//                 // getTargetTypeClass is a shortcut to get the class type using a string
-
-//                 "wpilibJava"(getArtifactTypeClass("WPILibJavaArtifact")) {
-//                     // Set to true to use debug including JNI, which will drastically impact performance.
-//                     setProperty("debugJni", false);
-//                     jvmArgs.add("-XX:+UseCompactObjectHeaders");
-//                 }
-
-//                 // Static files artifact
-//                 "wpilibStaticFileDeploy"(getArtifactTypeClass("FileTreeArtifact")) {
-//                     setProperty("files", project.fileTree("src/main/deploy"));
-//                     setProperty("directory", "/home/systemcore/deploy");
-//                     setProperty("deleteOldFiles", false); // Change to true to delete files on systemcore that no
-//                                            // longer exist in deploy directory of this project
-//                 }
-//             }
-//         }
-//     }
-// }
+/*
+ * Deploy
+ */
 deploy.targets.register<SystemCore>("systemcore") {
     team = wpilib.getTeamNumber();
     useDefaultSystemcoreHostName();
@@ -78,16 +41,19 @@ deploy.targets.register<SystemCore>("systemcore") {
     }
 }
 
-val deployArtifact = deploy.targets["systemcore"].artifacts["wpilibJava"] as WPILibJavaArtifact;
+/*
+ * Sim
+ */
+wpi.java.runSimWithDebugJni = false; // Set to true to use debug for simulation including JNI
+val includeDesktopSupport = true; // Set this to true to enable desktop support.// Simulation configuration (e.g. environment variables).
+wpi.sim.addGui().defaultEnabled = true;
+wpi.sim.addDriverstation();
 
-// Set to true to use debug for simulation including JNI
-wpi.java.runSimWithDebugJni = false;
+/*
+ * Dependencies
+ */
+val akitVersion = (groovy.json.JsonSlurper().parse(file("vendordeps/AdvantageKit.json")) as Map<*, *>)["version"];
 
-// Set this to true to enable desktop support.
-val includeDesktopSupport = true;
-
-// Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
-// Also defines JUnit 5.
 dependencies {
     wpi.java.deps.wpilibAnnotations().forEach { annotationProcessor(it) };
     wpi.java.deps.wpilib().forEach { implementation(it) };
@@ -110,27 +76,18 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.1");
     testRuntimeOnly("org.junit.platform:junit-platform-launcher");
 
-    val akitJson = groovy.json.JsonSlurper().parse(File(projectDir.getAbsolutePath() + "/vendordeps/AdvantageKit.json")) as Map<*, *>;
-    "annotationProcessor"("org.littletonrobotics.akit:akit-autolog:${akitJson["version"]}");
+    annotationProcessor("org.littletonrobotics.akit:akit-autolog:$akitVersion");
 
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2");
 }
 
+/*
+ * Default tasks
+ */
 tasks.test {
     useJUnitPlatform();
     systemProperty("junit.jupiter.extensions.autodetection.enabled", "true");
-    // jvmArgs "--add-opens=java.base/jdk.internal.vm=ALL-UNNAMED" // allow tests to access robot code classes
 }
-
-// Simulation configuration (e.g. environment variables).
-wpi.sim.addGui().defaultEnabled = true;
-wpi.sim.addDriverstation();
-
-application.mainClass.set(ROBOT_MAIN_CLASS);
-
-deployArtifact.configureApplication(application);
-wpi.java.configureApplication(application);
-wpi.java.configureTestTasks(tasks.test.get());
 
 tasks.jar {
     from("src") {
@@ -144,15 +101,12 @@ tasks.jar {
     }
 }
 
-// Configure string concat to always inline compile
 tasks.withType<JavaCompile> {
-    options.compilerArgs.add("-XDstringConcat=inline");
+    options.compilerArgs.add("-XDstringConcat=inline"); // Configure string concat to always inline compile
 }
 
-// True if the file has nothing left after stripping comments
-// For ignoring commented out files with spotless
 fun isFullyCommented(f: File): Boolean {
-    val stripped = f.readText()
+    val stripped = f.readText() // for ignoring commented out files with spotless
         .replace(Regex("""(?s)/\*.*?\*/"""), "")  // block comments (including license headers)
         .replace(Regex("""(?m)//.*$"""), "")      // line comments
     return stripped.isBlank()
@@ -161,6 +115,7 @@ fun isFullyCommented(f: File): Boolean {
 tasks.compileJava {
     dependsOn(tasks.spotlessApply);
 }
+
 spotless {
     java {
         targetExclude(
@@ -195,51 +150,46 @@ spotless {
         removeUnusedImports();
     }
 }
-sourceSets { // isolated sourceset to avoid circular dep
-    val buildTools = create("buildTools") {
-        java {
-            srcDir("src/main/java");
-            include("tools/deployment/**");
-        }
-    }
 
-    main {
-        java {
-            exclude("tools/deployment/**");
-        }
-    }
+/*
+ * Application Setup
+ */
+val ROBOT_MAIN_CLASS = "com.stuypulse.robot.Main";
+application.mainClass.set(ROBOT_MAIN_CLASS);
+wpi.java.configureApplication(application);
+
+val deployArtifact = deploy.targets["systemcore"].artifacts["wpilibJava"] as WPILibJavaArtifact;
+deployArtifact.configureApplication(application);
+wpi.java.configureTestTasks(tasks.test.get());
+
+/*
+ * Custom tasks
+ */
+sourceSets { // isolated sourceset to avoid circular dep
+    create("tools"); // defaulted to src/tools/java
 }
 
 dependencies {
-    "buildToolsImplementation"("org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r");
-}
-
-val patchToolDir = layout.buildDirectory.dir("tmp/patchBuildTool")
-
-val compilePatchTool = tasks.register<JavaCompile>("compilePatchBuildTool") {
-    source(File("src/main/java/tools/deployment/PatchBuildConstants.java"));
-    classpath = sourceSets.getByName("buildTools").compileClasspath;
-    destinationDirectory = patchToolDir;
+    "toolsImplementation"("org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r");
 }
 
 gversion {
-    srcDir       = "src/main/java/"
-    classPackage = "com.stuypulse.robot"
-    className    = "BuildConstants"
-    dateFormat   = "yyyy-MM-dd HH:mm:ss z"
-    timeZone     = "America/New_York"
-    indent       = "  "
+    srcDir       = "src/main/java/";
+    classPackage = "com.stuypulse.robot.generated";
+    className    = "BuildConstants";
+    dateFormat   = "yyyy-MM-dd HH:mm:ss z";
+    timeZone     = "America/New_York";
+    indent       = "  ";
 }
 
 val patchBuildConstants = tasks.register<JavaExec>("patchBuildConstants") {
-    dependsOn(compilePatchTool);
     dependsOn(tasks.named("createVersionFile"));
 
-    classpath = sourceSets.getByName("buildTools").runtimeClasspath;
-    mainClass = "tools.deployment.PatchBuildConstants";
+    classpath = sourceSets["tools"].runtimeClasspath;
+    mainClass = "deployment.PatchBuildConstants"; // appended to the classpath first tho so it's src/tools/java/deployment/PatchBuildConstants
 
     doFirst {
-        args(file(gversion.srcDir).absolutePath, gversion.classPackage, gversion.className, gversion.indent, file(".git").absolutePath)
+        args(file(gversion.srcDir).absolutePath, gversion.classPackage, gversion.className, gversion.indent, file(".git").absolutePath);
     }
 }
 
