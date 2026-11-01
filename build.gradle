@@ -2,7 +2,12 @@ plugins {
     id "java"
     id "application"
     id "org.wpilib.GradleRIO" version "2027.0.0-alpha-8"
+    id "com.peterabeles.gversion" version "1.10"
     id "com.diffplug.spotless" version "8.9.0"
+}
+
+repositories {
+    mavenCentral()
 }
 
 java {
@@ -85,6 +90,7 @@ dependencies {
     annotationProcessor "org.littletonrobotics.akit:akit-autolog:$akitJson.version"
 
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r'
 }
 
 test {
@@ -155,19 +161,33 @@ spotless {
     }
 }
 
-tasks.register("recordLastCommit", JavaExec) {
-    group = "deployment"
+def patchToolDir = layout.buildDirectory.dir("tmp/patchBuildTool")
 
-    classpath = sourceSets.main.runtimeClasspath
-    mainClass = "tools.deployment.RecordLastCommitTask"
-
-    workingDir = project.rootDir
+def compilePatchTool = tasks.register("compilePatchBuildTool", JavaCompile) {
+    source(file("src/main/java/tools/deployment/PatchBuildConstants.java"))
+    classpath = configurations.runtimeClasspath
+    destinationDirectory = patchToolDir
 }
 
-tasks.named("deploy") {
-    dependsOn tasks.named("recordLastCommit")
+def patchBuildConstants = tasks.register("patchBuildConstants", JavaExec) {
+    dependsOn compilePatchTool
+    dependsOn tasks.named("createVersionFile")
+
+    classpath = files(patchToolDir) + configurations.runtimeClasspath
+    mainClass = "tools.deployment.PatchBuildConstants"
+
+    doFirst {
+        args(file(gversion.srcDir).absolutePath, gversion.classPackage, gversion.className, gversion.indent, file(".git").absolutePath)
+    }
 }
 
-tasks.named("simulateExternalJava") {
-    dependsOn tasks.named("recordLastCommit")
+project.compileJava.dependsOn(patchBuildConstants)
+
+gversion {
+    srcDir       = "src/main/java/"
+    classPackage = "com.stuypulse.robot"
+    className    = "BuildConstants"
+    dateFormat   = "yyyy-MM-dd HH:mm:ss z"
+    timeZone     = "America/New_York"
+    indent       = "  "
 }

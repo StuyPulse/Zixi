@@ -11,13 +11,8 @@ import com.stuypulse.robot.util.PeriodicSubsystem;
 import org.wpilib.command3.Scheduler;
 import org.wpilib.driverstation.Alliance;
 import org.wpilib.driverstation.MatchState;
-import org.wpilib.system.Filesystem;
 import org.wpilib.util.Alert;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Optional;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -65,6 +60,7 @@ public class Robot extends LoggedRobot {
         robot = new RobotContainer();
         defaultScheduler = Scheduler.getDefault();
 
+        logGitInfo();
         switch (GlobalSettings.CURRENT_MODE) {
             case REAL -> {
                 // Running on a real robot, log to a USB stick ("/U/logs")
@@ -87,33 +83,34 @@ public class Robot extends LoggedRobot {
             }
         }
 
-        logCommitHash();
         Logger.start();
     }
 
-    private void logCommitHash() {
-        Path commitFile = Filesystem.getDeployDirectory().toPath().resolve("commit.json");
-
-        try {
-            if (Files.exists(commitFile)) {
-                ObjectMapper json = new ObjectMapper();
-                JsonNode object = json.readTree(commitFile.toFile());
-
-                String hash = object.path("hash").asText("unknown");
-                String message = object.path("message").asText("unknown");
-                String description = object.path("description").asText("");
-
-                Logger.recordMetadata("Commit Hash", hash);
-                Logger.recordMetadata("Commit Message", message);
-                if (!description.isBlank()) {
-                    Logger.recordMetadata("Commit Description", description);
-                }
-            } else {
-                Logger.recordMetadata("Commit", "commit.json file missing");
-            }
-        } catch (Exception e) {
-            Logger.recordMetadata("Commit", "JSON parse failed: " + e);
+    private void logGitInfo() {
+        Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
+        Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
+        Logger.recordMetadata("GitCommitMessage", BuildConstants.GIT_MESSAGE);
+        if (!BuildConstants.GIT_LINK.isBlank()) {
+            Logger.recordMetadata("GitCommitLink", BuildConstants.GIT_LINK);
         }
+        Logger.recordMetadata(
+                "GitPushStatus",
+                switch (BuildConstants.GIT_PUSH_STATUS) {
+                    case "PUSHED" -> "Commit pushed to remote repository";
+                    case "NOT_PUSHED" -> "Local commit not pushed to remote repository";
+                    case "STALE" -> "Could not verify push status. Cached information may be stale";
+                    default -> "Unable to determine commit push status";
+                });
+        Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
+        Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
+        Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
+        Logger.recordMetadata(
+                "GitDirty",
+                switch (BuildConstants.DIRTY) {
+                    case 0 -> "All changes committed";
+                    case 1 -> "Uncommitted changes";
+                    default -> "Unknown";
+                });
     }
 
     /*************************/
