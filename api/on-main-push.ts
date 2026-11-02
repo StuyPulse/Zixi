@@ -83,7 +83,10 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
     const path = ".automation/main-push.json";
     const branch = "docs";
 
-    const headCommit = payload.commits[0];
+    const headCommit = payload.head_commit;
+    if (!headCommit) {
+        return res.status(200).json({ message: "Head commit not present" });
+    }
     try {
         let sha: string | undefined;
         let currentHistory: any[] = [];
