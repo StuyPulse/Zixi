@@ -1,0 +1,11 @@
+name: Javadoc Generator
+
+on:
+  push:
+    branches:
+      - docs
+    paths:
+      - ".automation/main-push.json"
+
+permissions:
+  contents: write
