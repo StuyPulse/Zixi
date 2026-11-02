@@ -13,7 +13,10 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Implementation of {@link Auton} using PathPlanner paths */
+/** 
+ * Implementation of {@link Auton} using PathPlanner paths
+ * @author Aiden Zhang (https://github.com/aidenzhang21345)
+ */
 public class PathPlannerAuton implements Auton {
     private final List<PathPlannerPath> subPaths = new ArrayList<PathPlannerPath>();
 
