@@ -1,6 +1,8 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
+import { Octokit } from "@octokit/rest";
+
 import { GithubPushSchema } from "../schemas/github-push.js";
 
 const config = {
@@ -72,42 +74,70 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
         return res.status(200).json({ message: "Only main pushes are detected" });
     }
 
-    const workerUrl = process.env.WORKER_URL;
-    const workerSecret = process.env.WORKER_SECRET;
+    const octokit = new Octokit({
+        auth: process.env.GITHUB_TOKEN
+    });
 
-    if (!workerUrl || !workerSecret) {
-        return res.status(500).json({ error: "Worker configuration not setup" });
-    }
+    const owner = "StuyPulse";
+    const repo = "Zixi";
+    const path = ".automation/main-push.json";
+    const branch = "docs";
 
+    const headCommit = payload.commits[0];
     try {
-        const workerResponse = await fetch(workerUrl, {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${workerSecret}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                after: payload.after,
-            }),
-        });
+        let sha: string | undefined;
+        let currentHistory: any[] = [];
 
-        if (!workerResponse.ok) {
-            const error = await workerResponse.text();
+        try {
+            const { data: existingFile } = await octokit.repos.getContent({
+                owner,
+                repo,
+                path,
+                ref: branch,
+            });
 
-            console.error("Worker rejected request:", error);
-
-            return res.status(502).json({ error: "Could not queue documentation generation" });
+            if (!Array.isArray(existingFile) && existingFile.type === 'file') {
+                sha = existingFile.sha;
+                const fileString = Buffer.from(existingFile.content, 'base64').toString('utf-8');
+                const parsedJson = JSON.parse(fileString);
+                if (parsedJson && Array.isArray(parsedJson.history)) {
+                    currentHistory = parsedJson.history;
+                }
+            }
+        } catch {
+            // File does not exist
         }
 
-        const job = await workerResponse.json();
+        const updatedData = {
+            latest: {
+                message: headCommit.message,
+                hash: headCommit.id,
+                updatedAt: new Date().toISOString()
+            },
+            history: [
+                {
+                    message: headCommit.message,
+                    hash: headCommit.id,
+                    timestamp: new Date().toISOString()
+                },
+                ...currentHistory
+            ].slice(0, 100)
+        };
 
-        console.log("Documentation job queued:", job);
+        const response = await octokit.repos.createOrUpdateFileContents({
+            owner,
+            repo,
+            path,
+            message: `chore: update main push info for commit ${headCommit.id.substring(0, 7)}`,
+            content: Buffer.from(JSON.stringify(updatedData, null, 2)).toString('base64'),
+            sha,
+            branch,
+        });
 
-        return res.status(202).json({ success: true, job });
-    } catch (error) {
-        console.error("Worker request failed:", error);
-
-        return res.status(502).json({ error: "Worker unavailable" });
+        return res.status(200).json({ success: true, sha: response.data.content?.sha });
+    } catch (error: any) {
+        console.error('Failed to commit to docs branch:', error.message);
+        return res.status(500).json({ error: error.message });
     }
 }
 
