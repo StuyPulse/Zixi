@@ -42,13 +42,10 @@ public interface VisionConstants {
 
     /**
      * Represents a camera from its physical position and identified by name.
-     * 
-     * <p>
-     * An constant of this enum looks like this
-     * <code>
+     *
+     * <p>An constant of this enum looks like this <code>
      * NAME("detailed name", {@link Transform3d#Transform3d(double, double, double, Rotation3d) new Transform3d(x, y, z, rotation)}, 1.0);
      * </code>
-     * </p>
      */
     public enum Camera {
         ;
@@ -56,6 +53,7 @@ public interface VisionConstants {
 
         /**
          * Internal constructor to setup a camera with a {@link CameraData} instance
+         *
          * @param name name of the camera, can be more detailed than its simple enum constant's name
          * @param robotToCamera transformation from the robot origin to the camera's position
          * @param stdDevFactor scalar factor to multiply the camrea's standard deviations by
@@ -78,6 +76,7 @@ public interface VisionConstants {
 
         /**
          * Gets the backing data object
+         *
          * @return The corresponding {@link CameraData} instance
          */
         public CameraData getData() {
