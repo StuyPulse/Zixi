@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.function.Function;
 import org.littletonrobotics.junction.networktables.LoggedNetworkChooser;
 
+/**
+ * @author Taryn Huang (https://github.com/7arymisu)
+ */
 public class BLineUtil {
     public static class BLineConfig {
 
