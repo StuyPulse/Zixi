@@ -226,7 +226,7 @@ public class Vision extends PeriodicSubsystem {
 
     @Override
     public void periodicAfterScheduler() {
-        for (var entry : io.entrySet()) {
+        for (Entry<Camera, VisionIO> entry : io.entrySet()) {
             entry.getValue().applyOutputs(outputs.get(entry.getKey()));
         }
     }
