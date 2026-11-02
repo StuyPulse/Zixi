@@ -31,7 +31,7 @@ import org.littletonrobotics.junction.networktables.LoggedNetworkChooser;
 public class RobotContainer {
 
     // Gamepads
-    public final CommandGamepad driver =
+    private final CommandGamepad driver =
             new CommandGamepad(GlobalPorts.Gamepad.DRIVER); // model-agnostic controller
     // public final CommandGamepad operator = new CommandGamepad(GlobalPorts.Gamepad.OPERATOR);
 
@@ -39,7 +39,7 @@ public class RobotContainer {
     private final Swerve swerve;
     private final Vision vision;
     // Autons
-    private LoggedNetworkChooser<Auton> autonChooser = new LoggedNetworkChooser<>("Auton");
+    private final LoggedNetworkChooser<Auton> autonChooser = new LoggedNetworkChooser<>("Auton");
 
     // Robot container
 
