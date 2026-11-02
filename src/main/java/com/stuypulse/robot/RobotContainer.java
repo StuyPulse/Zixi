@@ -19,8 +19,11 @@ import com.stuypulse.robot.subsystems.swerve.Swerve;
 import com.stuypulse.robot.subsystems.vision.Vision;
 import com.stuypulse.robot.subsystems.vision.VisionConstants;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.Camera;
+import com.stuypulse.robot.subsystems.vision.VisionConstants.VisionMode;
 import com.stuypulse.robot.subsystems.vision.VisionIO;
 import com.stuypulse.robot.subsystems.vision.VisionIOLimelight;
+import com.stuypulse.robot.subsystems.vision.VisionIOPhoton;
+import com.stuypulse.robot.subsystems.vision.VisionIOPhotonSim;
 
 import org.wpilib.command3.button.CommandGamepad;
 import org.wpilib.tunable.Tunables;
@@ -57,8 +60,12 @@ public class RobotContainer {
                 for (Camera camera : VisionConstants.Camera.values()) {
                     visionIOMap.put(
                             camera,
-                            new VisionIOLimelight(
-                                    camera.name(), camera.getRobotToCamera(), swerve::getRotation));
+                            VisionConstants.VISION_MODE == VisionMode.LIMELIGHT
+                                    ? new VisionIOLimelight(
+                                            camera.name(),
+                                            camera.getRobotToCamera(),
+                                            swerve::getRotation)
+                                    : new VisionIOPhoton(camera.name(), camera.getRobotToCamera()));
                 }
             }
 
@@ -71,7 +78,10 @@ public class RobotContainer {
                                 new ModuleIOSim(TunerConstants.BackLeft),
                                 new ModuleIOSim(TunerConstants.BackRight));
                 for (Camera camera : Camera.values()) {
-                    visionIOMap.put(camera, new VisionIO() {});
+                    visionIOMap.put(
+                            camera,
+                            new VisionIOPhotonSim(
+                                    camera.name(), camera.getRobotToCamera(), swerve::getPose));
                 }
             }
 
