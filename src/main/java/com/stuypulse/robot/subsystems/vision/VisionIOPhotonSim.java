@@ -25,6 +25,7 @@ public class VisionIOPhotonSim extends VisionIOPhoton {
      * Creates a new VisionIOPhotonVisionSim.
      *
      * @param name The name of the camera.
+     * @param robotToCamera The 3D position of the camera relative to the robot.
      * @param poseSupplier Supplier for the robot pose to use in simulation.
      */
     public VisionIOPhotonSim(
@@ -39,7 +40,7 @@ public class VisionIOPhotonSim extends VisionIOPhoton {
         }
 
         // Add sim camera
-        var cameraProperties = new SimCameraProperties();
+        SimCameraProperties cameraProperties = new SimCameraProperties();
         cameraSim = new PhotonCameraSim(camera, cameraProperties, FieldConstants.FIELD_LAYOUT);
         visionSim.addCamera(cameraSim, robotToCamera);
     }
