@@ -1,5 +1,5 @@
 {
-  "message": "Fix docs references, ignore BuildConstants folder in javadoc, and move TunerConstants to swerve folder (#31)\n\n* docs: fix class references and ignore BuildConstants in javadoc\n\n* move TunerConstants to swerve folder",
-  "hash": "b8a63edd9523d3c258a50c33e84c944b6ceac664",
-  "updatedAt": "2026-11-03T17:55:25.895Z"
+  "message": "build: fix breaking of lazy intialization of test task",
+  "hash": "c5559d872f643062d20a0abd8e9aa79d1d20ccc1",
+  "updatedAt": "2026-11-03T19:36:37.881Z"
 }
