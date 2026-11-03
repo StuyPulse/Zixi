@@ -77,6 +77,11 @@ jobs:
 
           git add docs/
 
-          git commit -m "docs: automated documentation update" || echo "No changes to commit"
+          if ! git diff --cached --quiet; then
+            git commit -m "docs: automated documentation update"
+            git push origin docs
+          else
+            echo "No changes to commit"
+          fi
 
           git push origin docs
