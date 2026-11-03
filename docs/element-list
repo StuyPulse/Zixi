@@ -1,0 +1,14 @@
+com.stuypulse.robot
+com.stuypulse.robot.commands
+com.stuypulse.robot.commands.auton
+com.stuypulse.robot.commands.subsystems
+com.stuypulse.robot.constants
+com.stuypulse.robot.subsystems.swerve
+com.stuypulse.robot.subsystems.vision
+com.stuypulse.robot.util
+com.stuypulse.robot.util.auton
+com.stuypulse.robot.util.robotsimulation
+com.stuypulse.robot.util.swerve
+com.stuypulse.robot.util.talonfx.config
+com.stuypulse.robot.util.talonfx.logged
+com.stuypulse.robot.util.talonfx.sim
