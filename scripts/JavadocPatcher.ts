@@ -21,7 +21,7 @@ const assetsDirectory = path.join(
 );
 
 const getRelativePath = (filePath: string) => {
-    return path.relative(__dirname, filePath);
+    return path.relative(projectDirectory, filePath);
 }
 
 const getRelativePathBetweenFiles = (fromFile: string, toFile: string) => {
