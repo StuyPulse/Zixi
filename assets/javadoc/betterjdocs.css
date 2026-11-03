@@ -1266,11 +1266,13 @@ ul.ui-autocomplete li {
 #search-input,
 #page-search-input {
   background-color: var(--bg-600-color);
+  background-position: 8px center;
   border: solid 1px var(--bg-600-color);
   border-radius: 5px;
+  box-sizing: border-box;
   height: 1.85rem;
   color: var(--description-color);
-  padding-left: 8px;
+  padding-left: 30px;
   margin-left: 20px;
   width: 60vh;
   margin-top: 0.5rem;
@@ -1556,3 +1558,213 @@ table.striped > tbody > tr > th {
     padding-right: 12px;
   }
 }
+
+/* Java 25 standard doclet theme variables and layout overrides. */
+:root[data-theme="dark"] {
+  --body-text-color: var(--description-color-dark);
+  --block-text-color: var(--secondary-color-dark);
+  --body-background-color: var(--bg-800-color-dark);
+  --section-background-color: var(--bg-900-color-dark);
+  --detail-background-color: var(--bg-600-color-dark);
+  --code-background-color: var(--bg-700-color-dark);
+  --mark-background-color: var(--bg-700-color-dark);
+  --detail-block-color: var(--bg-900-color-dark);
+  --navbar-background-color: var(--bg-900-color-dark);
+  --navbar-text-color: var(--secondary-color-dark);
+  --subnav-background-color: var(--bg-700-color-dark);
+  --subnav-link-color: var(--primary-color-dark);
+  --member-heading-background-color: var(--bg-700-color-dark);
+  --selected-background-color: var(--primary-color-dark);
+  --selected-text-color: var(--secondary-color-dark);
+  --selected-link-color: var(--primary-color-dark);
+  --table-header-color: var(--bg-900-color-dark);
+  --even-row-color: var(--bg-600-color-dark);
+  --odd-row-color: var(--bg-700-color-dark);
+  --title-color: var(--secondary-color-dark);
+  --link-color: var(--primary-color-dark);
+  --link-color-active: var(--hover-color);
+  --toc-background-color: var(--bg-900-color-dark);
+  --toc-highlight-color: var(--bg-700-color-dark);
+  --toc-hover-color: var(--bg-600-color-dark);
+  --snippet-background-color: var(--bg-700-color-dark);
+  --snippet-text-color: var(--secondary-color-dark);
+  --snippet-highlight-color: #580202;
+  --pre-background-color: var(--bg-700-color-dark);
+  --pre-text-color: var(--secondary-color-dark);
+  --border-color: #ffffff24;
+  --table-border-color: #ffffff24;
+  --search-input-background-color: var(--bg-600-color-dark);
+  --search-input-text-color: var(--secondary-color-dark);
+  --search-input-placeholder-color: var(--description-color-dark);
+  --search-tag-highlight-color: #580202;
+  --button-border-color: #ffffff33;
+  --invalid-tag-background-color: #580202;
+  --invalid-tag-text-color: var(--secondary-color-dark);
+}
+
+:root[data-theme="light"] {
+  --body-text-color: var(--description-color-light);
+  --block-text-color: var(--secondary-color-light);
+  --body-background-color: var(--bg-800-color-light);
+  --section-background-color: var(--bg-900-color-light);
+  --detail-background-color: var(--bg-600-color-light);
+  --code-background-color: var(--bg-700-color-light);
+  --mark-background-color: var(--bg-700-color-light);
+  --detail-block-color: var(--bg-900-color-light);
+  --navbar-background-color: var(--bg-900-color-light);
+  --navbar-text-color: var(--secondary-color-light);
+  --subnav-background-color: var(--bg-700-color-light);
+  --subnav-link-color: var(--primary-color-light);
+  --member-heading-background-color: var(--bg-700-color-light);
+  --selected-background-color: var(--primary-color-light);
+  --selected-text-color: var(--secondary-color-light);
+  --selected-link-color: var(--primary-color-light);
+  --table-header-color: var(--bg-900-color-light);
+  --even-row-color: var(--bg-600-color-light);
+  --odd-row-color: var(--bg-700-color-light);
+  --title-color: var(--secondary-color-light);
+  --link-color: var(--primary-color-light);
+  --link-color-active: var(--hover-color);
+  --toc-background-color: var(--bg-900-color-light);
+  --toc-highlight-color: var(--bg-700-color-light);
+  --toc-hover-color: var(--bg-600-color-light);
+  --snippet-background-color: var(--bg-700-color-light);
+  --snippet-text-color: var(--secondary-color-light);
+  --snippet-highlight-color: #ffcccc;
+  --pre-background-color: var(--bg-700-color-light);
+  --pre-text-color: var(--secondary-color-light);
+  --border-color: #00000020;
+  --table-border-color: #00000020;
+  --search-input-background-color: var(--bg-600-color-light);
+  --search-input-text-color: var(--secondary-color-light);
+  --search-input-placeholder-color: var(--description-color-light);
+  --search-tag-highlight-color: #ffcccc;
+  --button-border-color: #00000030;
+  --invalid-tag-background-color: #ffcccc;
+  --invalid-tag-text-color: var(--secondary-color-light);
+}
+
+/* The Java 25 doclet uses a sticky header and a two-column main grid. */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+div.main-grid {
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+main {
+  min-width: 0;
+}
+
+.main-grid nav.toc {
+  color: var(--description-color);
+}
+
+.top-nav,
+.sub-nav {
+  color: var(--secondary-color);
+}
+
+.top-nav .nav-list a:link,
+.top-nav .nav-list a:active,
+.top-nav .nav-list a:visited {
+  color: var(--secondary-color);
+}
+
+.main-grid nav.toc a:link,
+.main-grid nav.toc a:visited,
+.sub-nav a:link,
+.sub-nav a:visited {
+  color: var(--primary-color);
+}
+
+.main-grid nav.toc a:focus-visible {
+  color: var(--secondary-color);
+}
+
+input#reset-search {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+:root[data-theme="dark"] .main-grid nav.toc button > img {
+  filter: invert(1);
+}
+
+:root[data-theme="dark"] .ui-autocomplete .search-result-desc,
+:root[data-theme="dark"] #result-container .search-result-desc {
+  color: var(--description-color-dark);
+}
+
+:root[data-theme="dark"] .ui-autocomplete .ui-state-active .search-result-desc {
+  color: var(--secondary-color-dark);
+}
+
+.class-description,
+.summary section[class$="-summary"],
+.details section[class$="-details"],
+.class-uses .detail,
+.serialized-class-details {
+  background-color: var(--bg-900-color);
+}
+
+.inherited-list,
+section[class$="-details"] .detail {
+  background-color: var(--bg-600-color);
+}
+
+.summary-table,
+.details-table {
+  width: 100%;
+}
+
+.summary-table > div,
+.details-table > div {
+  color: var(--description-color);
+}
+
+.table-header,
+.even-row-color .table-header,
+.odd-row-color .table-header {
+  color: var(--secondary-color);
+  background-color: var(--bg-900-color);
+}
+
+.even-row-color {
+  background-color: var(--bg-600-color);
+}
+
+.odd-row-color {
+  background-color: var(--bg-700-color);
+}
+
+.caption span {
+  color: var(--secondary-color);
+}
+
+.class-declaration-page .details h3 {
+  color: var(--secondary-color);
+  background-color: var(--bg-700-color);
+  border-color: rgba(148, 148, 148, 0.2);
+}
+
+.class-declaration-page section.detail:target > h3,
+.class-declaration-page section.detail > h3:target {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+}
+
+.type-signature,
+.member-signature,
+.package-signature,
+.module-signature {
+  color: var(--secondary-color);
+}
+
+pre,
+code {
+  color: var(--secondary-color);
+}
+
