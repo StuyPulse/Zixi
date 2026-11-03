@@ -140,8 +140,8 @@ public class DriveTurnInputProcessor {
 
     /**
      * Update method that processes all filters and updates the filtered angular velocity. This
-     * should be called within the {@link edu.wpi.first.wpilibj2.command.Command#execute()} method
-     * of the command using this DriveTurnInputProcessor.
+     * should be called once per cycle in the Command using this processor, before retrieving the
+     * processed angular velociy via {@link #get()}.
      */
     public void update() {
         getRightX()
