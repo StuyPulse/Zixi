@@ -167,10 +167,8 @@ const syntaxHighlight = () => {
                     ${lineNumbers}
                 </div>
 
-                <pre>
-                    <code class="language-java" hlfs></code>
-                </pre>
-            <div>
+                <pre><code class="language-java" hlfs></code></pre>
+            </div>
             `
             const codeBlock = document.querySelector(".code-wrapper > pre > code");
             codeBlock.textContent = source;
