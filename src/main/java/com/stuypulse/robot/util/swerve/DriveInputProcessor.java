@@ -39,7 +39,7 @@ import org.wpilib.units.measure.LinearVelocity;
  * </ul>
  *
  * <p>To use within a command, create an instance of this class and call the {@link #update()}
- * method in the {@link edu.wpi.first.wpilibj2.command.Command#execute()} method of the command.
+ * method in the start of the Command.
  *
  * <p>To get the processed speed, call the {@link #get()} method.
  *
@@ -188,8 +188,8 @@ public class DriveInputProcessor {
 
     /**
      * Update method that processes all filters and updates the filtered speed. This should be
-     * called within the start of the {@link edu.wpi.first.wpilibj2.command.Command#execute()}
-     * method of the command using DriveInputProcessor.
+     * called once per cycle in the Command using this processor, before retrieving the processed
+     * velocity vector via {@link #get()}.
      */
     public void update() {
         getDriverInputAsVelocity()
