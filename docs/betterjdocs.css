@@ -1560,6 +1560,16 @@ table.striped > tbody > tr > th {
   }
 }
 
+@media screen and (max-width: 1000px) {
+  .top-nav {
+    overflow: visible;
+  }
+
+  ul.nav-list {
+    display: none;
+  }
+}
+
 /* Java 25 standard doclet theme variables and layout overrides. */
 :root[data-theme="dark"] {
   --body-text-color: var(--description-color-dark);
