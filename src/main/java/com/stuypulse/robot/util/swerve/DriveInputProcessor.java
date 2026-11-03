@@ -160,7 +160,7 @@ public class DriveInputProcessor {
 
     /**
      * Applies a rate limit to {@link #processedSpeed} using a {@link
-     * edu.wpi.first.math.filter.SlewRateLimiter} for each axis. This limits the rate of change of
+     * SlewRateLimiter} for each axis. This limits the rate of change of
      * the velocity vector to the max acceleration (m/s^2).
      *
      * @return This instance of the class
@@ -174,7 +174,7 @@ public class DriveInputProcessor {
 
     /**
      * Applies a low pass filter to {@link #processedSpeed} using a {@link
-     * edu.wpi.first.math.filter.LinearFilter} for each axis. This smooths out the velocity vector
+     * LinearFilter} for each axis. This smooths out the velocity vector
      * and reduces noise.
      *
      * @return This instance of the class
