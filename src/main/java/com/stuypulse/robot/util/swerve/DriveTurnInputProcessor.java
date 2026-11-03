@@ -7,12 +7,12 @@ package com.stuypulse.robot.util.swerve;
 import static org.wpilib.units.Units.RadiansPerSecond;
 import static org.wpilib.units.Units.Seconds;
 
+import com.stuypulse.robot.constants.GlobalSettings;
+
 import org.wpilib.command3.button.CommandGamepad;
 import org.wpilib.math.filter.LinearFilter;
 import org.wpilib.math.util.MathUtil;
 import org.wpilib.units.measure.AngularVelocity;
-
-import com.stuypulse.robot.constants.GlobalSettings;
 
 /**
  *
@@ -128,8 +128,8 @@ public class DriveTurnInputProcessor {
     }
 
     /**
-     * Applies a low pass filter to {@link #processedAngularVelocity} using a 
-     * {@link LinearFilter}. This smooths out the input and reduces noise.
+     * Applies a low pass filter to {@link #processedAngularVelocity} using a {@link LinearFilter}.
+     * This smooths out the input and reduces noise.
      *
      * @return This instance of the class
      */
