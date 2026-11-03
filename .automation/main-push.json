@@ -1,5 +1,5 @@
 {
-  "message": "feat: drive commands (#29)\n\n* feat: drive commands\n\n* fix: command requirements in swerve ff char\n\n* add faizaan as author for drive input processors\n\n* docs(drive processors): change update method docs from commands v2 to v3\n\n* docs(drive processors): change update method docs from commands v2 to v3\n\n* fix: update documentation references for SlewRateLimiter and LinearFilter\n\n* feat: reset heading binding\n\n---------\n\nCo-authored-by: Faizaan-J <125227430+Faizaan-J@users.noreply.github.com>",
-  "hash": "0ecaaa8d3e693143d7f7225702aee4345ac795ea",
-  "updatedAt": "2026-11-03T17:34:46.590Z"
+  "message": "Fix docs references, ignore BuildConstants folder in javadoc, and move TunerConstants to swerve folder (#31)\n\n* docs: fix class references and ignore BuildConstants in javadoc\n\n* move TunerConstants to swerve folder",
+  "hash": "b8a63edd9523d3c258a50c33e84c944b6ceac664",
+  "updatedAt": "2026-11-03T17:55:25.895Z"
 }
