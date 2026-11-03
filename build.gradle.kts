@@ -204,4 +204,6 @@ tasks.javadoc {
     opt.addBooleanOption("-allow-script-in-comments", true)
 
     opt.addStringOption("doctitle", "Zixi")
+
+    exclude("${gversion.classPackage.replace(".", "/")}/${gversion.className}.java")
 }
