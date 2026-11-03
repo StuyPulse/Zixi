@@ -14,8 +14,9 @@ import bline.path.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-/** 
+/**
  * Implementation of {@link Auton} using BLine paths
+ *
  * @author Aiden Zhang (https://github.com/aidenzhang21345)
  */
 public class BLineAuton implements Auton {
