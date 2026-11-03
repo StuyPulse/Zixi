@@ -115,7 +115,7 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
             owner,
             repo,
             path,
-            message: `chore: update main push info for commit ${headCommit.id.substring(0, 7)}`,
+            message: `chore: [AUTOMATED] update main push info for commit ${headCommit.id.substring(0, 7)}`,
             content: Buffer.from(JSON.stringify(updatedData, null, 2)).toString('base64'),
             sha,
             branch,
