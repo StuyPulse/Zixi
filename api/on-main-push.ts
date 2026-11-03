@@ -89,7 +89,6 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
     }
     try {
         let sha: string | undefined;
-        let currentHistory: any[] = [];
 
         try {
             const { data: existingFile } = await octokit.repos.getContent({
@@ -101,30 +100,15 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
 
             if (!Array.isArray(existingFile) && existingFile.type === 'file') {
                 sha = existingFile.sha;
-                const fileString = Buffer.from(existingFile.content, 'base64').toString('utf-8');
-                const parsedJson = JSON.parse(fileString);
-                if (parsedJson && Array.isArray(parsedJson.history)) {
-                    currentHistory = parsedJson.history;
-                }
             }
         } catch {
             // File does not exist
         }
 
         const updatedData = {
-            latest: {
-                message: headCommit.message,
-                hash: headCommit.id,
-                updatedAt: new Date().toISOString()
-            },
-            history: [
-                {
-                    message: headCommit.message,
-                    hash: headCommit.id,
-                    timestamp: new Date().toISOString()
-                },
-                ...currentHistory
-            ].slice(0, 100)
+            message: headCommit.message,
+            hash: headCommit.id,
+            updatedAt: new Date().toISOString()
         };
 
         const response = await octokit.repos.createOrUpdateFileContents({
