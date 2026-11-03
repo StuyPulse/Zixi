@@ -1,5 +1,5 @@
 {
-  "message": "chore: bump build dependency versions (#28)",
-  "hash": "274e3085636feba132fdfe9cb479bb60af8be456",
-  "updatedAt": "2026-11-03T14:19:57.074Z"
+  "message": "refactor: photon sim (#30)\n\n* refactor: use super update inputs in photon sim\n\n* spotless\n\n* docs: fix @param name mismatch\n\n---------\n\nCo-authored-by: Faizaan-J <125227430+Faizaan-J@users.noreply.github.com>",
+  "hash": "21f62518234a3b29e279e653dd78f44f04286796",
+  "updatedAt": "2026-11-03T16:48:42.406Z"
 }
