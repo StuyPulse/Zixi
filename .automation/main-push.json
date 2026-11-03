@@ -1,5 +1,5 @@
 {
-  "message": "refactor: photon sim (#30)\n\n* refactor: use super update inputs in photon sim\n\n* spotless\n\n* docs: fix @param name mismatch\n\n---------\n\nCo-authored-by: Faizaan-J <125227430+Faizaan-J@users.noreply.github.com>",
-  "hash": "21f62518234a3b29e279e653dd78f44f04286796",
-  "updatedAt": "2026-11-03T16:48:42.406Z"
+  "message": "feat: drive commands (#29)\n\n* feat: drive commands\n\n* fix: command requirements in swerve ff char\n\n* add faizaan as author for drive input processors\n\n* docs(drive processors): change update method docs from commands v2 to v3\n\n* docs(drive processors): change update method docs from commands v2 to v3\n\n* fix: update documentation references for SlewRateLimiter and LinearFilter\n\n* feat: reset heading binding\n\n---------\n\nCo-authored-by: Faizaan-J <125227430+Faizaan-J@users.noreply.github.com>",
+  "hash": "0ecaaa8d3e693143d7f7225702aee4345ac795ea",
+  "updatedAt": "2026-11-03T17:34:46.590Z"
 }
