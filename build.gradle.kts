@@ -160,7 +160,9 @@ wpi.java.configureApplication(application)
 
 val deployArtifact = deploy.targets["systemcore"].artifacts["wpilibJava"] as WPILibJavaArtifact
 deployArtifact.configureApplication(application)
-wpi.java.configureTestTasks(tasks.test.get())
+tasks.test {
+    wpi.java.configureTestTasks(this)
+}
 
 /*
  * Custom tasks
