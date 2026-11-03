@@ -174,7 +174,7 @@
 
 .package-index-page .title::after,
 .all-packages-index-page .title::after {
-  --size: 75px;
+  --size: 65px;
   content: "";
   position: absolute;
   width: var(--size);
