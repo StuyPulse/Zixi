@@ -109,7 +109,7 @@ public interface DriveCommands {
         Timer timer = new Timer();
 
         Command resetData =
-                drive.run(
+                Command.noRequirements(
                                 coroutine -> {
                                     velocitySamples.clear();
                                     voltageSamples.clear();
@@ -121,7 +121,7 @@ public interface DriveCommands {
                         .named("Orient modules")
                         .withTimeout(SwerveConstants.Characterization.FF_START_DELAY);
 
-        Command startTimer = drive.run(coroutine -> timer.restart()).named("Start timer");
+        Command startTimer = Command.noRequirements(coroutine -> timer.restart()).named("Start timer");
 
         Command accelerateAndGatherData =
                 drive.runRepeatedly(
