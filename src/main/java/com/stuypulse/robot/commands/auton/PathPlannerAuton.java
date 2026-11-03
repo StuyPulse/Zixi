@@ -19,7 +19,7 @@ import java.util.List;
  * @author Aiden Zhang (https://github.com/aidenzhang21345)
  */
 public class PathPlannerAuton implements Auton {
-    private final List<PathPlannerPath> subPaths = new ArrayList<PathPlannerPath>();
+    private final List<PathPlannerPath> paths = new ArrayList<PathPlannerPath>();
 
     private final Command command;
 
@@ -32,7 +32,7 @@ public class PathPlannerAuton implements Auton {
      */
     public PathPlannerAuton(PathPlannerPath[] paths, String name, Command... commands) {
         for (PathPlannerPath path : paths) {
-            subPaths.add(path);
+            this.paths.add(path);
         }
 
         this.command = Command.sequence(commands).named(name);
@@ -40,25 +40,21 @@ public class PathPlannerAuton implements Auton {
 
     @Override
     public void displayPaths() {
-        for (int i = 0; i < subPaths.size(); i++) {
-            if (Robot.isBlue()) {
-                FieldConstants.FIELD_2D
-                        .getObject("path: " + subPaths.get(i).name)
-                        .setPoses(subPaths.get(i).getPathPoses());
-            } else {
-                FieldConstants.FIELD_2D
-                        .getObject("path: " + subPaths.get(i).name)
-                        .setPoses(
-                                FieldConstants.transformToOppositeAlliance(
-                                        subPaths.get(i).getPathPoses()));
-            }
+        for (PathPlannerPath path : paths) {
+            FieldConstants.FIELD_2D
+                    .getObject("path: " + path.name)
+                    .setPoses(
+                            Robot.isBlue()
+                                    ? path.getPathPoses()
+                                    : FieldConstants.transformToOppositeAlliance(
+                                            path.getPathPoses()));
         }
     }
 
     @Override
     public void clearPaths() {
-        for (int i = 0; i < subPaths.size(); i++) {
-            FieldConstants.FIELD_2D.getObject("path: " + subPaths.get(i).name).setPoses();
+        for (PathPlannerPath path : paths) {
+            FieldConstants.FIELD_2D.getObject("path: " + path.name).setPoses();
         }
     }
 
