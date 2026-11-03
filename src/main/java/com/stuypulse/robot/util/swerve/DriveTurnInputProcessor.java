@@ -33,7 +33,7 @@ import org.wpilib.units.measure.AngularVelocity;
  * </ul>
  *
  * <p>To use within a command, create an instance of this class and call the {@link #update()}
- * method in the {@link edu.wpi.first.wpilibj2.command.Command#execute()} method of the command.
+ * method in the start of the Command.
  *
  * <p>To get the processed speed, call the {@link #get()} method.
  *
@@ -128,8 +128,8 @@ public class DriveTurnInputProcessor {
     }
 
     /**
-     * Applies a low pass filter to {@link #processedAngularVelocity} using a {@link
-     * edu.wpi.first.math.filter.LinearFilter}. This smooths out the input and reduces noise.
+     * Applies a low pass filter to {@link #processedAngularVelocity} using a {@link LinearFilter}.
+     * This smooths out the input and reduces noise.
      *
      * @return This instance of the class
      */

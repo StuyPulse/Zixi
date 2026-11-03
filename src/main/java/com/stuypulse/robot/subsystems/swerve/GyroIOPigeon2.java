@@ -4,8 +4,6 @@
 /**************************************************************/
 package com.stuypulse.robot.subsystems.swerve;
 
-import com.stuypulse.robot.generated.TunerConstants;
-
 import org.wpilib.math.geometry.Rotation2d;
 import org.wpilib.units.measure.Angle;
 import org.wpilib.units.measure.AngularVelocity;

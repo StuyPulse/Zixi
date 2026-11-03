@@ -8,7 +8,6 @@ import static org.wpilib.units.Units.*;
 
 import com.stuypulse.robot.constants.GlobalSettings;
 import com.stuypulse.robot.constants.GlobalSettings.RobotMode;
-import com.stuypulse.robot.generated.TunerConstants;
 import com.stuypulse.robot.subsystems.vision.Vision.VisionConsumer;
 import com.stuypulse.robot.util.PeriodicSubsystem;
 

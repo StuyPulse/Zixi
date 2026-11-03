@@ -6,8 +6,6 @@ package com.stuypulse.robot.subsystems.swerve;
 
 import static org.wpilib.units.Units.Rotations;
 
-import com.stuypulse.robot.generated.TunerConstants;
-
 import org.wpilib.math.filter.Debouncer;
 import org.wpilib.math.geometry.Rotation2d;
 import org.wpilib.math.util.Units;
