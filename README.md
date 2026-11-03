@@ -1,5 +1,5 @@
 <div align="center">
-<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Tiny5+Duo&size=24&duration=2500&pause=1000&color=F7F7F7&background=FF0000&center=true&vCenter=true&width=435&lines=Zixi;A+StuyPulse+Template;Dedicated+to+Zixi+Qiao" alt="Typing SVG" /></a></a>
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Tiny5+Duo&size=48&duration=2500&pause=1000&color=F7F7F7&background=FF0000&center=true&vCenter=true&width=870&height=150&lines=Zixi;A+StuyPulse+Template;Dedicated+to+Zixi+Qiao" alt="Typing SVG" /></a></a>
 </div>
 <div align="center">
 <a><img src="https://img.shields.io/badge/License-MIT-750014?style=for-the-badge&logo=markdown"></a>
