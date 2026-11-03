@@ -14,12 +14,13 @@ import bline.path.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-/** 
+/**
  * Implementation of {@link Auton} using BLine paths
+ *
  * @author Aiden Zhang (https://github.com/aidenzhang21345)
  */
 public class BLineAuton implements Auton {
-    private final List<Path> displayedPaths = new ArrayList<>();
+    private final List<Path> paths = new ArrayList<>();
 
     private final Command command;
 
@@ -32,7 +33,7 @@ public class BLineAuton implements Auton {
      */
     public BLineAuton(Path[] paths, String name, Command... commands) {
         for (Path path : paths) {
-            displayedPaths.add(path.copy());
+            this.paths.add(path.copy());
         }
 
         this.command = Command.sequence(commands).named(name);
@@ -40,20 +41,15 @@ public class BLineAuton implements Auton {
 
     @Override
     public void displayPaths() {
-        for (Path path : displayedPaths) {
-            if (Robot.isBlue()) {
-                path.setFlipped(false);
-                BLineField.drawPath(FieldConstants.FIELD_2D, path);
-            } else {
-                path.setFlipped(true);
-                BLineField.drawPath(FieldConstants.FIELD_2D, path);
-            }
+        for (Path path : paths) {
+            path.setFlipped(!Robot.isBlue());
+            BLineField.drawPath(FieldConstants.FIELD_2D, path);
         }
     }
 
     @Override
     public void clearPaths() {
-        for (Path path : displayedPaths) {
+        for (Path path : paths) {
             FieldConstants.FIELD_2D
                     .getObject(BLineField.drawPath(FieldConstants.FIELD_2D, path))
                     .setPoses();
