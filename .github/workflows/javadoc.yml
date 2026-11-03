@@ -38,19 +38,16 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Checkout main
+        run: |
+          git fetch origin main
+          git checkout main
 
       - name: Validate Gradle wrapper
         uses: gradle/actions/wrapper-validation@v4
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
-
-      - name: Checkout main
-        run: |
-          git fetch origin main
-          git checkout main
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -63,6 +60,9 @@ jobs:
 
       - name: Return to docs branch
         run: git checkout docs
+
+      - name: Install npm dependencies
+        run: npm ci
 
       - name: Patch Javadocs
         run: npm run patch
@@ -83,5 +83,3 @@ jobs:
           else
             echo "No changes to commit"
           fi
-
-          git push origin docs
