@@ -45,7 +45,7 @@ deploy.targets.register<SystemCore>("systemcore") {
  * Sim
  */
 wpi.java.runSimWithDebugJni = false // Set to true to use debug for simulation including JNI
-val includeDesktopSupport = true // Set this to true to enable desktop support.// Simulation configuration (e.g. environment variables).
+val includeDesktopSupport = true // Set this to true to enable desktop support. Simulation configuration (e.g. environment variables).
 wpi.sim.addGui().defaultEnabled = true
 wpi.sim.addDriverstation()
 
@@ -73,12 +73,12 @@ dependencies {
     wpi.java.vendor.jniRelease(NativePlatforms.desktop).forEach { "nativeRelease"(it) }
     wpi.sim.enableRelease().forEach {"simulationRelease"(it) }
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.1")
+    testImplementation("org.junit.jupiter:junit-jupiter:6.1.3")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     annotationProcessor("org.littletonrobotics.akit:akit-autolog:$akitVersion")
 
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.22.4")
 }
 
 /*
@@ -96,7 +96,7 @@ tasks.jar {
     from("vendordeps") {
         into("backup/vendordeps")
     }
-    from("build.gradle") {
+    from("build.gradle.kts") {
         into("backup")
     }
 }
