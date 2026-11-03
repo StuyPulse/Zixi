@@ -3,11 +3,12 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const projectDirectory = process.argv[2];
+const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 
-if (!projectDirectory) {
-    throw new Error("Missing project directory argument");
-}
+const projectDirectory = path.resolve(
+    scriptDirectory,
+    process.argv[2] ?? ".."
+);
 
 const javadocDirectory = path.join(
     projectDirectory,
@@ -66,33 +67,6 @@ const fileWalker = (directory: string) => {
         }
     }
 }
-
-// Patch the script.js file because of the scroll position bug that comes with older versions of Javadoc.
-const scriptJsPatcher = (filePath: string) => {
-    const text = fs.readFileSync(filePath, "utf-8");
-
-    const newText = (() => {
-        let updatedText = text.replace(
-            /^(\s*)var contentDiv = document\.querySelector\("div\.flex-content"\);/m,
-            `$1var timeoutID;\n$1var contentDiv = document.querySelector("div.flex-content");`
-        )
-
-        updatedText = updatedText.replace(
-            /(contentDiv\.addEventListener\("scroll", function\(e\) {\s*)var timeoutID;\s*/m,
-            "$1"
-        )
-
-        return updatedText;
-    })();
-
-    if (newText === text) {
-        log(`Failed to patch ${getRelativePath(filePath)}`, "red");
-        return;
-    }
-
-    fs.writeFileSync(filePath, newText, "utf-8");
-    log(`Patched ${getRelativePath(filePath)}`);
-};
 
 const htmlPatcher = (filePath: string) => {
     const text = fs.readFileSync(filePath, "utf-8");
@@ -154,7 +128,6 @@ const checkpointFile = path.join(javadocDirectory, ".patched");
 if (fs.existsSync(checkpointFile)) {
     log("Javadoc already patched, skipping patcher", "green"); 
 } else {
-    scriptJsPatcher(path.join(javadocDirectory, "script.js"));
     fileWalker(javadocDirectory);
     addJavadocAssets();
 
