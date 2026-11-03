@@ -76,7 +76,7 @@ const htmlPatcher = (filePath: string) => {
     const utilsFile = path.join(javadocDirectory, "utils.js");
     const themeFile = path.join(javadocDirectory, "theme.js");
 
-    const faviconFile = path.join(javadocDirectory, "favicon.ico");
+    const faviconFile = path.join(javadocDirectory, "favicon.svg");
 
     const inlineThemeScript = `<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script>`
     const stylesheetFile = path.join(javadocDirectory, "betterjdocs.css");
@@ -106,7 +106,7 @@ const htmlPatcher = (filePath: string) => {
 
 const javadocAssets = [
     "javadoc/betterjdocs.css",
-    "javadoc/favicon.ico",
+    "javadoc/favicon.svg",
     "javadoc/javadocs.js",
     "javadoc/svgs.js",
     "javadoc/utils.js",
