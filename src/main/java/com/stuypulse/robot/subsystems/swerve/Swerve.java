@@ -316,8 +316,12 @@ public class Swerve extends PeriodicSubsystem {
     }
 
     /** Resets the current odometry pose. */
-    public void setPose(Pose2d pose) {
+    public void resetPose(Pose2d pose) {
         poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);
+    }
+
+    public void resetRotation(Rotation2d rotation) {
+        poseEstimator.resetRotation(rotation);
     }
 
     public VisionConsumer visionConsumer = poseEstimator::addVisionMeasurement;

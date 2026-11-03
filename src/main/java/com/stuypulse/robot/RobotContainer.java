@@ -6,8 +6,9 @@ package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.auton.Auton;
 import com.stuypulse.robot.commands.auton.AutonFactory;
+import com.stuypulse.robot.commands.subsystems.DriveCommands;
+import com.stuypulse.robot.constants.DriverConstants;
 import com.stuypulse.robot.constants.FieldConstants;
-import com.stuypulse.robot.constants.GlobalPorts;
 import com.stuypulse.robot.constants.GlobalSettings;
 import com.stuypulse.robot.generated.TunerConstants;
 import com.stuypulse.robot.subsystems.swerve.GyroIO;
@@ -26,6 +27,7 @@ import com.stuypulse.robot.subsystems.vision.VisionIOPhoton;
 import com.stuypulse.robot.subsystems.vision.VisionIOPhotonSim;
 
 import org.wpilib.command3.button.CommandGamepad;
+import org.wpilib.math.geometry.Rotation2d;
 import org.wpilib.tunable.Tunables;
 
 import java.util.EnumMap;
@@ -35,7 +37,7 @@ public class RobotContainer {
 
     // Gamepads
     private final CommandGamepad driver =
-            new CommandGamepad(GlobalPorts.Gamepad.DRIVER); // model-agnostic controller
+            new CommandGamepad(DriverConstants.Driver.DRIVER_INDEX); // model-agnostic controller
     // public final CommandGamepad operator = new CommandGamepad(GlobalPorts.Gamepad.OPERATOR);
 
     // Subsystems
@@ -118,19 +120,23 @@ public class RobotContainer {
     /*** DEFAULTS ***/
     /****************/
 
-    private void configureDefaultCommands() {}
+    private void configureDefaultCommands() {
+        swerve.setDefaultCommand(DriveCommands.joystickDrive(swerve, driver));
+    }
 
     /***************/
     /*** BUTTONS ***/
     /***************/
 
-    private void configureButtonBindings() {}
+    private void configureButtonBindings() {
+        driver.dpadUp().onTrue(DriveCommands.resetHeading(swerve, Rotation2d.ZERO));
+    }
 
     /**************/
     /*** AUTONS ***/
     /**************/
 
-    public void configureAutons() {
+    private void configureAutons() {
         AutonFactory autonFactory = new AutonFactory();
 
         autonChooser.addDefault("Do Nothing", autonFactory.doNothingAuton());
