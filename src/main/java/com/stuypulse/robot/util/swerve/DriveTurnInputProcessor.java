@@ -36,6 +36,8 @@ import org.wpilib.units.measure.AngularVelocity;
  * method in the {@link edu.wpi.first.wpilibj2.command.Command#execute()} method of the command.
  *
  * <p>To get the processed speed, call the {@link #get()} method.
+ *
+ * @author Faizaan (https://github.com/Faizaan-J)
  */
 public class DriveTurnInputProcessor {
     private final CommandGamepad controller;
