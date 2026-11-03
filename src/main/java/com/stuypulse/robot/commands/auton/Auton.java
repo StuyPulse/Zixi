@@ -9,8 +9,6 @@ import com.stuypulse.robot.RobotContainer;
 import org.wpilib.command3.Command;
 
 /**
- *
- *
  * <h2>Auton </h2>
  *
  * <p>Used for previewing the selected auton's paths in elastic
