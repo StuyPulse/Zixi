@@ -1,1 +1,14 @@
-{}
+{
+  "latest": {
+    "message": "chore: bump build dependency versions (#28)",
+    "hash": "274e3085636feba132fdfe9cb479bb60af8be456",
+    "updatedAt": "2026-11-03T14:00:46.880Z"
+  },
+  "history": [
+    {
+      "message": "chore: bump build dependency versions (#28)",
+      "hash": "274e3085636feba132fdfe9cb479bb60af8be456",
+      "timestamp": "2026-11-03T14:00:46.880Z"
+    }
+  ]
+}
