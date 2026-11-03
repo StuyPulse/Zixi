@@ -121,7 +121,8 @@ public interface DriveCommands {
                         .named("Orient modules")
                         .withTimeout(SwerveConstants.Characterization.FF_START_DELAY);
 
-        Command startTimer = Command.noRequirements(coroutine -> timer.restart()).named("Start timer");
+        Command startTimer =
+                Command.noRequirements(coroutine -> timer.restart()).named("Start timer");
 
         Command accelerateAndGatherData =
                 drive.runRepeatedly(

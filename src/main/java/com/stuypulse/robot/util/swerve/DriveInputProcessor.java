@@ -159,9 +159,8 @@ public class DriveInputProcessor {
     }
 
     /**
-     * Applies a rate limit to {@link #processedSpeed} using a {@link
-     * SlewRateLimiter} for each axis. This limits the rate of change of
-     * the velocity vector to the max acceleration (m/s^2).
+     * Applies a rate limit to {@link #processedSpeed} using a {@link SlewRateLimiter} for each
+     * axis. This limits the rate of change of the velocity vector to the max acceleration (m/s^2).
      *
      * @return This instance of the class
      */
@@ -173,9 +172,8 @@ public class DriveInputProcessor {
     }
 
     /**
-     * Applies a low pass filter to {@link #processedSpeed} using a {@link
-     * LinearFilter} for each axis. This smooths out the velocity vector
-     * and reduces noise.
+     * Applies a low pass filter to {@link #processedSpeed} using a {@link LinearFilter} for each
+     * axis. This smooths out the velocity vector and reduces noise.
      *
      * @return This instance of the class
      */

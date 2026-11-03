@@ -27,6 +27,7 @@ import com.stuypulse.robot.subsystems.vision.VisionIOPhoton;
 import com.stuypulse.robot.subsystems.vision.VisionIOPhotonSim;
 
 import org.wpilib.command3.button.CommandGamepad;
+import org.wpilib.math.geometry.Rotation2d;
 import org.wpilib.tunable.Tunables;
 
 import java.util.EnumMap;
@@ -127,7 +128,9 @@ public class RobotContainer {
     /*** BUTTONS ***/
     /***************/
 
-    private void configureButtonBindings() {}
+    private void configureButtonBindings() {
+        driver.dpadUp().onTrue(DriveCommands.resetHeading(swerve, Rotation2d.ZERO));
+    }
 
     /**************/
     /*** AUTONS ***/
