@@ -4,10 +4,12 @@
 /**************************************************************/
 package com.stuypulse.robot.subsystems.vision;
 
+import static org.wpilib.units.Units.Meters;
 import static org.wpilib.units.Units.Seconds;
 
 import org.wpilib.math.geometry.Rotation3d;
 import org.wpilib.math.geometry.Transform3d;
+import org.wpilib.units.measure.Distance;
 import org.wpilib.units.measure.Time;
 
 import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean;
@@ -36,6 +38,8 @@ public interface VisionConstants {
                 Double.POSITIVE_INFINITY; // No rotation data available
 
         double BUZZ_DEBOUNCE = 0.25;
+
+        Distance OBJ_DET_TARGET_HEIGHT = Meters.of(2);
     }
 
     record CameraData(String name, Transform3d robotToCamera, double stdDevFactor) {}
