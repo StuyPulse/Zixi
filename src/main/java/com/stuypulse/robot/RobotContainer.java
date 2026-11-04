@@ -20,9 +20,9 @@ import com.stuypulse.robot.subsystems.swerve.TunerConstants;
 import com.stuypulse.robot.subsystems.vision.Vision;
 import com.stuypulse.robot.subsystems.vision.VisionConstants;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.Camera;
-import com.stuypulse.robot.subsystems.vision.VisionConstants.VisionMode;
 import com.stuypulse.robot.subsystems.vision.VisionIO;
 import com.stuypulse.robot.subsystems.vision.VisionIOLimelight;
+import com.stuypulse.robot.subsystems.vision.VisionIOObjDetectionPhoton;
 import com.stuypulse.robot.subsystems.vision.VisionIOPhoton;
 import com.stuypulse.robot.subsystems.vision.VisionIOPhotonSim;
 
@@ -62,12 +62,23 @@ public class RobotContainer {
                 for (Camera camera : VisionConstants.Camera.values()) {
                     visionIOMap.put(
                             camera,
-                            VisionConstants.VISION_MODE == VisionMode.LIMELIGHT
-                                    ? new VisionIOLimelight(
-                                            camera.name(),
-                                            camera.getRobotToCamera(),
-                                            swerve::getRotation)
-                                    : new VisionIOPhoton(camera.name(), camera.getRobotToCamera()));
+                            switch (camera.getVisionType()) {
+                                case PHOTON_OBJ_DETECTION ->
+                                        new VisionIOObjDetectionPhoton(
+                                                camera.getName(),
+                                                camera.getRobotToCamera(),
+                                                swerve::getPose);
+
+                                case PHOTONVISION ->
+                                        new VisionIOPhoton(
+                                                camera.name(), camera.getRobotToCamera());
+
+                                default ->
+                                        new VisionIOLimelight(
+                                                camera.name(),
+                                                camera.getRobotToCamera(),
+                                                swerve::getRotation);
+                            });
                 }
             }
 

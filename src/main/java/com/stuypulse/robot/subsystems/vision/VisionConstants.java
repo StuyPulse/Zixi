@@ -55,6 +55,8 @@ public interface VisionConstants {
         ;
         private final CameraData data;
 
+        private final VisionType visionType;
+
         /**
          * Internal constructor to setup a camera with a {@link CameraData} instance
          *
@@ -62,8 +64,13 @@ public interface VisionConstants {
          * @param robotToCamera transformation from the robot origin to the camera's position
          * @param stdDevFactor scalar factor to multiply the camrea's standard deviations by
          */
-        private Camera(String name, Transform3d robotToCamera, double stdDevFactor) {
+        private Camera(
+                String name,
+                Transform3d robotToCamera,
+                double stdDevFactor,
+                VisionType visionType) {
             this.data = new CameraData(name, robotToCamera, stdDevFactor);
+            this.visionType = visionType;
         }
 
         public String getName() {
@@ -86,6 +93,10 @@ public interface VisionConstants {
         public CameraData getData() {
             return data;
         }
+
+        public VisionType getVisionType() {
+            return visionType;
+        }
     }
 
     public enum Pipeline {
@@ -103,10 +114,9 @@ public interface VisionConstants {
         }
     }
 
-    public enum VisionMode {
+    public enum VisionType {
         LIMELIGHT,
-        PHOTONVISION
+        PHOTONVISION,
+        PHOTON_OBJ_DETECTION
     }
-
-    VisionMode VISION_MODE = VisionMode.LIMELIGHT;
 }
