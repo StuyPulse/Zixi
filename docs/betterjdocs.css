@@ -216,20 +216,20 @@
   .back-button {
     background: var(--primary-color);
     border-radius: 5px;
-    padding: 5px 16px;
+    padding: 5px 6px;
     color: var(--secondary-color);
     font-family: "monospace", Arial, Helvetica, sans-serif;
     border: none;
-    font-size: 1.2em;
+    font-size: 12px;
     --margin: 10px;
     margin-top: var(--margin);
     margin-left: var(--margin);
     text-transform: uppercase;
     cursor: pointer;
-
     position: fixed;
     display: flex;
     justify-self: right;
+    font-weight: bold;
   }
 
   --line-height: 1.5em;
