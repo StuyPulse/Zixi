@@ -586,6 +586,11 @@ ul.nav-list li:first-child {
     color: var(--secondary-color);
     font-weight: bold;
   }
+
+.sub-nav > .nav-content {
+  float: none !important;
+}
+
 .sub-nav .nav-list-search {
   margin: 0 0 0 0;
   padding: 5px 6px;
@@ -614,6 +619,10 @@ ul.sub-nav-list li {
   text-decoration: none;
   color: var(--hover-color);
   text-transform: uppercase;
+}
+
+.top-nav > .nav-content {
+  max-width: none !important;
 }
 
 .nav-bar-cell1-rev {
