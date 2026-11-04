@@ -11,14 +11,14 @@ const CommitSchema = z.object({
     distinct: z.boolean().optional(),
     timestamp: z.string().optional(),
     author: z.object({
-            name: z.string(),
-            email: z.string(),
-            date: z.string().optional(),
-            username: z.string().optional(),
-        }).optional(),
+        name: z.string(),
+        email: z.string().nullable(),
+        date: z.string().optional(),
+        username: z.string().optional(),
+    }).optional(),
     committer: z.object({
         name: z.string(),
-        email: z.string(),
+        email: z.string().nullable(),
         date: z.string().optional(),
         username: z.string().optional(),
     }).optional(),
@@ -37,7 +37,7 @@ const GithubPushSchema = z.object({
 
     pusher: z.object({
         name: z.string(),
-        email: z.string(),
+        email: z.string().nullable(),
     }),
 
     forced: z.boolean(),
