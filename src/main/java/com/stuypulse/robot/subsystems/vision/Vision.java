@@ -10,6 +10,7 @@ import com.stuypulse.robot.subsystems.vision.VisionConstants.Camera;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.CameraData;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.Pipeline;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.VisionSettings;
+import com.stuypulse.robot.subsystems.vision.VisionConstants.VisionType;
 import com.stuypulse.robot.subsystems.vision.VisionIO.MegaTagMode;
 import com.stuypulse.robot.subsystems.vision.VisionIO.PoseObservation;
 import com.stuypulse.robot.subsystems.vision.VisionIO.PoseObservationType;
@@ -27,12 +28,16 @@ import org.wpilib.math.numbers.N3;
 import org.wpilib.system.Timer;
 import org.wpilib.util.Alert;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
+
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 public class Vision extends PeriodicSubsystem {
@@ -43,6 +48,9 @@ public class Vision extends PeriodicSubsystem {
     private final EnumMap<Camera, Alert> disconnectedAlerts;
 
     private final Timer hdrTimer;
+
+    @AutoLogOutput
+    private final List<Pose3d> objectPoses;
 
     public Vision(VisionConsumer consumer, EnumMap<Camera, VisionIO> cameraIOMap) {
         this.consumer = consumer;
@@ -69,6 +77,8 @@ public class Vision extends PeriodicSubsystem {
         }
 
         hdrTimer.start();
+
+        objectPoses = new ArrayList<>();
     }
 
     /**
@@ -84,6 +94,10 @@ public class Vision extends PeriodicSubsystem {
         Iterator<VisionIOInputsAutoLogged> iterator = inputs.values().iterator();
         return iterator.hasNext() ? Optional.of(iterator.next().currentPipeline) : Optional.empty();
     }
+
+    public List<Pose3d> getObjectPoses() {
+        return objectPoses;
+    } 
 
     @Override
     public void periodic() {
@@ -121,10 +135,25 @@ public class Vision extends PeriodicSubsystem {
         List<Pose3d> allRobotPosesAccepted = new LinkedList<>();
         List<Pose3d> allRobotPosesRejected = new LinkedList<>();
 
+        boolean objDetectionStarted = false;
+
         // Loop over cameras
         for (Entry<Camera, VisionIO> entry : io.entrySet()) {
             CameraData currentCameraData = entry.getKey().getData();
             VisionIOInputsAutoLogged currentInputs = inputs.get(entry.getKey());
+
+            if (entry.getKey().getVisionType() == VisionType.PHOTON_OBJ_DETECTION) {
+                if (!objDetectionStarted) {
+                    objectPoses.clear();
+                    objDetectionStarted = true;
+                }
+
+                if (currentInputs.objectPoses.length > 0) {
+                    Collections.addAll(objectPoses, currentInputs.objectPoses);
+                }
+
+                continue;
+            }
 
             // Update disconnected alert
             disconnectedAlerts.get(entry.getKey()).set(!currentInputs.connected);
