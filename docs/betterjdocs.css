@@ -1288,7 +1288,6 @@ ul.ui-autocomplete li {
   margin-top: 0.5rem;
   position: relative;
   max-width: 600px;
-
   padding-right: 2.5rem !important;
 }
 
@@ -1716,32 +1715,34 @@ input#reset-search {
   filter: invert(1);
 }
 
-:root[data-theme="dark"] .ui-autocomplete .search-result-desc,
-:root[data-theme="dark"] #result-container .search-result-desc {
-  color: var(--description-color-dark);
+:root .ui-autocomplete .search-result-desc,
+:root #result-container .search-result-desc {
+  color: var(--description-color) !important;
+  text-shadow: none !important;
 }
 
-:root[data-theme="dark"] .ui-autocomplete .ui-state-active .search-result-desc {
-  color: var(--secondary-color-dark);
-}
-
-/* Keep page-search selection consistent with the index autocomplete. */
+/* Keep page-search hover and selection effects in sync with autocomplete. */
 #result-container div.result-table > a.search-result-link:focus-visible,
+#result-container div.result-table > a.search-result-link:hover,
 #result-container div.result-table > a.search-result-link.selected {
   background-color: var(--autocomplete-selected-bg);
   border: var(--primary-color) solid 1px;
   box-sizing: border-box;
   color: var(--secondary-color);
   outline: none;
+  text-shadow: 0 0 2px var(--primary-color);
 }
 
-#result-container .search-result-desc {
-  color: var(--description-color-dark) !important;
-}
-
+#result-container div.result-table > a.search-result-link:hover .search-result-desc,
 #result-container div.result-table > a.search-result-link:focus-visible .search-result-desc,
 #result-container div.result-table > a.search-result-link.selected .search-result-desc {
-  color: var(--secondary-color);
+  color: var(--secondary-color) !important;
+  text-shadow: 0 0 2px var(--primary-color) !important;
+}
+
+.ui-autocomplete .ui-state-active .search-result-desc {
+  color: var(--secondary-color) !important;
+  text-shadow: 0 0 2px var(--primary-color) !important;
 }
 
 .class-description,
