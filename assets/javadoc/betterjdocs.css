@@ -1288,6 +1288,8 @@ ul.ui-autocomplete li {
   margin-top: 0.5rem;
   position: relative;
   max-width: 600px;
+
+  padding-right: 2.5rem !important;
 }
 
 #page-search-input {
@@ -1707,6 +1709,7 @@ main {
 input#reset-search {
   top: 50%;
   transform: translateY(-50%);
+  right: 5% !important;
 }
 
 :root[data-theme="dark"] .main-grid nav.toc button > img {
@@ -1720,6 +1723,25 @@ input#reset-search {
 
 :root[data-theme="dark"] .ui-autocomplete .ui-state-active .search-result-desc {
   color: var(--secondary-color-dark);
+}
+
+/* Keep page-search selection consistent with the index autocomplete. */
+#result-container div.result-table > a.search-result-link:focus-visible,
+#result-container div.result-table > a.search-result-link.selected {
+  background-color: var(--autocomplete-selected-bg);
+  border: var(--primary-color) solid 1px;
+  box-sizing: border-box;
+  color: var(--secondary-color);
+  outline: none;
+}
+
+#result-container .search-result-desc {
+  color: var(--description-color-dark) !important;
+}
+
+#result-container div.result-table > a.search-result-link:focus-visible .search-result-desc,
+#result-container div.result-table > a.search-result-link.selected .search-result-desc {
+  color: var(--secondary-color);
 }
 
 .class-description,
