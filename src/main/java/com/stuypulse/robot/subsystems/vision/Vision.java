@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
 
-import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 public class Vision extends PeriodicSubsystem {
@@ -49,7 +48,6 @@ public class Vision extends PeriodicSubsystem {
 
     private final Timer hdrTimer;
 
-    @AutoLogOutput
     private final List<Pose3d> objectPoses;
 
     public Vision(VisionConsumer consumer, EnumMap<Camera, VisionIO> cameraIOMap) {
@@ -251,6 +249,7 @@ public class Vision extends PeriodicSubsystem {
                 "Vision/Summary/RobotPosesAccepted", allRobotPosesAccepted.toArray(new Pose3d[0]));
         Logger.recordOutput(
                 "Vision/Summary/RobotPosesRejected", allRobotPosesRejected.toArray(new Pose3d[0]));
+        Logger.recordOutput("Vision/Summary/ObjectPoses", objectPoses.toArray(new Pose3d[0]));
     }
 
     @Override
