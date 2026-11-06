@@ -64,7 +64,7 @@ public class RobotContainer {
                             camera,
                             VisionConstants.VISION_MODE == VisionMode.LIMELIGHT
                                     ? new VisionIOLimelightNew(
-                                            camera.name(),
+                                            camera.getName(),
                                             camera.getRobotToCamera(),
                                             swerve::getRotation)
                                     : new VisionIOPhoton(camera.name(), camera.getRobotToCamera()));
