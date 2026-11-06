@@ -15,7 +15,9 @@ import com.limelightvision.PoseEstimateType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Supplier;
 
 public class VisionIOLimelightNew implements VisionIO {
@@ -41,14 +43,12 @@ public class VisionIOLimelightNew implements VisionIO {
     public void updateInputs(VisionIOInputs inputs) {
         inputs.connected = camera.isConnected();
 
-        if (!camera.hasTarget()) {
-            return;
-        }
+        inputs.currentPipeline = camera.getCurrentPipelineIndex();
 
         Limelight.setSharedRobotOrientation(rotationSupplier.get().getDegrees());
 
         List<PoseObservation> poses = new ArrayList<>();
-        List<Integer> tagIds = new ArrayList<>();
+        Set<Integer> tagIds = new HashSet<>();
 
         if (megaTagMode == MegaTagMode.MEGATAG_1) {
             for (var estimate :

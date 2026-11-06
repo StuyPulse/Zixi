@@ -22,7 +22,7 @@ import com.stuypulse.robot.subsystems.vision.VisionConstants;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.Camera;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.VisionMode;
 import com.stuypulse.robot.subsystems.vision.VisionIO;
-import com.stuypulse.robot.subsystems.vision.VisionIOLimelight;
+import com.stuypulse.robot.subsystems.vision.VisionIOLimelightNew;
 import com.stuypulse.robot.subsystems.vision.VisionIOPhoton;
 import com.stuypulse.robot.subsystems.vision.VisionIOPhotonSim;
 
@@ -63,7 +63,7 @@ public class RobotContainer {
                     visionIOMap.put(
                             camera,
                             VisionConstants.VISION_MODE == VisionMode.LIMELIGHT
-                                    ? new VisionIOLimelight(
+                                    ? new VisionIOLimelightNew(
                                             camera.name(),
                                             camera.getRobotToCamera(),
                                             swerve::getRotation)

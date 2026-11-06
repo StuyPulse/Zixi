@@ -6,6 +6,7 @@ package com.stuypulse.robot.subsystems.swerve;
 
 import static org.wpilib.units.Units.*;
 
+import com.stuypulse.robot.constants.FieldConstants;
 import com.stuypulse.robot.constants.GlobalSettings;
 import com.stuypulse.robot.constants.GlobalSettings.RobotMode;
 import com.stuypulse.robot.subsystems.vision.Vision.VisionConsumer;
@@ -186,6 +187,8 @@ public class Swerve extends PeriodicSubsystem {
         // Update gyro alert
         gyroDisconnectedAlert.set(
                 !gyroInputs.connected && GlobalSettings.CURRENT_MODE != RobotMode.SIM);
+
+        FieldConstants.FIELD_2D.setRobotPose(getPose());
     }
 
     @Override
