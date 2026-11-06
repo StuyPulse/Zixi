@@ -226,16 +226,16 @@ public class Vision extends PeriodicSubsystem {
             // Log camera metadata
             Logger.recordOutput(
                     "Vision/Camera" + currentCameraData.name() + "/TagPoses",
-                    tagPoses.toArray(new Pose3d[tagPoses.size()]));
+                    tagPoses.toArray(Pose3d[]::new));
             Logger.recordOutput(
                     "Vision/Camera" + currentCameraData.name() + "/RobotPoses",
-                    robotPoses.toArray(new Pose3d[robotPoses.size()]));
+                    robotPoses.toArray(Pose3d[]::new));
             Logger.recordOutput(
                     "Vision/Camera" + currentCameraData.name() + "/RobotPosesAccepted",
-                    robotPosesAccepted.toArray(new Pose3d[robotPosesAccepted.size()]));
+                    robotPosesAccepted.toArray(Pose3d[]::new));
             Logger.recordOutput(
                     "Vision/Camera" + currentCameraData.name() + "/RobotPosesRejected",
-                    robotPosesRejected.toArray(new Pose3d[robotPosesRejected.size()]));
+                    robotPosesRejected.toArray(Pose3d[]::new));
             allTagPoses.addAll(tagPoses);
             allRobotPoses.addAll(robotPoses);
             allRobotPosesAccepted.addAll(robotPosesAccepted);
@@ -243,13 +243,13 @@ public class Vision extends PeriodicSubsystem {
         }
 
         // Log summary data
-        Logger.recordOutput("Vision/Summary/TagPoses", allTagPoses.toArray(new Pose3d[0]));
-        Logger.recordOutput("Vision/Summary/RobotPoses", allRobotPoses.toArray(new Pose3d[0]));
+        Logger.recordOutput("Vision/Summary/TagPoses", allTagPoses.toArray(Pose3d[]::new));
+        Logger.recordOutput("Vision/Summary/RobotPoses", allRobotPoses.toArray(Pose3d[]::new));
         Logger.recordOutput(
-                "Vision/Summary/RobotPosesAccepted", allRobotPosesAccepted.toArray(new Pose3d[0]));
+                "Vision/Summary/RobotPosesAccepted", allRobotPosesAccepted.toArray(Pose3d[]::new));
         Logger.recordOutput(
-                "Vision/Summary/RobotPosesRejected", allRobotPosesRejected.toArray(new Pose3d[0]));
-        Logger.recordOutput("Vision/Summary/ObjectPoses", objectPoses.toArray(new Pose3d[0]));
+                "Vision/Summary/RobotPosesRejected", allRobotPosesRejected.toArray(Pose3d[]::new));
+        Logger.recordOutput("Vision/Summary/ObjectPoses", objectPoses.toArray(Pose3d[]::new));
     }
 
     @Override
