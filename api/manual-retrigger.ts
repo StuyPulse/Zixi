@@ -30,7 +30,7 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
         await updateMainPush({
             message: "Manual retrigger",
             hash: "manual-retrigger",
-            automatedMessage: "chore: [AUTOMATED] manually retrigger javadoc generation"
+            automatedMessage: "chore: manually retrigger javadoc generation"
         });
     } catch (error: any) {
         return res.status(500).json({ error: error.message });
