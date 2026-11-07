@@ -49,12 +49,16 @@ const updateMainPush = async ({ message, hash, automatedMessage }: UpdateMainPus
         owner,
         repo,
         path,
-        message: automatedMessage ?? `chore: [AUTOMATED] update main push info for commit ${hash.substring(0, 7)}`,
+        message: automatedMessage ?? `chore: update main push info for commit ${hash.substring(0, 7)}`,
         content: Buffer.from(
             JSON.stringify(updatedData, null, 2)
         ).toString("base64"),
         sha,
         branch,
+        committer: {
+            name: "Zixi Main Push Notifier",
+            email: "41898282+github-actions[bot]@users.noreply.github.com"
+        }
     });
 
     return response.data.content?.sha;
