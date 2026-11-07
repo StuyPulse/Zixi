@@ -59,7 +59,9 @@ jobs:
         run: ./gradlew javadoc
 
       - name: Return to docs branch
-        run: git checkout docs
+        run: |
+          git reset --hard
+          git checkout docs
 
       - name: Install npm dependencies
         run: npm ci
