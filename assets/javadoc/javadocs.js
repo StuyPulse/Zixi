@@ -18,7 +18,7 @@
 /* 5. Flashing of line numbers and sections when scrolled in  */
 /* view                                                       */
 /**************************************************************/
-import { scrollToElementWithRespectToMotionPreference, isSourcePage, isClassDeclarationPage } from "./utils.js";
+import { scrollBehavior, isSourcePage, isClassDeclarationPage, getElementFromHash } from "./utils.js";
 import { getEffectiveTheme } from "./theme.js";
 
 let hljsCSSLink = null;
@@ -91,25 +91,17 @@ const goToLineNumberByHash = () => {
         }, { threshold: 1.0 })
 
         lineInViewObserver.observe(targetElement);
-        scrollToElementWithRespectToMotionPreference(targetElement, "center");
+        targetElement.scrollIntoView({ behavior: scrollBehavior(), block: "center" });
     }
 }
 
 const detectTargetElementInViewOnHashChange = () => {
     if (!isClassDeclarationPage()) return;
 
-    const targetElement = (() => {
-        try {
-            const rawHash = window.location.hash.slice(1);
-            const decodedHash = decodeURIComponent(rawHash);
-            return document.querySelector(`#${CSS.escape(decodedHash)}`);
-        } catch (error) {
-            return null;
-        }
-    })();
-    if (!targetElement || !targetElement.matches("section.detail")) {
-        return;
-    }
+    console.log("ducker");
+    const targetElement = getElementFromHash();
+    if (!targetElement || !targetElement.matches("section.detail")) return;
+    console.log("YEOW");
 
     if (animationEndEventListener) {
         const highlightDiv = document.querySelector(".line-highlight");
@@ -131,7 +123,7 @@ const detectTargetElementInViewOnHashChange = () => {
     targetElementInView = targetElement;
     sectionInViewObserver.observe(targetElement);
 
-    scrollToElementWithRespectToMotionPreference(targetElement, "center");
+    targetElement.scrollIntoView({ behavior: scrollBehavior(), block: "center" });
 }
 
 const syntaxHighlight = () => {
@@ -236,6 +228,33 @@ const createListeners = () => {
     window.addEventListener("hashchange", () => {
         goToLineNumberByHash();
         detectTargetElementInViewOnHashChange();
+    });
+
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", (e) => {
+            const href = anchor.getAttribute("href");
+
+            e.preventDefault();
+
+            if (window.location.hash !== href) {
+                history.pushState(null, "", href);
+            }
+
+            if (href === "#") {
+                window.scrollTo({ top: 0, behavior: scrollBehavior() });
+                return;
+            }
+
+            const element = getElementFromHash(href.slice(1));
+            if (!element) return;
+
+            if (!element.matches("section.detail")) {
+                element.scrollIntoView({ behavior: scrollBehavior(), block: "start" });
+                return;
+            }
+
+            detectTargetElementInViewOnHashChange();
+        });
     });
 }
 
