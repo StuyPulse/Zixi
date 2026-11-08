@@ -16,8 +16,8 @@ This is a robot template designed with the IO architecture and use by other team
 ## To Use
 
 - Click `Use this template` in GitHub and create your new repository using the `Zixi` template. 
-- Ensure that the `vendordeps` & `build.gradle`'s plugin versions are up-to-date in your new repository.
-- Change the project name in `build.gradle`'s file header to match your project.
+- Ensure that the `vendordeps` & `build.gradle.kts`'s plugin versions are up-to-date in your new repository.
+- Change the project name in `build.gradle.kts`'s file header to match your project.
 - Happy coding! 😀
 
 ## Features
