@@ -1,6 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { timingSafeEqual } from "node:crypto";
 
+import { Octokit } from "@octokit/rest";
+
 import { updateMainPush } from "../lib/update-main-push.js";
 
 const handler = async (req: VercelRequest, res: VercelResponse) => {
@@ -26,10 +28,25 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
         return res.status(401).json({ error: "Unauthorized" });
     }
 
+    const owner = "StuyPulse";
+    const repo = "Zixi";
+    const branch = "main";
+
+    const octokit = new Octokit();
+    const { data } = await octokit.rest.repos.listCommits({
+        owner,
+        repo,
+        sha: branch,
+        per_page: 1
+    });
+
+    const latestCommit = data[0];
+    const { sha, commit: { message } } = latestCommit;
+
     try {        
         await updateMainPush({
-            message: "Manual retrigger",
-            hash: "manual-retrigger",
+            message: message,
+            hash: sha,
             automatedMessage: "chore: manually retrigger javadoc generation"
         });
     } catch (error: any) {
