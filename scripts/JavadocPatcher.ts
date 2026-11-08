@@ -20,6 +20,14 @@ const assetsDirectory = path.join(
     "../assets"
 );
 
+const javadocAssetsDirectory = path.join(assetsDirectory, "javadoc");
+const sharedScriptsDirectory = path.join(javadocAssetsDirectory, "shared");
+
+const sharedScriptFiles = fs.readdirSync(sharedScriptsDirectory);
+
+const sourcePageScript = "source-page.js";
+const classDeclarationScript = "class-declaration.js";
+
 const getRelativePath = (filePath: string) => {
     return path.relative(projectDirectory, filePath);
 }
@@ -52,6 +60,21 @@ const log = (message: string, color: TextColor = "yellow") => {
     console.log(`${colorCode}${message}${RESET_ANSI}`);
 }
 
+const addModule = (filePath: string, relativeScriptPath: string) => {
+    const scriptPath = path.join(javadocDirectory, relativeScriptPath);
+    return `<script defer type="module" src="${getRelativePathBetweenFiles(filePath, scriptPath)}"></script>`;
+};
+
+const copyJavadocAssets = (relativePath: string) => {
+    const sourcePath = path.join(javadocAssetsDirectory, relativePath);
+    const destinationPath = path.join(javadocDirectory, relativePath);
+
+    fs.mkdirSync(path.dirname(destinationPath), { recursive: true });
+    fs.cpSync(sourcePath, destinationPath, { recursive: true });
+
+    log(`Copied javadoc/${relativePath}`);
+};
+
 const fileWalker = (directory: string) => {
     const files = fs.readdirSync(directory, { withFileTypes: true });
 
@@ -71,24 +94,33 @@ const fileWalker = (directory: string) => {
 const htmlPatcher = (filePath: string) => {
     const text = fs.readFileSync(filePath, "utf-8");
 
-    const javadocsFile = path.join(javadocDirectory, "javadocs.js");
-    const svgsFile = path.join(javadocDirectory, "svgs.js");
-    const utilsFile = path.join(javadocDirectory, "utils.js");
-    const themeFile = path.join(javadocDirectory, "theme.js");
-
     const faviconFile = path.join(javadocDirectory, "favicon.svg");
 
     const inlineThemeScript = `<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script>`
     const stylesheetFile = path.join(javadocDirectory, "betterjdocs.css");
 
-    const replacement =
+    let replacement =
         inlineThemeScript +
         `<link rel="stylesheet" href="${getRelativePathBetweenFiles(filePath, stylesheetFile)}">` +
-        `<script defer type="module" src="${getRelativePathBetweenFiles(filePath, javadocsFile)}"></script>` +
-        `<script defer type="module" src="${getRelativePathBetweenFiles(filePath, svgsFile)}"></script>` +
-        `<script defer type="module" src="${getRelativePathBetweenFiles(filePath, utilsFile)}"></script>` +
-        `<script defer type="module" src="${getRelativePathBetweenFiles(filePath, themeFile)}"></script>` +
-        `<link rel="icon" href="${getRelativePathBetweenFiles(filePath, faviconFile)}?t=${Date.now()}" type="image/x-icon"></head>`;
+        `<link rel="icon" href="${getRelativePathBetweenFiles(filePath, faviconFile)}?t=${Date.now()}" type="image/x-icon">`;
+
+    for (const scriptFile of sharedScriptFiles) {
+        replacement += addModule(filePath, path.join("shared", scriptFile));
+    }
+
+    const relativePath = path.relative(javadocDirectory, filePath);
+    const isSourcePage = relativePath.split(path.sep).includes("src-html");
+    const isClassDeclarationPage = /<body\b[^>]*\bclass=["'][^"']*\bclass-declaration-page\b[^"']*["']/i.test(text);
+    
+    if (isSourcePage) {
+        replacement += addModule(filePath, path.join("pages", sourcePageScript));
+    }
+
+    if (isClassDeclarationPage) {
+        replacement += addModule(filePath, path.join("pages", classDeclarationScript));
+    }
+
+    replacement += "</head>";
 
     const newText = text.replace(
         "</head>",
@@ -107,10 +139,6 @@ const htmlPatcher = (filePath: string) => {
 const javadocAssets = [
     "javadoc/betterjdocs.css",
     "javadoc/favicon.svg",
-    "javadoc/javadocs.js",
-    "javadoc/svgs.js",
-    "javadoc/utils.js",
-    "javadoc/theme.js",
     "logos/StuyPulseLogo.png"
 ]
 const addJavadocAssets = () => {
@@ -128,8 +156,10 @@ const checkpointFile = path.join(javadocDirectory, ".patched");
 if (fs.existsSync(checkpointFile)) {
     log("Javadoc already patched, skipping patcher", "green"); 
 } else {
-    fileWalker(javadocDirectory);
+    copyJavadocAssets("shared");
+    copyJavadocAssets("pages");
     addJavadocAssets();
+    fileWalker(javadocDirectory);
 
     log("Patcher complete", "green");
     fs.writeFileSync(checkpointFile, "done", "utf-8");

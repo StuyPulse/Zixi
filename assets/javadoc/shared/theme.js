@@ -3,6 +3,8 @@ import { isSourcePage } from "./utils.js";
 
 let themeState = null;
 
+const themeChangeCallbacks = [];
+
 const themes = ["system", "dark", "light"];
 const themeContainer = (() => {
     if (isSourcePage()) return null;
@@ -168,6 +170,7 @@ const setTheme = (theme) => {
         toggleMenuAccessibility(isExpanded);
     }
 
+    themeChangeCallbacks.forEach((callback) => callback(themeState, getEffectiveTheme()));
     localStorage.setItem("theme", themeState);
     document.documentElement.setAttribute("data-theme", theme);
 }
@@ -183,6 +186,10 @@ const setTheme = (theme) => {
     toggleMenuAccessibility(false);
 })();
 
+const onThemeChange = (callback) => {
+    themeChangeCallbacks.push(callback);
+}
+
 const getTheme = () => {
     return themeState;
 }
@@ -195,4 +202,4 @@ const getEffectiveTheme = () => {
     return themeState;
 }
 
-export { getTheme, getEffectiveTheme };
+export { getTheme, getEffectiveTheme, onThemeChange };

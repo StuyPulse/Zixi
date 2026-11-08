@@ -17,11 +17,28 @@ const getElementFromHash = (hash = null) => {
         }
         if (!hash) return null;
 
-        const decodedHash = decodeURIComponent(hash);
-        return document.getElementById(decodedHash);
+        return document.querySelector(getSafeHashSelector(`#${hash}`));
     } catch {
         return null;
     }
+}
+
+const getSafeHashSelector = (hash = window.location.hash) => {
+    if (!hash) return null;
+
+    let id = hash.slice(1);
+
+    try {
+        id = decodeURIComponent(id);
+    } catch {
+        return null;
+    }
+
+    id = `${CSS.escape(id)}`;
+    if (!id.startsWith("#")) {
+        id = `#${id}`;
+    }
+    return id;
 };
 
-export { scrollBehavior, isSourcePage, isClassDeclarationPage, getElementFromHash };
+export { scrollBehavior, isSourcePage, isClassDeclarationPage, getElementFromHash, getSafeHashSelector };
