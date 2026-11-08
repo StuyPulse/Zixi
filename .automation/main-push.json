@@ -1,5 +1,7 @@
 {
   "message": "fix: photon io construction",
   "hash": "192eb61b84495ff2ab2dc2bd5ce6ec3c1a92d78b",
-  "updatedAt": "2026-11-08T12:46:14.868Z"
+  "commitTimestamp": "2026-11-07T00:02:53Z",
+  "triggerTimestamp": "2026-11-08T13:21:49.534Z",
+  "manuallyTriggered": true
 }
