@@ -1,15 +1,16 @@
 import { getSvgFromName } from "./svgs.js";
 import { isSourcePage } from "./utils.js";
 
-let themeState = null;
+let themeState: Theme = "system";
 
-const themeChangeCallbacks = [];
+const themeChangeCallbacks: Array<ThemeChangeCallback> = [];
 
-const themes = ["system", "dark", "light"];
+const themes: Theme[] = ["system", "dark", "light"];
 const themeContainer = (() => {
     if (isSourcePage()) return null;
 
-    const topNavbar = document.querySelector("#navbar-top");
+    const topNavbar = document.querySelector<HTMLElement>("#navbar-top");
+    if (!topNavbar) return null;
     
     const themeToggleWrapper = document.createElement("div");
     themeToggleWrapper.setAttribute("role", "menu");
@@ -38,9 +39,9 @@ const themeContainer = (() => {
         themeToggleWrapper.appendChild(button);
     });
 
-    themeToggleWrapper.addEventListener("keydown", (event) => {
-        const buttons = Array.from(themeToggleWrapper.querySelectorAll(".theme-button"));
-        const currentIndex = buttons.indexOf(document.activeElement);
+    themeToggleWrapper.addEventListener("keydown", (event: KeyboardEvent) => {
+        const buttons = Array.from(themeToggleWrapper.querySelectorAll<HTMLButtonElement>(".theme-button"));
+        const currentIndex = buttons.indexOf(document.activeElement as HTMLButtonElement);
 
         if (currentIndex === -1) return;
 
@@ -54,7 +55,7 @@ const themeContainer = (() => {
         } else if (event.key === "Escape") {
             event.preventDefault();
             closeMenu();
-            const activeButton = themeToggleWrapper.querySelector(".theme-button.is-active");
+            const activeButton = themeToggleWrapper.querySelector<HTMLButtonElement>(".theme-button.is-active");
             if (activeButton) {
                 activeButton.focus();
             }
@@ -82,13 +83,13 @@ const themeContainer = (() => {
     themeToggleWrapper.addEventListener("mouseleave", closeMenu);
 
     themeToggleWrapper.addEventListener("focusin", () => {
-        if (!document.activeElement.matches(":focus-visible")) return;
+        if (!(document.activeElement as HTMLElement).matches(":focus-visible")) return;
 
         openMenu();
     });
 
-    themeToggleWrapper.addEventListener("focusout", (event) => {
-        if (!themeToggleWrapper.contains(event.relatedTarget)) {
+    themeToggleWrapper.addEventListener("focusout", (event: FocusEvent) => {
+        if (!themeToggleWrapper.contains(event.relatedTarget as Node)) {
             closeMenu();
         }
     });
@@ -96,10 +97,10 @@ const themeContainer = (() => {
     return themeToggleWrapper;
 })();
 
-const toggleMenuAccessibility = (isOpen) => {
+const toggleMenuAccessibility = (isOpen: boolean) => {
     if (!themeContainer) return;
 
-    const buttons = themeContainer.querySelectorAll(".theme-button");
+    const buttons = themeContainer.querySelectorAll<HTMLButtonElement>(".theme-button");
     buttons.forEach((button) => {
         const isActive = button.classList.contains("is-active");
 
@@ -135,13 +136,13 @@ const toggleMenuAccessibility = (isOpen) => {
     });
 };
 
-const handleThemeChangeEvent = (event) => {
+const handleThemeChangeEvent = (event: MediaQueryListEvent) => {
     if (themeState === "system") {
         setTheme("system");
     }
 }
 
-const setTheme = (theme) => {
+const setTheme = (theme: Theme) => {
     if (!themes.includes(theme)) {
         console.warn(`Invalid theme: ${theme}. Valid themes are: ${themes.join(", ")}`);
         return;
@@ -177,16 +178,16 @@ const setTheme = (theme) => {
 
 (() => {
     let storedTheme = localStorage.getItem("theme");
-    if (!storedTheme) {
+    if (!storedTheme || !themes.includes(storedTheme as Theme)) {
         storedTheme = "system";
         localStorage.setItem("theme", storedTheme);
     }
 
-    setTheme(storedTheme);
+    setTheme(storedTheme as Theme);
     toggleMenuAccessibility(false);
 })();
 
-const onThemeChange = (callback) => {
+const onThemeChange = (callback: ThemeChangeCallback) => {
     themeChangeCallbacks.push(callback);
 }
 
@@ -202,4 +203,9 @@ const getEffectiveTheme = () => {
     return themeState;
 }
 
+type EffectiveTheme = "dark" | "light";
+type Theme = "system" | EffectiveTheme;
+type ThemeChangeCallback = (theme: Theme, effectiveTheme: EffectiveTheme) => void
+
 export { getTheme, getEffectiveTheme, onThemeChange };
+export type { Theme, EffectiveTheme };

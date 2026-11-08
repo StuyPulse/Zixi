@@ -1,7 +1,6 @@
-
 import { scrollBehavior, getElementFromHash } from "./utils.js";
 
-const hashNavigationCallbacks = [];
+const hashNavigationCallbacks: HashNavigationCallback[] = [];
 
 const handleHashNavigation = () => {
     const hash = window.location.hash;
@@ -31,7 +30,7 @@ const initializeHashNavigation = () => {
             event.preventDefault();
 
             if (window.location.hash !== href) {
-                history.pushState(null, null, href);
+                history.pushState(null, "", href);
             }
 
             handleHashNavigation();
@@ -41,10 +40,13 @@ const initializeHashNavigation = () => {
     window.addEventListener("hashchange", handleHashNavigation);
 };
 
-const onHashNavigate = (callback) => {
+const onHashNavigate = (callback: HashNavigationCallback) => {
     hashNavigationCallbacks.push(callback);
 };
 
 initializeHashNavigation();
 
+type HashNavigationCallback = (element: HTMLElement) => boolean;
+
 export { onHashNavigate };
+export type { HashNavigationCallback };

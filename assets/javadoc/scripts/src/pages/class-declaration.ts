@@ -1,7 +1,7 @@
 import { scrollBehavior, getSafeHashSelector } from "../shared/utils.js";
 import { onHashNavigate } from "../shared/hash-navigation.js";
 
-let targetElementInView = null;
+let targetElementInView: Element | null = null;
 
 const sectionInViewObserver = new IntersectionObserver((entries) => {
     for (const entry of entries) {
@@ -12,7 +12,8 @@ const sectionInViewObserver = new IntersectionObserver((entries) => {
         entry.target.classList.add("flash");
         sectionInViewObserver.unobserve(entry.target);
 
-        const handleAnimationEnd = (animationEvent) => {
+        const handleAnimationEnd: EventListener = (event) => {
+            const animationEvent = event as AnimationEvent;
             if (animationEvent.animationName !== "flashBorder") return;
 
             entry.target.classList.remove("flash");
@@ -25,7 +26,7 @@ const sectionInViewObserver = new IntersectionObserver((entries) => {
     }
 }, { threshold: 0.99 });
 
-const handleSectionNavigation = (targetElement) => {
+const handleSectionNavigation = (targetElement: Element) => {
     if (!targetElement.matches("section.detail")) return false;
 
     if (targetElementInView) {
@@ -44,7 +45,10 @@ const handleSectionNavigation = (targetElement) => {
 
 onHashNavigate(handleSectionNavigation);
 
-const initialTarget = document.querySelector(getSafeHashSelector());
+const initialSelector = getSafeHashSelector();
+const initialTarget = initialSelector
+    ? document.querySelector(initialSelector)
+    : null;
 
 if (initialTarget) {
     handleSectionNavigation(initialTarget);

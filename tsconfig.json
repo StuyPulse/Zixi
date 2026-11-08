@@ -10,5 +10,9 @@
     "types": ["node"],
     "noEmit": true
   },
-  "include": ["api/**/*.ts", "scripts/**/*.ts"]
+  "include": ["api/**/*.ts", "scripts/**/*.ts"],
+  "exclude": [
+    "node_modules",
+    "assets/javadoc/scripts/**/*"
+  ]
 }

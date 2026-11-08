@@ -21,9 +21,9 @@ const assetsDirectory = path.join(
 );
 
 const javadocAssetsDirectory = path.join(assetsDirectory, "javadoc");
-const sharedScriptsDirectory = path.join(javadocAssetsDirectory, "shared");
-
-const sharedScriptFiles = fs.readdirSync(sharedScriptsDirectory);
+const scriptsDirectory = path.join(javadocAssetsDirectory, "scripts");
+const distDirectory = path.join(scriptsDirectory, "dist");
+const sharedScriptsDistDirectory = path.join(distDirectory, "shared");
 
 const sourcePageScript = "source-page.js";
 const classDeclarationScript = "class-declaration.js";
@@ -63,17 +63,17 @@ const log = (message: string, color: TextColor = "yellow") => {
 const addModule = (filePath: string, relativeScriptPath: string) => {
     const scriptPath = path.join(javadocDirectory, relativeScriptPath);
     return `<script defer type="module" src="${getRelativePathBetweenFiles(filePath, scriptPath)}"></script>`;
-};
+}
 
-const copyJavadocAssets = (relativePath: string) => {
-    const sourcePath = path.join(javadocAssetsDirectory, relativePath);
-    const destinationPath = path.join(javadocDirectory, relativePath);
+const moveCompiledDistToJavadoc = () => {
+    if (!fs.existsSync(distDirectory)) {
+        log("Frontend Typescript distribution not found", "red");
+        return;
+    }
 
-    fs.mkdirSync(path.dirname(destinationPath), { recursive: true });
-    fs.cpSync(sourcePath, destinationPath, { recursive: true });
-
-    log(`Copied javadoc/${relativePath}`);
-};
+    fs.cpSync(distDirectory, javadocDirectory, { recursive: true });
+    log("dist successfully moved to javadoc", "green");
+}
 
 const fileWalker = (directory: string) => {
     const files = fs.readdirSync(directory, { withFileTypes: true });
@@ -104,8 +104,13 @@ const htmlPatcher = (filePath: string) => {
         `<link rel="stylesheet" href="${getRelativePathBetweenFiles(filePath, stylesheetFile)}">` +
         `<link rel="icon" href="${getRelativePathBetweenFiles(filePath, faviconFile)}?t=${Date.now()}" type="image/x-icon">`;
 
-    for (const scriptFile of sharedScriptFiles) {
-        replacement += addModule(filePath, path.join("shared", scriptFile));
+    if (fs.existsSync(sharedScriptsDistDirectory)) {
+        const sharedScriptFiles = fs.readdirSync(sharedScriptsDistDirectory);
+        for (const scriptFile of sharedScriptFiles) {
+            if (scriptFile.endsWith(".js")) {
+                replacement += addModule(filePath, path.join("shared", scriptFile));
+            }
+        }
     }
 
     const relativePath = path.relative(javadocDirectory, filePath);
@@ -156,8 +161,7 @@ const checkpointFile = path.join(javadocDirectory, ".patched");
 if (fs.existsSync(checkpointFile)) {
     log("Javadoc already patched, skipping patcher", "green"); 
 } else {
-    copyJavadocAssets("shared");
-    copyJavadocAssets("pages");
+    moveCompiledDistToJavadoc();
     addJavadocAssets();
     fileWalker(javadocDirectory);
 

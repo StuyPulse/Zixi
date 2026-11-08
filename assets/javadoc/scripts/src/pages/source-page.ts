@@ -2,9 +2,7 @@ import { highlightCode } from "../shared/syntax-highlighting.js";
 import { scrollBehavior, getSafeHashSelector } from "../shared/utils.js";
 import { onHashNavigate } from "../shared/hash-navigation.js";
 
-let animationEndEventListener = null;
-
-const goToLineNumberByHash = (targetElement) => {
+const goToLineNumberByHash = (targetElement: Element) => {
     const lineHashRegex = /^#line-\d+$/;
 
     const hash = window.location.hash;
@@ -27,13 +25,15 @@ const goToLineNumberByHash = (targetElement) => {
                     highlightDiv.style.setProperty("transform", `translateY(${translateY}em)`);
                     highlightDiv.classList.add("flash");
 
-                    const handleAnimationEnd = (animationEvent) => {
+                    const handleAnimationEnd: EventListener = (event: Event) => {
+                        const animationEvent = event as AnimationEvent;
                         if (animationEvent.animationName !== "flashLine") return;
 
                         highlightDiv.classList.remove("flash");
+
+                        highlightDiv.removeEventListener("animationend", handleAnimationEnd);
                     }
-                    highlightDiv.addEventListener("animationend", handleAnimationEnd, { once: true });
-                    animationEndEventListener = handleAnimationEnd;
+                    highlightDiv.addEventListener("animationend", handleAnimationEnd);
 
                     lineInViewObserver.disconnect();
                 }
@@ -48,6 +48,9 @@ const goToLineNumberByHash = (targetElement) => {
 }
 
 const pre = document.querySelector(".source-container > pre");
+if (!pre) {
+    throw new Error("Source code element was not found.");
+}
 const lines = pre.querySelectorAll(":scope > [id*=\"line-\"]");
 const source = Array.from(lines).map(line => line.textContent).join("\n");
 const lineNumbers = Array.from(lines).map((_, i) => `<span id="line-${i + 1}">${i + 1}</span>`).join("\n");
@@ -64,7 +67,10 @@ pre.outerHTML =
 </div>
 `
 
-const codeBlock = document.querySelector(".code-wrapper > pre > code");
+const codeBlock = document.querySelector<HTMLElement>(".code-wrapper > pre > code");
+if (!codeBlock) {
+    throw new Error("Code block element was not found.");
+}
 codeBlock.textContent = source;
 highlightCode(codeBlock);
 
@@ -73,13 +79,17 @@ highlightDiv.setAttribute("class", "line-highlight");
 onHashNavigate(goToLineNumberByHash);
 
 const applySyntaxHighlighting = async () => {
-    const codeBlock = document.querySelector(".code-wrapper > pre > code");
+    const codeBlock = document.querySelector<HTMLElement>(".code-wrapper > pre > code");
+    if (!codeBlock) {
+        throw new Error("Code block element was not found.");
+    }
     codeBlock.textContent = source;
 
     await highlightCode(codeBlock);
     codeBlock.appendChild(highlightDiv);
 
-    const initialTarget = document.querySelector(getSafeHashSelector());
+    const selector = getSafeHashSelector();
+    const initialTarget = selector ? document.querySelector(selector) : null;
 
     if (initialTarget) {
         goToLineNumberByHash(initialTarget);
@@ -88,7 +98,10 @@ const applySyntaxHighlighting = async () => {
 
 applySyntaxHighlighting();
 
-const backButton = document.querySelector(".back-button");
+const backButton = document.querySelector<HTMLButtonElement>(".back-button");
+if (!backButton) {
+    throw new Error("Back button element was not found.");
+}
 backButton.addEventListener("click", () => {
     const currentURL = new URL(window.location.href);
     currentURL.pathname = currentURL.pathname.replace("/src-html", "");

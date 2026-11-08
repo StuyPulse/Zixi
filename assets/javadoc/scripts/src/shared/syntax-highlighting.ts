@@ -1,9 +1,16 @@
-import { getEffectiveTheme, onThemeChange } from "./theme.js";
+import { getEffectiveTheme, onThemeChange, type EffectiveTheme } from "./theme.js";
+import type { HLJSApi } from "highlight.js";
 
-let hljsPromise = null;
-let hljsCSS = null;
+declare global {
+    interface Window {
+        hljs: HLJSApi;
+    }
+}
 
-const setCSS = (effectiveTheme) => {
+let hljsPromise: Promise<HLJSApi> | null = null;
+let hljsCSS: HTMLLinkElement | null = null;
+
+const setCSS = (effectiveTheme: EffectiveTheme) => {
     const theme = effectiveTheme === "light" ? "github" : "github-dark";
     if (!hljsCSS) {
         const link = document.createElement("link");
@@ -36,16 +43,16 @@ const loadHighlightJS = () => {
     return hljsPromise;
 };
 
-const highlightCode = async (element) => {
+const highlightCode = async (element: HTMLElement) => {
     const hljs = await loadHighlightJS();
 
     hljs.highlightElement(element);
 };
 
-const highlightAll = async (selector = "pre code") => {
+const highlightAll = async (selector: string = "pre code") => {
     const hljs = await loadHighlightJS();
-
-    document.querySelectorAll(selector).forEach(element => {
+    
+    document.querySelectorAll<HTMLElement>(selector).forEach(element => {
         hljs.highlightElement(element);
     });
 };

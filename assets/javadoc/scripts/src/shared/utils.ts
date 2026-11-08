@@ -10,20 +10,21 @@ const isClassDeclarationPage = () => {
     return document.querySelector("body.class-declaration-page") !== null;
 }
 
-const getElementFromHash = (hash = null) => {
+const getElementFromHash = (hash?: string | null) => {
     try {
         if (!hash) {
             hash = window.location.hash.slice(1);
         }
         if (!hash) return null;
 
-        return document.querySelector(getSafeHashSelector(`#${hash}`));
+        const selector = getSafeHashSelector(`#${hash}`);
+        return selector ? document.querySelector(selector) as HTMLElement : null;
     } catch {
         return null;
     }
 }
 
-const getSafeHashSelector = (hash = window.location.hash) => {
+const getSafeHashSelector = (hash: string = window.location.hash) => {
     if (!hash) return null;
 
     let id = hash.slice(1);

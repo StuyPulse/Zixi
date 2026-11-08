@@ -4,7 +4,8 @@
   "description": "Generates documentation for the Zixi IO-style robot template without adding any extra functionality to main.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "patch": "tsx scripts/JavadocPatcher.ts"
+    "build-frontend": "tsc --project assets/javadoc/scripts/tsconfig.json",
+    "patch": "npm run build-frontend && tsx scripts/JavadocPatcher.ts"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@types/node": "^26.6.6",
     "@vercel/node": "^29.0.1",
+    "highlight.js": "^11.12.0",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   },

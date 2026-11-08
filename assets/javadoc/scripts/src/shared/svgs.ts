@@ -1,4 +1,4 @@
-const constructSvgRoot = () => {
+const constructSvgRoot = (): SVGSVGElement => {
     const svgRoot = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svgRoot.setAttribute("viewBox", "0 0 24 24");
     svgRoot.setAttribute("width", "24");
@@ -8,7 +8,7 @@ const constructSvgRoot = () => {
     return svgRoot;
 }
 
-const getSystemThemeIcon = () => {
+const getSystemThemeIcon = (): SVGSVGElement => {
     const systemThemeIcon = constructSvgRoot();
     systemThemeIcon.innerHTML = `
         <rect width="20" height="14" x="2" y="3" rx="2"/>
@@ -19,7 +19,7 @@ const getSystemThemeIcon = () => {
     return systemThemeIcon;
 }
 
-const getDarkThemeIcon = () => {
+const getDarkThemeIcon = (): SVGSVGElement => {
     const darkThemeIcon = constructSvgRoot();
     darkThemeIcon.innerHTML = `
         <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
@@ -28,7 +28,7 @@ const getDarkThemeIcon = () => {
     return darkThemeIcon;
 }
 
-const getLightThemeIcon = () => {
+const getLightThemeIcon = (): SVGSVGElement => {
     const lightThemeIcon = constructSvgRoot();
     lightThemeIcon.innerHTML = `
         <circle cx="12" cy="12" r="4"/>
@@ -45,17 +45,22 @@ const getLightThemeIcon = () => {
     return lightThemeIcon;
 }
 
-const getSvgFromName = (name) => {
-    switch (name) {
-        case "system":
-            return getSystemThemeIcon();
-        case "dark":
-            return getDarkThemeIcon();
-        case "light":
-            return getLightThemeIcon();
-        default:
-            throw new Error(`Unknown theme name: ${name}`);
+const getSvgFromName = (name: SVGName): SVGSVGElement => {
+    const svg = themeIcons[name];
+    if (!svg) {
+        throw new Error(`Unknown theme name: ${name}`);
     }
+
+    return svg();
 }
 
+const themeIcons = {
+    system: getSystemThemeIcon,
+    dark: getDarkThemeIcon,
+    light: getLightThemeIcon,
+}
+
+type SVGName = keyof typeof themeIcons;
+
 export { getSystemThemeIcon, getDarkThemeIcon, getLightThemeIcon, getSvgFromName };
+export type { SVGName };
