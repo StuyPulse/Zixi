@@ -2,8 +2,8 @@
 <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Tiny5+Duo&size=48&duration=2500&pause=1000&color=F7F7F7&background=FF0000&center=true&vCenter=true&width=870&height=150&lines=Zixi;A+StuyPulse+Template;Dedicated+to+Zixi+Qiao" alt="Typing SVG" /></a></a>
 </div>
 <div align="center">
-<a href="https://github.com/StuyPulse/Zixi/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-750014?style=for-the-badge&logo=markdown"></a>
-<a><img src="https://img.shields.io/github/actions/workflow/status/StuyPulse/StuyPlus-2026/gradle.yml?style=for-the-badge&label=Build"></a>
+<a href="https://github.com/StuyPulse/Zixi/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-750014?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPgogIDxwYXRoIGQ9Ik0xMSAyaDJ2MTZoNHYySDd2LTJoNFYyem0tOCA1aDE4djJIM1Y3em0xIDVoNHYySDR2LTJ6bTEyIDBoNHYyaC00di0yeiIvPgo8L3N2Zz4="></a>
+<a><img src="https://img.shields.io/github/actions/workflow/status/StuyPulse/Zixi/build.yml?style=for-the-badge&label=Build"></a>
 <!-- <br> -->
 <a href="https://github.com/StuyPulse/Zixi/tree/main/src/main/java/com/stuypulse/robot"><img src="https://img.shields.io/badge/Java-25-ED8B00?style=for-the-badge&logo=openjdk"></a>
 <a href="https://github.com/wpilibsuite/allwpilib"><img src="https://img.shields.io/badge/WPILib-Alpha_8-aa182c?style=for-the-badge&logo=first&labelColor=4d4e4e"></a>
