@@ -1,7 +1,7 @@
 {
-  "message": "docs: fix build badge reference and update license badge to balance icon (#36)",
-  "hash": "3a7cdcb6dffe1dbd3d21bcd956992f7952987bed",
-  "commitTimestamp": "2026-11-08T17:36:39-05:00",
-  "triggerTimestamp": "2026-11-08T22:36:43.137Z",
+  "message": "docs: fix build.gradle reference to build.gradle.kts in usage instructions",
+  "hash": "c49dc293a250079217cc6ff4f5743db6e3e5bd9c",
+  "commitTimestamp": "2026-11-08T17:45:23-05:00",
+  "triggerTimestamp": "2026-11-08T22:45:31.030Z",
   "manuallyTriggered": false
 }
