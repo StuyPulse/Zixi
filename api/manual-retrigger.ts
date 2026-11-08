@@ -40,14 +40,28 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
         per_page: 1
     });
 
+    if (!data || data.length < 1) {
+        return res.status(500).json({ error: "No commits found" });
+    }
     const latestCommit = data[0];
-    const { sha, commit: { message } } = latestCommit;
+
+    const { 
+        sha, 
+        commit: { 
+            message,
+            committer
+        } 
+    } = latestCommit;
+
+    const date = committer?.date;
 
     try {        
         await updateMainPush({
             message: message,
             hash: sha,
-            automatedMessage: "chore: manually retrigger javadoc generation"
+            commitTimestamp: date ?? null,
+            automatedMessage: "chore: manually retrigger javadoc generation",
+            manuallyTriggered: true
         });
     } catch (error: any) {
         return res.status(500).json({ error: error.message });

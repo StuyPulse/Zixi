@@ -43,20 +43,31 @@ jobs:
               message += "...";
             }
 
-            const timestamp = new Date(metadata.updatedAt).toLocaleString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-              hour: "numeric",
-              minute: "2-digit",
-              hour12: true,
-              timeZone: "America/New_York"
-            });
+            const formatTimestamp = (timestamp) => {
+              if (!timestamp || timestamp === "unknown") {
+                return "unknown";
+              }
+
+              return new Date(timestamp).toLocaleString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true,
+                timeZone: "America/New_York"
+              });
+            }
+
+            const commitTimestamp = formatTimestamp(metadata.commitTimestamp);
+            const triggerTimestamp = formatTimestamp(metadata.triggerTimestamp);
 
             const formatted = [
               `For commit ${shortHash}`,
               `Message: ${message}`,
-              `Timestamp: ${timestamp}`
+              `Commit timestamp: ${commitTimestamp}`,
+              `Trigger timestamp: ${triggerTimestamp}`,
+              `Trigger type: ${metadata.manuallyTriggered ? "Manually triggered" : "Push to main"}`
             ].join("\n");
 
             core.setOutput("push_metadata", formatted);

@@ -3,16 +3,20 @@ import { Octokit } from "@octokit/rest";
 interface MainPushData {
     message: string;
     hash: string;
-    updatedAt: string;
+    commitTimestamp: string;
+    triggerTimestamp: string;
+    manuallyTriggered?: boolean;
 }
 
 interface UpdateMainPushOptions {
     message: string;
     hash: string;
+    commitTimestamp: string | null;
     automatedMessage?: string;
+    manuallyTriggered?: boolean;
 }
 
-const updateMainPush = async ({ message, hash, automatedMessage }: UpdateMainPushOptions) => {
+const updateMainPush = async ({ message, hash, commitTimestamp, automatedMessage, manuallyTriggered }: UpdateMainPushOptions) => {
     const octokit = new Octokit({
         auth: process.env.GITHUB_TOKEN,
     });
@@ -42,7 +46,9 @@ const updateMainPush = async ({ message, hash, automatedMessage }: UpdateMainPus
     const updatedData: MainPushData = {
         message,
         hash,
-        updatedAt: new Date().toISOString(),
+        commitTimestamp: commitTimestamp ?? "unknown",
+        triggerTimestamp: new Date().toISOString(),
+        manuallyTriggered: manuallyTriggered ?? false,
     };
 
     const response = await octokit.repos.createOrUpdateFileContents({

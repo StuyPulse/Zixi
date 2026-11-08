@@ -80,11 +80,12 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
         const response = await updateMainPush({
             message: headCommit.message,
             hash: headCommit.id,
+            commitTimestamp: headCommit.timestamp ?? null,
+            manuallyTriggered: false,
         });
 
         return res.status(200).json({ success: true, sha: response });
     } catch (error: any) {
-        console.error('Failed to commit to docs branch:', error.message);
         return res.status(500).json({ error: error.message });
     }
 }
