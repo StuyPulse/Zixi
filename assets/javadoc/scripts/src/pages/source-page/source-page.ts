@@ -1,6 +1,6 @@
-import { highlightCode } from "../shared/syntax-highlighting.js";
-import { scrollBehavior, getSafeHashSelector } from "../shared/utils.js";
-import { onHashNavigate } from "../shared/hash-navigation.js";
+import { highlightCode } from "../../shared/syntax-highlighting.js";
+import { scrollBehavior, getSafeHashSelector } from "../../shared/utils.js";
+import { onHashNavigate } from "../../shared/hash-navigation.js";
 
 const goToLineNumberByHash = (targetElement: Element) => {
     const lineHashRegex = /^#line-\d+$/;

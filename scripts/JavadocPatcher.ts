@@ -25,8 +25,20 @@ const scriptsDirectory = path.join(javadocAssetsDirectory, "scripts");
 const distDirectory = path.join(scriptsDirectory, "dist");
 const sharedScriptsDistDirectory = path.join(distDirectory, "shared");
 
-const sourcePageScript = "source-page.js";
-const classDeclarationScript = "class-declaration.js";
+const pagesDistDirectory = path.join(distDirectory, "pages");
+
+const pageTypes = [
+    {
+        name: "source-page",
+        matches: (relativePath: string) =>
+            relativePath.split(path.sep).includes("src-html")
+    },
+    {
+        name: "class-declaration",
+        matches: (relativePath: string, text: string) =>
+            /<body\b[^>]*\bclass=["'][^"']*\bclass-declaration-page\b[^"']*["']/i.test(text)
+    }
+];
 
 const getRelativePath = (filePath: string) => {
     return path.relative(projectDirectory, filePath);
@@ -63,6 +75,19 @@ const log = (message: string, color: TextColor = "yellow") => {
 const addModule = (filePath: string, relativeScriptPath: string) => {
     const scriptPath = path.join(javadocDirectory, relativeScriptPath);
     return `<script defer type="module" src="${getRelativePathBetweenFiles(filePath, scriptPath)}"></script>`;
+}
+
+const addPageModule = (filePath: string, pageName: string) => {
+    const pageDirectory = path.join(pagesDistDirectory, pageName);
+
+    return fs.readdirSync(pageDirectory, { recursive: true, withFileTypes: true })
+        .filter((file) => file.isFile() && file.name.endsWith(".js"))
+        .map((file) => {
+            const scriptPath = path.join(file.parentPath, file.name);
+
+            return addModule(filePath, path.relative(distDirectory, scriptPath));
+        })
+        .join("");
 }
 
 const moveCompiledDistToJavadoc = () => {
@@ -114,15 +139,11 @@ const htmlPatcher = (filePath: string) => {
     }
 
     const relativePath = path.relative(javadocDirectory, filePath);
-    const isSourcePage = relativePath.split(path.sep).includes("src-html");
-    const isClassDeclarationPage = /<body\b[^>]*\bclass=["'][^"']*\bclass-declaration-page\b[^"']*["']/i.test(text);
-    
-    if (isSourcePage) {
-        replacement += addModule(filePath, path.join("pages", sourcePageScript));
-    }
 
-    if (isClassDeclarationPage) {
-        replacement += addModule(filePath, path.join("pages", classDeclarationScript));
+    for (const pageType of pageTypes) {
+        if (pageType.matches(relativePath, text)) {
+            replacement += addPageModule(filePath, pageType.name);
+        }
     }
 
     replacement += "</head>";

@@ -1,5 +1,5 @@
-import { scrollBehavior, getSafeHashSelector } from "../shared/utils.js";
-import { onHashNavigate } from "../shared/hash-navigation.js";
+import { scrollBehavior, getSafeHashSelector } from "../../shared/utils.js";
+import { onHashNavigate } from "../../shared/hash-navigation.js";
 
 let targetElementInView: Element | null = null;
 
