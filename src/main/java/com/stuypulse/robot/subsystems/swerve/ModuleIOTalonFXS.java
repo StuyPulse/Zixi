@@ -4,8 +4,6 @@
 /**************************************************************/
 package com.stuypulse.robot.subsystems.swerve;
 
-import static org.wpilib.units.Units.Rotations;
-
 import org.wpilib.math.filter.Debouncer;
 import org.wpilib.math.geometry.Rotation2d;
 import org.wpilib.math.util.Units;
@@ -209,10 +207,10 @@ public class ModuleIOTalonFXS implements ModuleIO {
 
         // Update drive inputs
         inputs.driveConnected = driveConnectedDebounce.calculate(driveStatus.isOK());
-        inputs.drivePosition = drivePosition.getValue();
-        inputs.driveVelocity = driveVelocity.getValue();
-        inputs.driveAppliedVolts = driveAppliedVolts.getValue();
-        inputs.driveCurrentAmps = driveCurrent.getValue();
+        inputs.drivePositionRad = Units.rotationsToRadians(drivePosition.getValueAsDouble());
+        inputs.driveVelocityRadPerSec = Units.rotationsToRadians(driveVelocity.getValueAsDouble());
+        inputs.driveAppliedVolts = driveAppliedVolts.getValueAsDouble();
+        inputs.driveCurrentAmps = driveCurrent.getValueAsDouble();
 
         // Update turn inputs
         inputs.turnConnected = turnConnectedDebounce.calculate(turnStatus.isOK());
@@ -228,10 +226,10 @@ public class ModuleIOTalonFXS implements ModuleIO {
         // Update odometry inputs
         inputs.odometryTimestamps =
                 timestampQueue.stream().mapToDouble((Double value) -> value).toArray();
-        inputs.odometryDrivePositions =
+        inputs.odometryDrivePositionsRad =
                 drivePositionQueue.stream()
-                        .map((Double value) -> Rotations.of(value))
-                        .toArray(Angle[]::new);
+                        .mapToDouble((Double value) -> Units.rotationsToRadians(value))
+                        .toArray();
         inputs.odometryTurnPositions =
                 turnPositionQueue.stream()
                         .map((Double value) -> Rotation2d.fromRotations(value))
@@ -242,21 +240,23 @@ public class ModuleIOTalonFXS implements ModuleIO {
     }
 
     @Override
-    public void applyOutputs(ModuleIOOutputs outputs) {
-        switch (outputs.driveOutputMode) {
-            case VELOCITY ->
-                    driveTalon.setControl(
-                            velocityVoltageRequest.withVelocity(outputs.driveTargetVelocity));
-            case OPEN_LOOP ->
-                    driveTalon.setControl(voltageRequest.withOutput(outputs.driveTargetOpenLoop));
-        }
-        switch (outputs.turnOutputMode) {
-            case POSITION ->
-                    turnTalon.setControl(
-                            positionVoltageRequest.withPosition(
-                                    outputs.turnTargetPosition.in(Rotations)));
-            case OPEN_LOOP ->
-                    turnTalon.setControl(voltageRequest.withOutput(outputs.turnTargetOpenLoop));
-        }
+    public void setDriveOpenLoop(double output) {
+        driveTalon.setControl(voltageRequest.withOutput(output));
+    }
+
+    @Override
+    public void setTurnOpenLoop(double output) {
+        turnTalon.setControl(voltageRequest.withOutput(output));
+    }
+
+    @Override
+    public void setDriveVelocity(double velocityRadPerSec) {
+        double velocityRotPerSec = Units.radiansToRotations(velocityRadPerSec);
+        driveTalon.setControl(velocityVoltageRequest.withVelocity(velocityRotPerSec));
+    }
+
+    @Override
+    public void setTurnPosition(Rotation2d rotation) {
+        turnTalon.setControl(positionVoltageRequest.withPosition(rotation.getRotations()));
     }
 }
