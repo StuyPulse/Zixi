@@ -3,128 +3,169 @@ import { isSourcePage } from "./utils.js";
 let themeState = "system";
 const themeChangeCallbacks = [];
 const themes = ["system", "dark", "light"];
+const systemThemeQuery = window.matchMedia("(prefers-color-scheme: light)");
+const interactionQuery = window.matchMedia("(prefers-reduced-motion: reduce), (hover: none), (max-width: 800px)");
+const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+const narrowViewportQuery = window.matchMedia("(max-width: 800px)");
+let interactionMode = interactionQuery.matches ? "click" : "hover";
+let isOpen = false;
 const themeContainer = (() => {
     if (isSourcePage())
         return null;
     const topNavbar = document.querySelector("#navbar-top");
     if (!topNavbar)
         return null;
-    const themeToggleWrapper = document.createElement("div");
-    themeToggleWrapper.setAttribute("role", "menu");
-    themeToggleWrapper.setAttribute("class", "theme-toggle-wrapper");
-    topNavbar.appendChild(themeToggleWrapper);
-    themes.forEach(theme => {
+    const wrapper = document.createElement("div");
+    wrapper.id = "theme-toggle-menu";
+    wrapper.setAttribute("class", "theme-toggle-wrapper");
+    wrapper.setAttribute("role", "group");
+    wrapper.setAttribute("aria-label", "Choose color theme");
+    wrapper.classList.toggle("interaction-click", interactionMode === "click");
+    wrapper.classList.toggle("no-motion", reducedMotionQuery.matches);
+    wrapper.classList.toggle("is-vertical", narrowViewportQuery.matches);
+    topNavbar.appendChild(wrapper);
+    themes.forEach((theme) => {
         const button = document.createElement("button");
+        button.type = "button";
         button.setAttribute("class", `theme-button theme-button-${theme}`);
-        button.setAttribute("aria-label", `Switch to ${theme} theme`);
-        button.setAttribute("title", `Switch to ${theme} theme`);
+        button.setAttribute("aria-label", `${theme[0].toUpperCase()}${theme.slice(1)} theme`);
+        button.setAttribute("title", `Use ${theme} theme`);
         button.setAttribute("data-theme-target", theme);
         button.appendChild(getSvgFromName(theme));
-        button.addEventListener("click", (e) => {
-            if (!themeToggleWrapper.classList.contains("is-hover") && button.classList.contains("is-active")) {
-                e.preventDefault();
-                openMenu();
+        button.addEventListener("click", (event) => {
+            if (button.classList.contains("is-active") && !isOpen) {
+                event.preventDefault();
+                if (interactionMode === "click")
+                    toggleMenu();
+                else
+                    openMenu();
                 return;
             }
             setTheme(theme);
             closeMenu();
             button.focus();
         });
-        themeToggleWrapper.appendChild(button);
+        wrapper.appendChild(button);
     });
-    themeToggleWrapper.addEventListener("keydown", (event) => {
-        const buttons = Array.from(themeToggleWrapper.querySelectorAll(".theme-button"));
+    wrapper.addEventListener("keydown", (event) => {
+        const buttons = Array.from(wrapper.querySelectorAll(".theme-button"));
         const currentIndex = buttons.indexOf(document.activeElement);
         if (currentIndex === -1)
             return;
+        if (event.key === "Escape") {
+            event.preventDefault();
+            closeMenu();
+            wrapper.querySelector(".theme-button.is-active")?.focus();
+            return;
+        }
         let nextIndex;
         if (event.key === "ArrowRight" || event.key === "ArrowDown") {
-            event.preventDefault();
             nextIndex = (currentIndex + 1) % buttons.length;
         }
         else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
-            event.preventDefault();
             nextIndex = (currentIndex - 1 + buttons.length) % buttons.length;
         }
-        else if (event.key === "Escape") {
-            event.preventDefault();
-            closeMenu();
-            const activeButton = themeToggleWrapper.querySelector(".theme-button.is-active");
-            if (activeButton) {
-                activeButton.focus();
-            }
-        }
         if (nextIndex !== undefined) {
-            buttons[currentIndex].setAttribute("tabindex", "-1");
-            buttons[nextIndex].setAttribute("tabindex", "0");
+            event.preventDefault();
+            if (!isOpen)
+                openMenu();
             buttons[nextIndex].focus();
         }
     });
-    const openMenu = () => {
-        themeToggleWrapper.classList.add("is-hover");
-        toggleMenuAccessibility(true);
-    };
-    const closeMenu = () => {
-        themeToggleWrapper.classList.remove("is-hover");
-        toggleMenuAccessibility(false);
-    };
-    themeToggleWrapper.addEventListener("mouseenter", openMenu);
-    themeToggleWrapper.addEventListener("mouseleave", closeMenu);
-    themeToggleWrapper.addEventListener("focusin", () => {
-        if (!document.activeElement.matches(":focus-visible"))
-            return;
-        openMenu();
+    wrapper.addEventListener("mouseenter", () => {
+        if (interactionMode === "hover")
+            openMenu();
     });
-    themeToggleWrapper.addEventListener("focusout", (event) => {
-        if (!themeToggleWrapper.contains(event.relatedTarget)) {
+    wrapper.addEventListener("mouseleave", () => {
+        if (interactionMode === "hover")
             closeMenu();
+    });
+    wrapper.addEventListener("focusin", () => {
+        if (interactionMode === "hover" && document.activeElement.matches(":focus-visible")) {
+            openMenu();
         }
     });
-    return themeToggleWrapper;
+    wrapper.addEventListener("focusout", (event) => {
+        if (interactionMode === "hover" && !wrapper.contains(event.relatedTarget))
+            closeMenu();
+    });
+    document.addEventListener("pointerdown", (event) => {
+        if (isOpen && !wrapper.contains(event.target))
+            closeMenu();
+    });
+    return wrapper;
 })();
-const toggleMenuAccessibility = (isOpen) => {
+positionVerticalMenu();
+const updateMenuAccessibility = () => {
     if (!themeContainer)
         return;
-    const buttons = themeContainer.querySelectorAll(".theme-button");
-    buttons.forEach((button) => {
-        const isActive = button.classList.contains("is-active");
-        if (isOpen) {
-            button.setAttribute("role", "menuitemradio");
-            button.removeAttribute("aria-haspopup");
-            button.removeAttribute("aria-expanded");
-            button.removeAttribute("aria-hidden");
-            button.setAttribute("aria-checked", isActive ? "true" : "false");
-            if (isActive) {
-                button.setAttribute("tabindex", "0");
-            }
-            else {
-                if (document.activeElement !== button) {
-                    button.setAttribute("tabindex", "-1");
-                }
-            }
+    themeContainer.querySelectorAll(".theme-button").forEach((button) => {
+        const active = button.classList.contains("is-active");
+        button.setAttribute("aria-pressed", String(active));
+        button.setAttribute("aria-hidden", String(!isOpen && !active));
+        button.setAttribute("tabindex", isOpen || active ? "0" : "-1");
+        if (active) {
+            button.setAttribute("aria-expanded", String(isOpen));
+            button.setAttribute("aria-controls", "theme-toggle-menu");
         }
         else {
-            if (isActive) {
-                button.setAttribute("role", "button");
-                button.setAttribute("tabindex", "0");
-                button.setAttribute("aria-haspopup", "true");
-                button.setAttribute("aria-expanded", "false");
-                button.setAttribute("aria-hidden", "true");
-            }
-            else {
-                button.removeAttribute("role");
-                button.setAttribute("tabindex", "-1");
-                button.removeAttribute("aria-haspopup");
-                button.removeAttribute("aria-expanded");
-                button.setAttribute("aria-hidden", "true");
-            }
+            button.removeAttribute("aria-expanded");
+            button.removeAttribute("aria-controls");
         }
     });
 };
-const handleThemeChangeEvent = (event) => {
-    if (themeState === "system") {
-        setTheme("system");
+function openMenu() {
+    if (!themeContainer || isOpen)
+        return;
+    isOpen = true;
+    themeContainer.classList.add("is-open");
+    positionVerticalMenu();
+    updateMenuAccessibility();
+}
+function closeMenu() {
+    if (!themeContainer || !isOpen)
+        return;
+    isOpen = false;
+    themeContainer.classList.remove("is-open");
+    updateMenuAccessibility();
+}
+function toggleMenu() {
+    if (isOpen)
+        closeMenu();
+    else
+        openMenu();
+}
+function positionVerticalMenu() {
+    if (!themeContainer || !narrowViewportQuery.matches)
+        return;
+    const bounds = themeContainer.getBoundingClientRect();
+    themeContainer.style.setProperty("--theme-menu-top", `${bounds.top + bounds.height / 2}px`);
+    themeContainer.style.setProperty("--theme-menu-left", `${bounds.left}px`);
+}
+window.addEventListener("scroll", positionVerticalMenu, true);
+window.addEventListener("resize", positionVerticalMenu);
+interactionQuery.addEventListener("change", (event) => {
+    const nextMode = event.matches ? "click" : "hover";
+    if (nextMode === interactionMode)
+        return;
+    interactionMode = nextMode;
+    themeContainer?.classList.toggle("interaction-click", interactionMode === "click");
+    const focusedButton = themeContainer?.contains(document.activeElement) ? document.activeElement : null;
+    closeMenu();
+    if (focusedButton && themeContainer?.contains(focusedButton)) {
+        themeContainer.querySelector(".theme-button.is-active")?.focus();
     }
+});
+reducedMotionQuery.addEventListener("change", (event) => {
+    themeContainer?.classList.toggle("no-motion", event.matches);
+});
+narrowViewportQuery.addEventListener("change", (event) => {
+    themeContainer?.classList.toggle("is-vertical", event.matches);
+    positionVerticalMenu();
+});
+const handleThemeChangeEvent = () => {
+    if (themeState === "system")
+        setTheme("system");
 };
 const setTheme = (theme) => {
     if (!themes.includes(theme)) {
@@ -132,30 +173,26 @@ const setTheme = (theme) => {
         return;
     }
     themeState = theme;
+    let effectiveTheme = theme === "system"
+        ? (systemThemeQuery.matches ? "light" : "dark")
+        : theme;
     if (theme === "system") {
-        const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches;
-        theme = isLightMode ? "light" : "dark";
-        window.matchMedia("(prefers-color-scheme: light)").addEventListener("change", handleThemeChangeEvent);
+        effectiveTheme = systemThemeQuery.matches ? "light" : "dark";
+        systemThemeQuery.addEventListener("change", handleThemeChangeEvent);
     }
     else {
-        window.matchMedia("(prefers-color-scheme: light)").removeEventListener("change", handleThemeChangeEvent);
+        systemThemeQuery.removeEventListener("change", handleThemeChangeEvent);
     }
     if (themeContainer) {
-        const buttons = themeContainer.querySelectorAll(".theme-button");
-        buttons.forEach((button) => {
-            if (button.getAttribute("data-theme-target") === themeState) {
-                button.classList.add("is-active");
-            }
-            else {
-                button.classList.remove("is-active");
-            }
+        themeContainer.dataset.activeTheme = themeState;
+        themeContainer.querySelectorAll(".theme-button").forEach((button) => {
+            button.classList.toggle("is-active", button.getAttribute("data-theme-target") === themeState);
         });
-        const isExpanded = themeContainer.classList.contains("is-hover") || themeContainer.contains(document.activeElement);
-        toggleMenuAccessibility(isExpanded);
+        updateMenuAccessibility();
     }
-    themeChangeCallbacks.forEach((callback) => callback(themeState, getEffectiveTheme()));
+    themeChangeCallbacks.forEach((callback) => callback(themeState, effectiveTheme));
     localStorage.setItem("theme", themeState);
-    document.documentElement.setAttribute("data-theme", theme);
+    document.documentElement.setAttribute("data-theme", effectiveTheme);
 };
 (() => {
     let storedTheme = localStorage.getItem("theme");
@@ -164,18 +201,15 @@ const setTheme = (theme) => {
         localStorage.setItem("theme", storedTheme);
     }
     setTheme(storedTheme);
-    toggleMenuAccessibility(false);
+    updateMenuAccessibility();
 })();
 const onThemeChange = (callback) => {
     themeChangeCallbacks.push(callback);
 };
-const getTheme = () => {
-    return themeState;
-};
+const getTheme = () => themeState;
 const getEffectiveTheme = () => {
     if (themeState === "system") {
-        const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches;
-        return isLightMode ? "light" : "dark";
+        return systemThemeQuery.matches ? "light" : "dark";
     }
     return themeState;
 };

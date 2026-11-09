@@ -146,7 +146,7 @@
   }
 }
 
-.theme-toggle-wrapper.is-hover {
+.theme-toggle-wrapper.is-open {
   width: 7.5rem;
 
   .theme-button {
@@ -163,6 +163,69 @@
   .theme-button-light {
     transform: translateY(-50%) translateX(5.0rem);
   }
+}
+
+.theme-toggle-wrapper.no-motion,
+.theme-toggle-wrapper.no-motion .theme-button,
+.theme-toggle-wrapper.no-motion .theme-button svg {
+  transition: none;
+}
+
+.theme-toggle-wrapper.is-vertical.is-open {
+  width: 2.5rem;
+}
+
+.theme-toggle-wrapper.is-vertical .theme-button {
+  position: fixed;
+  top: var(--theme-menu-top);
+  left: var(--theme-menu-left);
+}
+
+.theme-toggle-wrapper.is-vertical.is-open .theme-button {
+  background-color: var(--bg-800-color);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 35%);
+}
+
+html[data-theme="dark"] .theme-toggle-wrapper.is-vertical.is-open .theme-button:not(.is-active) {
+  background-color: #303030;
+  border-color: #4a4a4a;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 3px 10px rgba(0, 0, 0, 0.65);
+}
+
+.theme-toggle-wrapper.is-vertical.is-open .theme-button-system {
+  transform: translateY(-50%) translateY(0rem);
+}
+
+.theme-toggle-wrapper.is-vertical.is-open .theme-button-dark {
+  transform: translateY(-50%) translateY(2.5rem);
+}
+
+.theme-toggle-wrapper.is-vertical.is-open .theme-button-light {
+  transform: translateY(-50%) translateY(5rem);
+}
+
+.theme-toggle-wrapper.is-vertical.is-open[data-active-theme="dark"] .theme-button-system {
+  transform: translateY(-50%) translateY(5rem);
+}
+
+.theme-toggle-wrapper.is-vertical.is-open[data-active-theme="dark"] .theme-button-dark {
+  transform: translateY(-50%) translateY(0rem);
+}
+
+.theme-toggle-wrapper.is-vertical.is-open[data-active-theme="dark"] .theme-button-light {
+  transform: translateY(-50%) translateY(2.5rem);
+}
+
+.theme-toggle-wrapper.is-vertical.is-open[data-active-theme="light"] .theme-button-system {
+  transform: translateY(-50%) translateY(2.5rem);
+}
+
+.theme-toggle-wrapper.is-vertical.is-open[data-active-theme="light"] .theme-button-dark {
+  transform: translateY(-50%) translateY(5rem);
+}
+
+.theme-toggle-wrapper.is-vertical.is-open[data-active-theme="light"] .theme-button-light {
+  transform: translateY(-50%) translateY(0rem);
 }
 
 .package-index-page .title {
