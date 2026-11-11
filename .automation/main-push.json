@@ -1,7 +1,7 @@
 {
-  "message": "Revert \"refactor: implement units for gyro\" and \"refactor: output pattern in modules\" (#37)\n\nThis reverts commit bd2b803e81ecee95e61f20ab740ec79896a699b2 and c61cabaf99bdb9de96305be90b99967d959106c5, respectively.",
-  "hash": "e591cb2a25bab1b69949406f01f627d9a30bb483",
-  "commitTimestamp": "2026-11-11T16:50:03-05:00",
-  "triggerTimestamp": "2026-11-11T21:50:08.153Z",
+  "message": "fix: java string escaping in PatchBuildConstants not working with replaceAll",
+  "hash": "1d57887ca66cf6b8dff87721864a3e22948c60d4",
+  "commitTimestamp": "2026-11-11T17:24:33-05:00",
+  "triggerTimestamp": "2026-11-11T22:24:42.678Z",
   "manuallyTriggered": false
 }
