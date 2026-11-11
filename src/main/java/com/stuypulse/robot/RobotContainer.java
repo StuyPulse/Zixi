@@ -25,6 +25,7 @@ import com.stuypulse.robot.subsystems.vision.VisionIO;
 import com.stuypulse.robot.subsystems.vision.VisionIOLimelight;
 import com.stuypulse.robot.subsystems.vision.VisionIOPhoton;
 import com.stuypulse.robot.subsystems.vision.VisionIOPhotonSim;
+import com.stuypulse.robot.util.auton.BLineUtil.BLineConfig;
 
 import org.wpilib.command3.button.CommandGamepad;
 import org.wpilib.math.geometry.Rotation2d;
@@ -138,9 +139,13 @@ public class RobotContainer {
     /**************/
 
     private void configureAutons() {
-        AutonFactory autonFactory = new AutonFactory();
+        AutonFactory autonFactory = new AutonFactory(swerve);
 
         autonChooser.addDefault("Do Nothing", autonFactory.doNothingAuton());
+
+        BLineConfig exampleAuton =
+                new BLineConfig("Example Auto", autonFactory::example, "example");
+        exampleAuton.register(autonChooser);
     }
 
     /**

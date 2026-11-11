@@ -6,12 +6,15 @@ package com.stuypulse.robot.subsystems.swerve;
 
 import static org.wpilib.units.Units.*;
 
+import com.stuypulse.robot.constants.FieldConstants;
 import com.stuypulse.robot.constants.GlobalSettings;
 import com.stuypulse.robot.constants.GlobalSettings.RobotMode;
 import com.stuypulse.robot.subsystems.vision.Vision.VisionConsumer;
 import com.stuypulse.robot.util.PeriodicSubsystem;
 
+import org.wpilib.command3.Command;
 import org.wpilib.driverstation.RobotState;
+import org.wpilib.math.controller.PIDController;
 import org.wpilib.math.estimator.SwerveDrivePoseEstimator;
 import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.math.geometry.Rotation2d;
@@ -24,6 +27,11 @@ import org.wpilib.math.kinematics.SwerveModuleVelocity;
 import org.wpilib.util.Alert;
 import org.wpilib.util.UsageReporting;
 
+import bline.commands.FollowPath;
+import bline.following.DriveType;
+import bline.path.Path;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -76,6 +84,19 @@ public class Swerve extends PeriodicSubsystem {
             new SwerveDrivePoseEstimator(
                     kinematics, rawGyroRotation, lastModulePositions, Pose2d.ZERO);
 
+    private final FollowPath.Builder pathBuilder =
+            new FollowPath.Builder(
+                            DriveType.SWERVE,
+                            this,
+                            this::getPose,
+                            this::resetPose,
+                            this::getChassisSpeeds,
+                            this::runVelocity,
+                            new PIDController(12.0, 0.0, 0.0),
+                            new PIDController(7.0, 0.0, 0.0),
+                            new PIDController(0.5, 0.0, 0.0))
+                    .withDefaultShouldFlip();
+
     public Swerve(
             GyroIO gyroIO,
             ModuleIO flModuleIO,
@@ -126,6 +147,23 @@ public class Swerve extends PeriodicSubsystem {
         // (state) -> Logger.recordOutput("Drive/SysIdState", state.toString())),
         // new SysIdRoutine.Mechanism(
         // (voltage) -> runCharacterization(voltage.in(Volts)), null, this));
+
+        FollowPath.setDoubleLoggingConsumer(
+                value -> Logger.recordOutput(value.getFirst(), value.getSecond()));
+        FollowPath.setBooleanLoggingConsumer(
+                value -> Logger.recordOutput(value.getFirst(), value.getSecond()));
+        FollowPath.setPoseLoggingConsumer(
+                value -> Logger.recordOutput(value.getFirst(), value.getSecond()));
+        FollowPath.setTranslationListLoggingConsumer(
+                value -> {
+                    Logger.recordOutput(value.getFirst(), value.getSecond());
+
+                    List<Pose2d> poses =
+                            Arrays.stream(value.getSecond())
+                                    .map(t -> new Pose2d(t, new Rotation2d()))
+                                    .toList();
+                    FieldConstants.FIELD_2D.getObject(value.getFirst()).setPoses(poses);
+                });
     }
 
     @Override
@@ -326,6 +364,10 @@ public class Swerve extends PeriodicSubsystem {
     /** Returns the maximum angular speed in radians per sec. */
     public double getMaxAngularSpeedRadPerSec() {
         return getMaxLinearSpeedMetersPerSec() / DRIVE_BASE_RADIUS;
+    }
+
+    public Command followBLinePath(Path path) {
+        return pathBuilder.build(path);
     }
 
     /** Returns an array of module translations. */
