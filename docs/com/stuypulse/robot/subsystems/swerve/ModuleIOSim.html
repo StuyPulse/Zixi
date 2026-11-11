@@ -12,7 +12,7 @@
 <script type="text/javascript" src="../../../../../script-files/script.js"></script>
 <script type="text/javascript" src="../../../../../script-files/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="../../../../../script-files/jquery-ui.min.js"></script>
-<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../betterjdocs.css"><link rel="icon" href="../../../../../favicon.svg?t=1794182926536" type="image/x-icon"><script defer type="module" src="../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
+<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../betterjdocs.css"><link rel="icon" href="../../../../../favicon.svg?t=1794436036454" type="image/x-icon"><script defer type="module" src="../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
 <body class="class-declaration-page">
 <script type="text/javascript">const pathtoroot = "../../../../../";
 loadScripts(document, 'script');</script>
@@ -87,7 +87,10 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
 <li><a href="#updateInputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOInputs)" tabindex="0">updateInputs(ModuleIO.ModuleIOInputs)</a></li>
-<li><a href="#applyOutputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOOutputs)" tabindex="0">applyOutputs(ModuleIO.ModuleIOOutputs)</a></li>
+<li><a href="#setDriveOpenLoop(double)" tabindex="0">setDriveOpenLoop(double)</a></li>
+<li><a href="#setTurnOpenLoop(double)" tabindex="0">setTurnOpenLoop(double)</a></li>
+<li><a href="#setDriveVelocity(double)" tabindex="0">setDriveVelocity(double)</a></li>
+<li><a href="#setTurnPosition(org.wpilib.math.geometry.Rotation2d)" tabindex="0">setTurnPosition(Rotation2d)</a></li>
 </ol>
 </li>
 </ol>
@@ -107,7 +110,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="horizontal-scroll">
-<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-29">ModuleIOSim</a></span>
+<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-23">ModuleIOSim</a></span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="ModuleIO.html" title="interface in com.stuypulse.robot.subsystems.swerve">ModuleIO</a></span></div>
 <div class="block">Physics sim implementation of module IO. The sim models are configured using a set of module
@@ -122,7 +125,7 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <h2>Nested Class Summary</h2>
 <div class="inherited-list">
 <h3 id="nested-classes-inherited-from-class-com.stuypulse.robot.subsystems.swerve.ModuleIO">Nested classes/interfaces inherited from interface&nbsp;<a href="ModuleIO.html#nested-class-summary" title="interface in com.stuypulse.robot.subsystems.swerve">ModuleIO</a></h3>
-<code><a href="ModuleIO.DriveOutputMode.html" title="enum class in com.stuypulse.robot.subsystems.swerve">ModuleIO.DriveOutputMode</a>, <a href="ModuleIO.ModuleIOInputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOInputs</a>, <a href="ModuleIO.ModuleIOOutputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOOutputs</a>, <a href="ModuleIO.TurnOutputMode.html" title="enum class in com.stuypulse.robot.subsystems.swerve">ModuleIO.TurnOutputMode</a></code></div>
+<code><a href="ModuleIO.ModuleIOInputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOInputs</a></code></div>
 </section>
 </li>
 <!-- =========== FIELD SUMMARY =========== -->
@@ -216,11 +219,28 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#applyOutputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOOutputs)" class="member-name-link">applyOutputs</a><wbr>(<a href="ModuleIO.ModuleIOOutputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOOutputs</a>&nbsp;outputs)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDriveOpenLoop(double)" class="member-name-link">setDriveOpenLoop</a><wbr>(double&nbsp;output)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Run the drive motor at the specified open loop value.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateInputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOInputs)" class="member-name-link">updateInputs</a><wbr>(<a href="ModuleIO.ModuleIOInputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOInputs</a>&nbsp;inputs)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDriveVelocity(double)" class="member-name-link">setDriveVelocity</a><wbr>(double&nbsp;velocityRadPerSec)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Run the drive motor at the specified velocity.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTurnOpenLoop(double)" class="member-name-link">setTurnOpenLoop</a><wbr>(double&nbsp;output)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Run the turn motor at the specified open loop value.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTurnPosition(org.wpilib.math.geometry.Rotation2d)" class="member-name-link">setTurnPosition</a><wbr>(org.wpilib.math.geometry.Rotation2d&nbsp;rotation)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Run the turn motor to the specified rotation.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateInputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOInputs)" class="member-name-link">updateInputs</a><wbr>(<a href="ModuleIO.ModuleIOInputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOInputs</a>&nbsp;inputs)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Updates the set of loggable inputs.</div>
 </div>
 </div>
@@ -244,7 +264,7 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <section class="detail" id="DRIVE_KP">
 <h3>DRIVE_KP</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-32">DRIVE_KP</a></span></div>
+<div class="member-signature"><span class="modifiers">private static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-26">DRIVE_KP</a></span></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -260,7 +280,7 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <section class="detail" id="DRIVE_KD">
 <h3>DRIVE_KD</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-33">DRIVE_KD</a></span></div>
+<div class="member-signature"><span class="modifiers">private static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-27">DRIVE_KD</a></span></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -276,7 +296,7 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <section class="detail" id="DRIVE_KS">
 <h3>DRIVE_KS</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-34">DRIVE_KS</a></span></div>
+<div class="member-signature"><span class="modifiers">private static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-28">DRIVE_KS</a></span></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -292,7 +312,7 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <section class="detail" id="DRIVE_KV_ROT">
 <h3>DRIVE_KV_ROT</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-35">DRIVE_KV_ROT</a></span></div>
+<div class="member-signature"><span class="modifiers">private static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-29">DRIVE_KV_ROT</a></span></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -308,7 +328,7 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <section class="detail" id="DRIVE_KV">
 <h3>DRIVE_KV</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-37">DRIVE_KV</a></span></div>
+<div class="member-signature"><span class="modifiers">private static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-31">DRIVE_KV</a></span></div>
 </div>
 </section>
 </li>
@@ -316,7 +336,7 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <section class="detail" id="TURN_KP">
 <h3>TURN_KP</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-38">TURN_KP</a></span></div>
+<div class="member-signature"><span class="modifiers">private static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-32">TURN_KP</a></span></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -332,7 +352,7 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <section class="detail" id="TURN_KD">
 <h3>TURN_KD</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-39">TURN_KD</a></span></div>
+<div class="member-signature"><span class="modifiers">private static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-33">TURN_KD</a></span></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -348,7 +368,7 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <section class="detail" id="DRIVE_GEARBOX">
 <h3>DRIVE_GEARBOX</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private static final</span>&nbsp;<span class="return-type">org.wpilib.math.system.DCMotor</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-40">DRIVE_GEARBOX</a></span></div>
+<div class="member-signature"><span class="modifiers">private static final</span>&nbsp;<span class="return-type">org.wpilib.math.system.DCMotor</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-34">DRIVE_GEARBOX</a></span></div>
 </div>
 </section>
 </li>
@@ -356,7 +376,7 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <section class="detail" id="TURN_GEARBOX">
 <h3>TURN_GEARBOX</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private static final</span>&nbsp;<span class="return-type">org.wpilib.math.system.DCMotor</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-41">TURN_GEARBOX</a></span></div>
+<div class="member-signature"><span class="modifiers">private static final</span>&nbsp;<span class="return-type">org.wpilib.math.system.DCMotor</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-35">TURN_GEARBOX</a></span></div>
 </div>
 </section>
 </li>
@@ -364,7 +384,7 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <section class="detail" id="driveSim">
 <h3>driveSim</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">org.wpilib.simulation.DCMotorSim</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-43">driveSim</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">org.wpilib.simulation.DCMotorSim</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-37">driveSim</a></span></div>
 </div>
 </section>
 </li>
@@ -372,7 +392,7 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <section class="detail" id="turnSim">
 <h3>turnSim</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">org.wpilib.simulation.DCMotorSim</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-44">turnSim</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">org.wpilib.simulation.DCMotorSim</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-38">turnSim</a></span></div>
 </div>
 </section>
 </li>
@@ -380,7 +400,7 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <section class="detail" id="driveClosedLoop">
 <h3>driveClosedLoop</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-46">driveClosedLoop</a></span></div>
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-40">driveClosedLoop</a></span></div>
 </div>
 </section>
 </li>
@@ -388,7 +408,7 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <section class="detail" id="turnClosedLoop">
 <h3>turnClosedLoop</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-47">turnClosedLoop</a></span></div>
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-41">turnClosedLoop</a></span></div>
 </div>
 </section>
 </li>
@@ -396,7 +416,7 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <section class="detail" id="driveController">
 <h3>driveController</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">org.wpilib.math.controller.PIDController</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-48">driveController</a></span></div>
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">org.wpilib.math.controller.PIDController</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-42">driveController</a></span></div>
 </div>
 </section>
 </li>
@@ -404,7 +424,7 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <section class="detail" id="turnController">
 <h3>turnController</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">org.wpilib.math.controller.PIDController</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-49">turnController</a></span></div>
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">org.wpilib.math.controller.PIDController</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-43">turnController</a></span></div>
 </div>
 </section>
 </li>
@@ -412,7 +432,7 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <section class="detail" id="driveFFVolts">
 <h3>driveFFVolts</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-50">driveFFVolts</a></span></div>
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-44">driveFFVolts</a></span></div>
 </div>
 </section>
 </li>
@@ -420,7 +440,7 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <section class="detail" id="driveAppliedVolts">
 <h3>driveAppliedVolts</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-51">driveAppliedVolts</a></span></div>
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-45">driveAppliedVolts</a></span></div>
 </div>
 </section>
 </li>
@@ -428,7 +448,7 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <section class="detail" id="turnAppliedVolts">
 <h3>turnAppliedVolts</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-52">turnAppliedVolts</a></span></div>
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-46">turnAppliedVolts</a></span></div>
 </div>
 </section>
 </li>
@@ -444,7 +464,7 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <section class="detail" id="&lt;init&gt;(com.ctre.phoenix6.swerve.SwerveModuleConstants)">
 <h3>ModuleIOSim</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-54">ModuleIOSim</a></span><wbr><span class="parameters">(com.ctre.phoenix6.swerve.SwerveModuleConstants&lt;com.ctre.phoenix6.configs.TalonFXConfiguration, com.ctre.phoenix6.configs.TalonFXConfiguration, com.ctre.phoenix6.configs.CANcoderConfiguration&gt;&nbsp;constants)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-48">ModuleIOSim</a></span><wbr><span class="parameters">(com.ctre.phoenix6.swerve.SwerveModuleConstants&lt;com.ctre.phoenix6.configs.TalonFXConfiguration, com.ctre.phoenix6.configs.TalonFXConfiguration, com.ctre.phoenix6.configs.CANcoderConfiguration&gt;&nbsp;constants)</span></div>
 </div>
 </section>
 </li>
@@ -460,7 +480,7 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 <section class="detail" id="updateInputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOInputs)">
 <h3>updateInputs</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-78">updateInputs</a></span><wbr><span class="parameters">(<a href="ModuleIO.ModuleIOInputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOInputs</a>&nbsp;inputs)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-72">updateInputs</a></span><wbr><span class="parameters">(<a href="ModuleIO.ModuleIOInputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOInputs</a>&nbsp;inputs)</span></div>
 <div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="ModuleIO.html#updateInputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOInputs)">ModuleIO</a></code></span></div>
 <div class="block">Updates the set of loggable inputs.</div>
 <dl class="notes">
@@ -471,13 +491,57 @@ constants from Phoenix. Simulation is always based on voltage control.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="applyOutputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOOutputs)">
-<h3>applyOutputs</h3>
+<section class="detail" id="setDriveOpenLoop(double)">
+<h3>setDriveOpenLoop</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-122">applyOutputs</a></span><wbr><span class="parameters">(<a href="ModuleIO.ModuleIOOutputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOOutputs</a>&nbsp;outputs)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-116">setDriveOpenLoop</a></span><wbr><span class="parameters">(double&nbsp;output)</span></div>
+<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="ModuleIO.html#setDriveOpenLoop(double)">ModuleIO</a></code></span></div>
+<div class="block">Run the drive motor at the specified open loop value.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="ModuleIO.html#applyOutputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOOutputs)">applyOutputs</a></code>&nbsp;in interface&nbsp;<code><a href="ModuleIO.html" title="interface in com.stuypulse.robot.subsystems.swerve">ModuleIO</a></code></dd>
+<dd><code><a href="ModuleIO.html#setDriveOpenLoop(double)">setDriveOpenLoop</a></code>&nbsp;in interface&nbsp;<code><a href="ModuleIO.html" title="interface in com.stuypulse.robot.subsystems.swerve">ModuleIO</a></code></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="setTurnOpenLoop(double)">
+<h3>setTurnOpenLoop</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-122">setTurnOpenLoop</a></span><wbr><span class="parameters">(double&nbsp;output)</span></div>
+<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="ModuleIO.html#setTurnOpenLoop(double)">ModuleIO</a></code></span></div>
+<div class="block">Run the turn motor at the specified open loop value.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="ModuleIO.html#setTurnOpenLoop(double)">setTurnOpenLoop</a></code>&nbsp;in interface&nbsp;<code><a href="ModuleIO.html" title="interface in com.stuypulse.robot.subsystems.swerve">ModuleIO</a></code></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="setDriveVelocity(double)">
+<h3>setDriveVelocity</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-128">setDriveVelocity</a></span><wbr><span class="parameters">(double&nbsp;velocityRadPerSec)</span></div>
+<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="ModuleIO.html#setDriveVelocity(double)">ModuleIO</a></code></span></div>
+<div class="block">Run the drive motor at the specified velocity.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="ModuleIO.html#setDriveVelocity(double)">setDriveVelocity</a></code>&nbsp;in interface&nbsp;<code><a href="ModuleIO.html" title="interface in com.stuypulse.robot.subsystems.swerve">ModuleIO</a></code></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="setTurnPosition(org.wpilib.math.geometry.Rotation2d)">
+<h3>setTurnPosition</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOSim.html#line-135">setTurnPosition</a></span><wbr><span class="parameters">(org.wpilib.math.geometry.Rotation2d&nbsp;rotation)</span></div>
+<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="ModuleIO.html#setTurnPosition(org.wpilib.math.geometry.Rotation2d)">ModuleIO</a></code></span></div>
+<div class="block">Run the turn motor to the specified rotation.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="ModuleIO.html#setTurnPosition(org.wpilib.math.geometry.Rotation2d)">setTurnPosition</a></code>&nbsp;in interface&nbsp;<code><a href="ModuleIO.html" title="interface in com.stuypulse.robot.subsystems.swerve">ModuleIO</a></code></dd>
 </dl>
 </div>
 </section>

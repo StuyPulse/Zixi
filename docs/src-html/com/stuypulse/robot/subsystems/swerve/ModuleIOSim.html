@@ -7,7 +7,7 @@
 <meta name="description" content="source: package: com.stuypulse.robot.subsystems.swerve, class: ModuleIOSim">
 <meta name="generator" content="javadoc/SourceToHTMLConverter">
 <link rel="stylesheet" type="text/css" href="../../../../../../resource-files/stylesheet.css">
-<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../../betterjdocs.css"><link rel="icon" href="../../../../../../favicon.svg?t=1794182926571" type="image/x-icon"><script defer type="module" src="../../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../../pages/source-page/source-page.js"></script></head>
+<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../../betterjdocs.css"><link rel="icon" href="../../../../../../favicon.svg?t=1794436036486" type="image/x-icon"><script defer type="module" src="../../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../../pages/source-page/source-page.js"></script></head>
 <body class="source-page">
 <main role="main">
 <div class="source-container">
@@ -17,148 +17,140 @@
 <span class="source-line-no">004</span><span id="line-4">/**************************************************************/</span>
 <span class="source-line-no">005</span><span id="line-5">package com.stuypulse.robot.subsystems.swerve;</span>
 <span class="source-line-no">006</span><span id="line-6"></span>
-<span class="source-line-no">007</span><span id="line-7">import static org.wpilib.units.Units.Amps;</span>
-<span class="source-line-no">008</span><span id="line-8">import static org.wpilib.units.Units.Radians;</span>
-<span class="source-line-no">009</span><span id="line-9">import static org.wpilib.units.Units.RadiansPerSecond;</span>
-<span class="source-line-no">010</span><span id="line-10">import static org.wpilib.units.Units.Volts;</span>
-<span class="source-line-no">011</span><span id="line-11"></span>
-<span class="source-line-no">012</span><span id="line-12">import org.wpilib.math.controller.PIDController;</span>
-<span class="source-line-no">013</span><span id="line-13">import org.wpilib.math.geometry.Rotation2d;</span>
-<span class="source-line-no">014</span><span id="line-14">import org.wpilib.math.system.DCMotor;</span>
-<span class="source-line-no">015</span><span id="line-15">import org.wpilib.math.system.Models;</span>
-<span class="source-line-no">016</span><span id="line-16">import org.wpilib.math.util.Units;</span>
-<span class="source-line-no">017</span><span id="line-17">import org.wpilib.simulation.DCMotorSim;</span>
-<span class="source-line-no">018</span><span id="line-18">import org.wpilib.system.Timer;</span>
-<span class="source-line-no">019</span><span id="line-19">import org.wpilib.units.measure.Angle;</span>
-<span class="source-line-no">020</span><span id="line-20"></span>
-<span class="source-line-no">021</span><span id="line-21">import com.ctre.phoenix6.configs.CANcoderConfiguration;</span>
-<span class="source-line-no">022</span><span id="line-22">import com.ctre.phoenix6.configs.TalonFXConfiguration;</span>
-<span class="source-line-no">023</span><span id="line-23">import com.ctre.phoenix6.swerve.SwerveModuleConstants;</span>
-<span class="source-line-no">024</span><span id="line-24"></span>
-<span class="source-line-no">025</span><span id="line-25">/**</span>
-<span class="source-line-no">026</span><span id="line-26"> * Physics sim implementation of module IO. The sim models are configured using a set of module</span>
-<span class="source-line-no">027</span><span id="line-27"> * constants from Phoenix. Simulation is always based on voltage control.</span>
-<span class="source-line-no">028</span><span id="line-28"> */</span>
-<span class="source-line-no">029</span><span id="line-29">public class ModuleIOSim implements ModuleIO {</span>
-<span class="source-line-no">030</span><span id="line-30">    // TunerConstants doesn't support separate sim constants, so they are declared</span>
-<span class="source-line-no">031</span><span id="line-31">    // locally</span>
-<span class="source-line-no">032</span><span id="line-32">    private static final double DRIVE_KP = 0.05;</span>
-<span class="source-line-no">033</span><span id="line-33">    private static final double DRIVE_KD = 0.0;</span>
-<span class="source-line-no">034</span><span id="line-34">    private static final double DRIVE_KS = 0.0;</span>
-<span class="source-line-no">035</span><span id="line-35">    private static final double DRIVE_KV_ROT =</span>
-<span class="source-line-no">036</span><span id="line-36">            0.91035; // Same units as TunerConstants: (volt * secs) / rotation</span>
-<span class="source-line-no">037</span><span id="line-37">    private static final double DRIVE_KV = 1.0 / Units.rotationsToRadians(1.0 / DRIVE_KV_ROT);</span>
-<span class="source-line-no">038</span><span id="line-38">    private static final double TURN_KP = 8.0;</span>
-<span class="source-line-no">039</span><span id="line-39">    private static final double TURN_KD = 0.0;</span>
-<span class="source-line-no">040</span><span id="line-40">    private static final DCMotor DRIVE_GEARBOX = DCMotor.getKrakenX60Foc(1);</span>
-<span class="source-line-no">041</span><span id="line-41">    private static final DCMotor TURN_GEARBOX = DCMotor.getKrakenX60Foc(1);</span>
-<span class="source-line-no">042</span><span id="line-42"></span>
-<span class="source-line-no">043</span><span id="line-43">    private final DCMotorSim driveSim;</span>
-<span class="source-line-no">044</span><span id="line-44">    private final DCMotorSim turnSim;</span>
-<span class="source-line-no">045</span><span id="line-45"></span>
-<span class="source-line-no">046</span><span id="line-46">    private boolean driveClosedLoop = false;</span>
-<span class="source-line-no">047</span><span id="line-47">    private boolean turnClosedLoop = false;</span>
-<span class="source-line-no">048</span><span id="line-48">    private PIDController driveController = new PIDController(DRIVE_KP, 0, DRIVE_KD);</span>
-<span class="source-line-no">049</span><span id="line-49">    private PIDController turnController = new PIDController(TURN_KP, 0, TURN_KD);</span>
-<span class="source-line-no">050</span><span id="line-50">    private double driveFFVolts = 0.0;</span>
-<span class="source-line-no">051</span><span id="line-51">    private double driveAppliedVolts = 0.0;</span>
-<span class="source-line-no">052</span><span id="line-52">    private double turnAppliedVolts = 0.0;</span>
-<span class="source-line-no">053</span><span id="line-53"></span>
-<span class="source-line-no">054</span><span id="line-54">    public ModuleIOSim(</span>
-<span class="source-line-no">055</span><span id="line-55">            SwerveModuleConstants&lt;TalonFXConfiguration, TalonFXConfiguration, CANcoderConfiguration&gt;</span>
-<span class="source-line-no">056</span><span id="line-56">                    constants) {</span>
-<span class="source-line-no">057</span><span id="line-57">        // Create drive and turn sim models</span>
-<span class="source-line-no">058</span><span id="line-58">        driveSim =</span>
-<span class="source-line-no">059</span><span id="line-59">                new DCMotorSim(</span>
-<span class="source-line-no">060</span><span id="line-60">                        Models.singleJointedArmFromPhysicalConstants( // Recommended model by</span>
-<span class="source-line-no">061</span><span id="line-61">                                // documentation</span>
-<span class="source-line-no">062</span><span id="line-62">                                DRIVE_GEARBOX,</span>
-<span class="source-line-no">063</span><span id="line-63">                                constants.DriveInertia,</span>
-<span class="source-line-no">064</span><span id="line-64">                                constants.DriveMotorGearRatio),</span>
-<span class="source-line-no">065</span><span id="line-65">                        DRIVE_GEARBOX);</span>
-<span class="source-line-no">066</span><span id="line-66">        turnSim =</span>
-<span class="source-line-no">067</span><span id="line-67">                new DCMotorSim(</span>
-<span class="source-line-no">068</span><span id="line-68">                        Models.singleJointedArmFromPhysicalConstants(</span>
-<span class="source-line-no">069</span><span id="line-69">                                TURN_GEARBOX,</span>
-<span class="source-line-no">070</span><span id="line-70">                                constants.SteerInertia,</span>
-<span class="source-line-no">071</span><span id="line-71">                                constants.SteerMotorGearRatio),</span>
-<span class="source-line-no">072</span><span id="line-72">                        TURN_GEARBOX);</span>
-<span class="source-line-no">073</span><span id="line-73"></span>
-<span class="source-line-no">074</span><span id="line-74">        // Enable wrapping for turn PID</span>
-<span class="source-line-no">075</span><span id="line-75">        turnController.enableContinuousInput(-Math.PI, Math.PI);</span>
-<span class="source-line-no">076</span><span id="line-76">    }</span>
-<span class="source-line-no">077</span><span id="line-77"></span>
-<span class="source-line-no">078</span><span id="line-78">    @Override</span>
-<span class="source-line-no">079</span><span id="line-79">    public void updateInputs(ModuleIOInputs inputs) {</span>
-<span class="source-line-no">080</span><span id="line-80">        // Run closed-loop control</span>
-<span class="source-line-no">081</span><span id="line-81">        if (driveClosedLoop) {</span>
-<span class="source-line-no">082</span><span id="line-82">            driveAppliedVolts =</span>
-<span class="source-line-no">083</span><span id="line-83">                    driveFFVolts + driveController.calculate(driveSim.getAngularVelocity());</span>
-<span class="source-line-no">084</span><span id="line-84">        } else {</span>
-<span class="source-line-no">085</span><span id="line-85">            driveController.reset();</span>
-<span class="source-line-no">086</span><span id="line-86">        }</span>
-<span class="source-line-no">087</span><span id="line-87">        if (turnClosedLoop) {</span>
-<span class="source-line-no">088</span><span id="line-88">            turnAppliedVolts = turnController.calculate(turnSim.getAngularPosition());</span>
-<span class="source-line-no">089</span><span id="line-89">        } else {</span>
-<span class="source-line-no">090</span><span id="line-90">            turnController.reset();</span>
-<span class="source-line-no">091</span><span id="line-91">        }</span>
+<span class="source-line-no">007</span><span id="line-7">import org.wpilib.math.controller.PIDController;</span>
+<span class="source-line-no">008</span><span id="line-8">import org.wpilib.math.geometry.Rotation2d;</span>
+<span class="source-line-no">009</span><span id="line-9">import org.wpilib.math.system.DCMotor;</span>
+<span class="source-line-no">010</span><span id="line-10">import org.wpilib.math.system.Models;</span>
+<span class="source-line-no">011</span><span id="line-11">import org.wpilib.math.util.Units;</span>
+<span class="source-line-no">012</span><span id="line-12">import org.wpilib.simulation.DCMotorSim;</span>
+<span class="source-line-no">013</span><span id="line-13">import org.wpilib.system.Timer;</span>
+<span class="source-line-no">014</span><span id="line-14"></span>
+<span class="source-line-no">015</span><span id="line-15">import com.ctre.phoenix6.configs.CANcoderConfiguration;</span>
+<span class="source-line-no">016</span><span id="line-16">import com.ctre.phoenix6.configs.TalonFXConfiguration;</span>
+<span class="source-line-no">017</span><span id="line-17">import com.ctre.phoenix6.swerve.SwerveModuleConstants;</span>
+<span class="source-line-no">018</span><span id="line-18"></span>
+<span class="source-line-no">019</span><span id="line-19">/**</span>
+<span class="source-line-no">020</span><span id="line-20"> * Physics sim implementation of module IO. The sim models are configured using a set of module</span>
+<span class="source-line-no">021</span><span id="line-21"> * constants from Phoenix. Simulation is always based on voltage control.</span>
+<span class="source-line-no">022</span><span id="line-22"> */</span>
+<span class="source-line-no">023</span><span id="line-23">public class ModuleIOSim implements ModuleIO {</span>
+<span class="source-line-no">024</span><span id="line-24">    // TunerConstants doesn't support separate sim constants, so they are declared</span>
+<span class="source-line-no">025</span><span id="line-25">    // locally</span>
+<span class="source-line-no">026</span><span id="line-26">    private static final double DRIVE_KP = 0.05;</span>
+<span class="source-line-no">027</span><span id="line-27">    private static final double DRIVE_KD = 0.0;</span>
+<span class="source-line-no">028</span><span id="line-28">    private static final double DRIVE_KS = 0.0;</span>
+<span class="source-line-no">029</span><span id="line-29">    private static final double DRIVE_KV_ROT =</span>
+<span class="source-line-no">030</span><span id="line-30">            0.91035; // Same units as TunerConstants: (volt * secs) / rotation</span>
+<span class="source-line-no">031</span><span id="line-31">    private static final double DRIVE_KV = 1.0 / Units.rotationsToRadians(1.0 / DRIVE_KV_ROT);</span>
+<span class="source-line-no">032</span><span id="line-32">    private static final double TURN_KP = 8.0;</span>
+<span class="source-line-no">033</span><span id="line-33">    private static final double TURN_KD = 0.0;</span>
+<span class="source-line-no">034</span><span id="line-34">    private static final DCMotor DRIVE_GEARBOX = DCMotor.getKrakenX60Foc(1);</span>
+<span class="source-line-no">035</span><span id="line-35">    private static final DCMotor TURN_GEARBOX = DCMotor.getKrakenX60Foc(1);</span>
+<span class="source-line-no">036</span><span id="line-36"></span>
+<span class="source-line-no">037</span><span id="line-37">    private final DCMotorSim driveSim;</span>
+<span class="source-line-no">038</span><span id="line-38">    private final DCMotorSim turnSim;</span>
+<span class="source-line-no">039</span><span id="line-39"></span>
+<span class="source-line-no">040</span><span id="line-40">    private boolean driveClosedLoop = false;</span>
+<span class="source-line-no">041</span><span id="line-41">    private boolean turnClosedLoop = false;</span>
+<span class="source-line-no">042</span><span id="line-42">    private PIDController driveController = new PIDController(DRIVE_KP, 0, DRIVE_KD);</span>
+<span class="source-line-no">043</span><span id="line-43">    private PIDController turnController = new PIDController(TURN_KP, 0, TURN_KD);</span>
+<span class="source-line-no">044</span><span id="line-44">    private double driveFFVolts = 0.0;</span>
+<span class="source-line-no">045</span><span id="line-45">    private double driveAppliedVolts = 0.0;</span>
+<span class="source-line-no">046</span><span id="line-46">    private double turnAppliedVolts = 0.0;</span>
+<span class="source-line-no">047</span><span id="line-47"></span>
+<span class="source-line-no">048</span><span id="line-48">    public ModuleIOSim(</span>
+<span class="source-line-no">049</span><span id="line-49">            SwerveModuleConstants&lt;TalonFXConfiguration, TalonFXConfiguration, CANcoderConfiguration&gt;</span>
+<span class="source-line-no">050</span><span id="line-50">                    constants) {</span>
+<span class="source-line-no">051</span><span id="line-51">        // Create drive and turn sim models</span>
+<span class="source-line-no">052</span><span id="line-52">        driveSim =</span>
+<span class="source-line-no">053</span><span id="line-53">                new DCMotorSim(</span>
+<span class="source-line-no">054</span><span id="line-54">                        Models.singleJointedArmFromPhysicalConstants( // Recommended model by</span>
+<span class="source-line-no">055</span><span id="line-55">                                // documentation</span>
+<span class="source-line-no">056</span><span id="line-56">                                DRIVE_GEARBOX,</span>
+<span class="source-line-no">057</span><span id="line-57">                                constants.DriveInertia,</span>
+<span class="source-line-no">058</span><span id="line-58">                                constants.DriveMotorGearRatio),</span>
+<span class="source-line-no">059</span><span id="line-59">                        DRIVE_GEARBOX);</span>
+<span class="source-line-no">060</span><span id="line-60">        turnSim =</span>
+<span class="source-line-no">061</span><span id="line-61">                new DCMotorSim(</span>
+<span class="source-line-no">062</span><span id="line-62">                        Models.singleJointedArmFromPhysicalConstants(</span>
+<span class="source-line-no">063</span><span id="line-63">                                TURN_GEARBOX,</span>
+<span class="source-line-no">064</span><span id="line-64">                                constants.SteerInertia,</span>
+<span class="source-line-no">065</span><span id="line-65">                                constants.SteerMotorGearRatio),</span>
+<span class="source-line-no">066</span><span id="line-66">                        TURN_GEARBOX);</span>
+<span class="source-line-no">067</span><span id="line-67"></span>
+<span class="source-line-no">068</span><span id="line-68">        // Enable wrapping for turn PID</span>
+<span class="source-line-no">069</span><span id="line-69">        turnController.enableContinuousInput(-Math.PI, Math.PI);</span>
+<span class="source-line-no">070</span><span id="line-70">    }</span>
+<span class="source-line-no">071</span><span id="line-71"></span>
+<span class="source-line-no">072</span><span id="line-72">    @Override</span>
+<span class="source-line-no">073</span><span id="line-73">    public void updateInputs(ModuleIOInputs inputs) {</span>
+<span class="source-line-no">074</span><span id="line-74">        // Run closed-loop control</span>
+<span class="source-line-no">075</span><span id="line-75">        if (driveClosedLoop) {</span>
+<span class="source-line-no">076</span><span id="line-76">            driveAppliedVolts =</span>
+<span class="source-line-no">077</span><span id="line-77">                    driveFFVolts + driveController.calculate(driveSim.getAngularVelocity());</span>
+<span class="source-line-no">078</span><span id="line-78">        } else {</span>
+<span class="source-line-no">079</span><span id="line-79">            driveController.reset();</span>
+<span class="source-line-no">080</span><span id="line-80">        }</span>
+<span class="source-line-no">081</span><span id="line-81">        if (turnClosedLoop) {</span>
+<span class="source-line-no">082</span><span id="line-82">            turnAppliedVolts = turnController.calculate(turnSim.getAngularPosition());</span>
+<span class="source-line-no">083</span><span id="line-83">        } else {</span>
+<span class="source-line-no">084</span><span id="line-84">            turnController.reset();</span>
+<span class="source-line-no">085</span><span id="line-85">        }</span>
+<span class="source-line-no">086</span><span id="line-86"></span>
+<span class="source-line-no">087</span><span id="line-87">        // Update simulation state</span>
+<span class="source-line-no">088</span><span id="line-88">        driveSim.setInputVoltage(Math.clamp(driveAppliedVolts, -12.0, 12.0));</span>
+<span class="source-line-no">089</span><span id="line-89">        turnSim.setInputVoltage(Math.clamp(turnAppliedVolts, -12.0, 12.0));</span>
+<span class="source-line-no">090</span><span id="line-90">        driveSim.update(0.02);</span>
+<span class="source-line-no">091</span><span id="line-91">        turnSim.update(0.02);</span>
 <span class="source-line-no">092</span><span id="line-92"></span>
-<span class="source-line-no">093</span><span id="line-93">        // Update simulation state</span>
-<span class="source-line-no">094</span><span id="line-94">        driveSim.setInputVoltage(Math.clamp(driveAppliedVolts, -12.0, 12.0));</span>
-<span class="source-line-no">095</span><span id="line-95">        turnSim.setInputVoltage(Math.clamp(turnAppliedVolts, -12.0, 12.0));</span>
-<span class="source-line-no">096</span><span id="line-96">        driveSim.update(0.02);</span>
-<span class="source-line-no">097</span><span id="line-97">        turnSim.update(0.02);</span>
-<span class="source-line-no">098</span><span id="line-98"></span>
-<span class="source-line-no">099</span><span id="line-99">        // Update drive inputs</span>
-<span class="source-line-no">100</span><span id="line-100">        inputs.driveConnected = true;</span>
-<span class="source-line-no">101</span><span id="line-101">        inputs.drivePosition = Radians.of(driveSim.getAngularPosition());</span>
-<span class="source-line-no">102</span><span id="line-102">        inputs.driveVelocity = RadiansPerSecond.of(driveSim.getAngularVelocity());</span>
-<span class="source-line-no">103</span><span id="line-103">        inputs.driveAppliedVolts = Volts.of(driveAppliedVolts);</span>
-<span class="source-line-no">104</span><span id="line-104">        inputs.driveCurrentAmps = Amps.of(Math.abs(driveSim.getCurrentDraw()));</span>
-<span class="source-line-no">105</span><span id="line-105"></span>
-<span class="source-line-no">106</span><span id="line-106">        // Update turn inputs</span>
-<span class="source-line-no">107</span><span id="line-107">        inputs.turnConnected = true;</span>
-<span class="source-line-no">108</span><span id="line-108">        inputs.turnEncoderConnected = true;</span>
-<span class="source-line-no">109</span><span id="line-109">        inputs.turnAbsolutePosition = new Rotation2d(turnSim.getAngularPosition());</span>
-<span class="source-line-no">110</span><span id="line-110">        inputs.turnPosition = new Rotation2d(turnSim.getAngularPosition());</span>
-<span class="source-line-no">111</span><span id="line-111">        inputs.turnVelocityRadPerSec = turnSim.getAngularVelocity();</span>
-<span class="source-line-no">112</span><span id="line-112">        inputs.turnAppliedVolts = turnAppliedVolts;</span>
-<span class="source-line-no">113</span><span id="line-113">        inputs.turnCurrentAmps = Math.abs(turnSim.getCurrentDraw());</span>
-<span class="source-line-no">114</span><span id="line-114"></span>
-<span class="source-line-no">115</span><span id="line-115">        // Update odometry inputs (50Hz because high-frequency odometry in sim doesn't</span>
-<span class="source-line-no">116</span><span id="line-116">        // matter)</span>
-<span class="source-line-no">117</span><span id="line-117">        inputs.odometryTimestamps = new double[] {Timer.getMonotonicTimestamp()};</span>
-<span class="source-line-no">118</span><span id="line-118">        inputs.odometryDrivePositions = new Angle[] {inputs.drivePosition};</span>
-<span class="source-line-no">119</span><span id="line-119">        inputs.odometryTurnPositions = new Rotation2d[] {inputs.turnPosition};</span>
+<span class="source-line-no">093</span><span id="line-93">        // Update drive inputs</span>
+<span class="source-line-no">094</span><span id="line-94">        inputs.driveConnected = true;</span>
+<span class="source-line-no">095</span><span id="line-95">        inputs.drivePositionRad = driveSim.getAngularPosition();</span>
+<span class="source-line-no">096</span><span id="line-96">        inputs.driveVelocityRadPerSec = driveSim.getAngularVelocity();</span>
+<span class="source-line-no">097</span><span id="line-97">        inputs.driveAppliedVolts = driveAppliedVolts;</span>
+<span class="source-line-no">098</span><span id="line-98">        inputs.driveCurrentAmps = Math.abs(driveSim.getCurrentDraw());</span>
+<span class="source-line-no">099</span><span id="line-99"></span>
+<span class="source-line-no">100</span><span id="line-100">        // Update turn inputs</span>
+<span class="source-line-no">101</span><span id="line-101">        inputs.turnConnected = true;</span>
+<span class="source-line-no">102</span><span id="line-102">        inputs.turnEncoderConnected = true;</span>
+<span class="source-line-no">103</span><span id="line-103">        inputs.turnAbsolutePosition = new Rotation2d(turnSim.getAngularPosition());</span>
+<span class="source-line-no">104</span><span id="line-104">        inputs.turnPosition = new Rotation2d(turnSim.getAngularPosition());</span>
+<span class="source-line-no">105</span><span id="line-105">        inputs.turnVelocityRadPerSec = turnSim.getAngularVelocity();</span>
+<span class="source-line-no">106</span><span id="line-106">        inputs.turnAppliedVolts = turnAppliedVolts;</span>
+<span class="source-line-no">107</span><span id="line-107">        inputs.turnCurrentAmps = Math.abs(turnSim.getCurrentDraw());</span>
+<span class="source-line-no">108</span><span id="line-108"></span>
+<span class="source-line-no">109</span><span id="line-109">        // Update odometry inputs (50Hz because high-frequency odometry in sim doesn't</span>
+<span class="source-line-no">110</span><span id="line-110">        // matter)</span>
+<span class="source-line-no">111</span><span id="line-111">        inputs.odometryTimestamps = new double[] {Timer.getMonotonicTimestamp()};</span>
+<span class="source-line-no">112</span><span id="line-112">        inputs.odometryDrivePositionsRad = new double[] {inputs.drivePositionRad};</span>
+<span class="source-line-no">113</span><span id="line-113">        inputs.odometryTurnPositions = new Rotation2d[] {inputs.turnPosition};</span>
+<span class="source-line-no">114</span><span id="line-114">    }</span>
+<span class="source-line-no">115</span><span id="line-115"></span>
+<span class="source-line-no">116</span><span id="line-116">    @Override</span>
+<span class="source-line-no">117</span><span id="line-117">    public void setDriveOpenLoop(double output) {</span>
+<span class="source-line-no">118</span><span id="line-118">        driveClosedLoop = false;</span>
+<span class="source-line-no">119</span><span id="line-119">        driveAppliedVolts = output;</span>
 <span class="source-line-no">120</span><span id="line-120">    }</span>
 <span class="source-line-no">121</span><span id="line-121"></span>
 <span class="source-line-no">122</span><span id="line-122">    @Override</span>
-<span class="source-line-no">123</span><span id="line-123">    public void applyOutputs(ModuleIOOutputs outputs) {</span>
-<span class="source-line-no">124</span><span id="line-124">        switch (outputs.driveOutputMode) {</span>
-<span class="source-line-no">125</span><span id="line-125">            case VELOCITY -&gt; {</span>
-<span class="source-line-no">126</span><span id="line-126">                driveClosedLoop = true;</span>
-<span class="source-line-no">127</span><span id="line-127">                double velocityRadPerSec = outputs.driveTargetVelocity.in(RadiansPerSecond);</span>
-<span class="source-line-no">128</span><span id="line-128">                driveFFVolts =</span>
-<span class="source-line-no">129</span><span id="line-129">                        DRIVE_KS * Math.signum(velocityRadPerSec) + DRIVE_KV * velocityRadPerSec;</span>
-<span class="source-line-no">130</span><span id="line-130">                driveController.setSetpoint(velocityRadPerSec);</span>
-<span class="source-line-no">131</span><span id="line-131">            }</span>
-<span class="source-line-no">132</span><span id="line-132">            case OPEN_LOOP -&gt; {</span>
-<span class="source-line-no">133</span><span id="line-133">                driveClosedLoop = false;</span>
-<span class="source-line-no">134</span><span id="line-134">                driveAppliedVolts = outputs.driveTargetOpenLoop;</span>
-<span class="source-line-no">135</span><span id="line-135">            }</span>
-<span class="source-line-no">136</span><span id="line-136">        }</span>
-<span class="source-line-no">137</span><span id="line-137">        switch (outputs.turnOutputMode) {</span>
-<span class="source-line-no">138</span><span id="line-138">            case POSITION -&gt; {</span>
-<span class="source-line-no">139</span><span id="line-139">                turnClosedLoop = true;</span>
-<span class="source-line-no">140</span><span id="line-140">                turnController.setSetpoint(outputs.turnTargetPosition.in(Radians));</span>
-<span class="source-line-no">141</span><span id="line-141">            }</span>
-<span class="source-line-no">142</span><span id="line-142">            case OPEN_LOOP -&gt; {</span>
-<span class="source-line-no">143</span><span id="line-143">                turnClosedLoop = false;</span>
-<span class="source-line-no">144</span><span id="line-144">                turnAppliedVolts = outputs.turnTargetOpenLoop;</span>
-<span class="source-line-no">145</span><span id="line-145">            }</span>
-<span class="source-line-no">146</span><span id="line-146">        }</span>
-<span class="source-line-no">147</span><span id="line-147">    }</span>
-<span class="source-line-no">148</span><span id="line-148">}</span>
+<span class="source-line-no">123</span><span id="line-123">    public void setTurnOpenLoop(double output) {</span>
+<span class="source-line-no">124</span><span id="line-124">        turnClosedLoop = false;</span>
+<span class="source-line-no">125</span><span id="line-125">        turnAppliedVolts = output;</span>
+<span class="source-line-no">126</span><span id="line-126">    }</span>
+<span class="source-line-no">127</span><span id="line-127"></span>
+<span class="source-line-no">128</span><span id="line-128">    @Override</span>
+<span class="source-line-no">129</span><span id="line-129">    public void setDriveVelocity(double velocityRadPerSec) {</span>
+<span class="source-line-no">130</span><span id="line-130">        driveClosedLoop = true;</span>
+<span class="source-line-no">131</span><span id="line-131">        driveFFVolts = DRIVE_KS * Math.signum(velocityRadPerSec) + DRIVE_KV * velocityRadPerSec;</span>
+<span class="source-line-no">132</span><span id="line-132">        driveController.setSetpoint(velocityRadPerSec);</span>
+<span class="source-line-no">133</span><span id="line-133">    }</span>
+<span class="source-line-no">134</span><span id="line-134"></span>
+<span class="source-line-no">135</span><span id="line-135">    @Override</span>
+<span class="source-line-no">136</span><span id="line-136">    public void setTurnPosition(Rotation2d rotation) {</span>
+<span class="source-line-no">137</span><span id="line-137">        turnClosedLoop = true;</span>
+<span class="source-line-no">138</span><span id="line-138">        turnController.setSetpoint(rotation.getRadians());</span>
+<span class="source-line-no">139</span><span id="line-139">    }</span>
+<span class="source-line-no">140</span><span id="line-140">}</span>
 
 
 

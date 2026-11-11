@@ -12,7 +12,7 @@
 <script type="text/javascript" src="../../../../../script-files/script.js"></script>
 <script type="text/javascript" src="../../../../../script-files/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="../../../../../script-files/jquery-ui.min.js"></script>
-<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../betterjdocs.css"><link rel="icon" href="../../../../../favicon.svg?t=1794182926532" type="image/x-icon"><script defer type="module" src="../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
+<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../betterjdocs.css"><link rel="icon" href="../../../../../favicon.svg?t=1794436036447" type="image/x-icon"><script defer type="module" src="../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
 <body class="class-declaration-page">
 <script type="text/javascript">const pathtoroot = "../../../../../";
 loadScripts(document, 'script');</script>
@@ -88,7 +88,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="horizontal-scroll">
-<div class="type-signature"><span class="modifiers">public static class </span><span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/GyroIO.html#line-17">GyroIO.GyroIOInputs</a></span>
+<div class="type-signature"><span class="modifiers">public static class </span><span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/GyroIO.html#line-12">GyroIO.GyroIOInputs</a></span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 </div>
 </section>
@@ -112,10 +112,10 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>double[]</code></div>
 <div class="col-second even-row-color"><code><a href="#odometryYawTimestamps" class="member-name-link">odometryYawTimestamps</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>org.wpilib.units.measure.Angle</code></div>
+<div class="col-first odd-row-color"><code>org.wpilib.math.geometry.Rotation2d</code></div>
 <div class="col-second odd-row-color"><code><a href="#yawPosition" class="member-name-link">yawPosition</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>org.wpilib.units.measure.AngularVelocity</code></div>
+<div class="col-first even-row-color"><code>double</code></div>
 <div class="col-second even-row-color"><code><a href="#yawVelocityRadPerSec" class="member-name-link">yawVelocityRadPerSec</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
@@ -156,7 +156,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="connected">
 <h3>connected</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/GyroIO.GyroIOInputs.html#line-19">connected</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/GyroIO.GyroIOInputs.html#line-14">connected</a></span></div>
 </div>
 </section>
 </li>
@@ -164,7 +164,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="yawPosition">
 <h3>yawPosition</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.wpilib.units.measure.Angle</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/GyroIO.GyroIOInputs.html#line-20">yawPosition</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.wpilib.math.geometry.Rotation2d</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/GyroIO.GyroIOInputs.html#line-15">yawPosition</a></span></div>
 </div>
 </section>
 </li>
@@ -172,7 +172,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="yawVelocityRadPerSec">
 <h3>yawVelocityRadPerSec</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.wpilib.units.measure.AngularVelocity</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/GyroIO.GyroIOInputs.html#line-21">yawVelocityRadPerSec</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/GyroIO.GyroIOInputs.html#line-16">yawVelocityRadPerSec</a></span></div>
 </div>
 </section>
 </li>
@@ -180,7 +180,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="odometryYawTimestamps">
 <h3>odometryYawTimestamps</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/GyroIO.GyroIOInputs.html#line-22">odometryYawTimestamps</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/GyroIO.GyroIOInputs.html#line-17">odometryYawTimestamps</a></span></div>
 </div>
 </section>
 </li>
@@ -188,7 +188,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="odometryYawPositions">
 <h3>odometryYawPositions</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.wpilib.math.geometry.Rotation2d[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/GyroIO.GyroIOInputs.html#line-23">odometryYawPositions</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.wpilib.math.geometry.Rotation2d[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/GyroIO.GyroIOInputs.html#line-18">odometryYawPositions</a></span></div>
 </div>
 </section>
 </li>
@@ -204,7 +204,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;()">
 <h3>GyroIOInputs</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/GyroIO.GyroIOInputs.html#line-18">GyroIOInputs</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/GyroIO.GyroIOInputs.html#line-13">GyroIOInputs</a></span>()</div>
 </div>
 </section>
 </li>

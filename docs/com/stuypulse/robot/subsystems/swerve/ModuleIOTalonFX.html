@@ -12,7 +12,7 @@
 <script type="text/javascript" src="../../../../../script-files/script.js"></script>
 <script type="text/javascript" src="../../../../../script-files/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="../../../../../script-files/jquery-ui.min.js"></script>
-<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../betterjdocs.css"><link rel="icon" href="../../../../../favicon.svg?t=1794182926536" type="image/x-icon"><script defer type="module" src="../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
+<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../betterjdocs.css"><link rel="icon" href="../../../../../favicon.svg?t=1794436036455" type="image/x-icon"><script defer type="module" src="../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
 <body class="class-declaration-page">
 <script type="text/javascript">const pathtoroot = "../../../../../";
 loadScripts(document, 'script');</script>
@@ -95,7 +95,10 @@ loadScripts(document, 'script');</script>
 <ol class="toc-list">
 <li><a href="#tryUntilOk(int,java.util.function.Supplier)" tabindex="0">tryUntilOk(int, Supplier)</a></li>
 <li><a href="#updateInputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOInputs)" tabindex="0">updateInputs(ModuleIO.ModuleIOInputs)</a></li>
-<li><a href="#applyOutputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOOutputs)" tabindex="0">applyOutputs(ModuleIO.ModuleIOOutputs)</a></li>
+<li><a href="#setDriveOpenLoop(double)" tabindex="0">setDriveOpenLoop(double)</a></li>
+<li><a href="#setTurnOpenLoop(double)" tabindex="0">setTurnOpenLoop(double)</a></li>
+<li><a href="#setDriveVelocity(double)" tabindex="0">setDriveVelocity(double)</a></li>
+<li><a href="#setTurnPosition(org.wpilib.math.geometry.Rotation2d)" tabindex="0">setTurnPosition(Rotation2d)</a></li>
 </ol>
 </li>
 </ol>
@@ -115,7 +118,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="horizontal-scroll">
-<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-46">ModuleIOTalonFX</a></span>
+<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-44">ModuleIOTalonFX</a></span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="ModuleIO.html" title="interface in com.stuypulse.robot.subsystems.swerve">ModuleIO</a></span></div>
 <div class="block">Module IO implementation for Talon FX drive motor controller, Talon FX turn motor controller, and
@@ -132,7 +135,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <h2>Nested Class Summary</h2>
 <div class="inherited-list">
 <h3 id="nested-classes-inherited-from-class-com.stuypulse.robot.subsystems.swerve.ModuleIO">Nested classes/interfaces inherited from interface&nbsp;<a href="ModuleIO.html#nested-class-summary" title="interface in com.stuypulse.robot.subsystems.swerve">ModuleIO</a></h3>
-<code><a href="ModuleIO.DriveOutputMode.html" title="enum class in com.stuypulse.robot.subsystems.swerve">ModuleIO.DriveOutputMode</a>, <a href="ModuleIO.ModuleIOInputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOInputs</a>, <a href="ModuleIO.ModuleIOOutputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOOutputs</a>, <a href="ModuleIO.TurnOutputMode.html" title="enum class in com.stuypulse.robot.subsystems.swerve">ModuleIO.TurnOutputMode</a></code></div>
+<code><a href="ModuleIO.ModuleIOInputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOInputs</a></code></div>
 </section>
 </li>
 <!-- =========== FIELD SUMMARY =========== -->
@@ -247,15 +250,32 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#applyOutputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOOutputs)" class="member-name-link">applyOutputs</a><wbr>(<a href="ModuleIO.ModuleIOOutputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOOutputs</a>&nbsp;outputs)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>private static void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#tryUntilOk(int,java.util.function.Supplier)" class="member-name-link">tryUntilOk</a><wbr>(int&nbsp;maxAttempts,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;com.ctre.phoenix6.StatusCode&gt;&nbsp;command)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateInputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOInputs)" class="member-name-link">updateInputs</a><wbr>(<a href="ModuleIO.ModuleIOInputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOInputs</a>&nbsp;inputs)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDriveOpenLoop(double)" class="member-name-link">setDriveOpenLoop</a><wbr>(double&nbsp;output)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Run the drive motor at the specified open loop value.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDriveVelocity(double)" class="member-name-link">setDriveVelocity</a><wbr>(double&nbsp;velocityRadPerSec)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Run the drive motor at the specified velocity.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTurnOpenLoop(double)" class="member-name-link">setTurnOpenLoop</a><wbr>(double&nbsp;output)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Run the turn motor at the specified open loop value.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTurnPosition(org.wpilib.math.geometry.Rotation2d)" class="member-name-link">setTurnPosition</a><wbr>(org.wpilib.math.geometry.Rotation2d&nbsp;rotation)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Run the turn motor to the specified rotation.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>private static void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#tryUntilOk(int,java.util.function.Supplier)" class="member-name-link">tryUntilOk</a><wbr>(int&nbsp;maxAttempts,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;com.ctre.phoenix6.StatusCode&gt;&nbsp;command)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateInputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOInputs)" class="member-name-link">updateInputs</a><wbr>(<a href="ModuleIO.ModuleIOInputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOInputs</a>&nbsp;inputs)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Updates the set of loggable inputs.</div>
 </div>
 </div>
@@ -279,7 +299,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="constants">
 <h3>constants</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.swerve.SwerveModuleConstants&lt;com.ctre.phoenix6.configs.TalonFXConfiguration, com.ctre.phoenix6.configs.TalonFXConfiguration, com.ctre.phoenix6.configs.CANcoderConfiguration&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-54">constants</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.swerve.SwerveModuleConstants&lt;com.ctre.phoenix6.configs.TalonFXConfiguration, com.ctre.phoenix6.configs.TalonFXConfiguration, com.ctre.phoenix6.configs.CANcoderConfiguration&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-52">constants</a></span></div>
 </div>
 </section>
 </li>
@@ -287,7 +307,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="driveTalon">
 <h3>driveTalon</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.hardware.TalonFX</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-59">driveTalon</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.hardware.TalonFX</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-57">driveTalon</a></span></div>
 </div>
 </section>
 </li>
@@ -295,7 +315,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="turnTalon">
 <h3>turnTalon</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.hardware.TalonFX</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-60">turnTalon</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.hardware.TalonFX</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-58">turnTalon</a></span></div>
 </div>
 </section>
 </li>
@@ -303,7 +323,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="cancoder">
 <h3>cancoder</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.hardware.CANcoder</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-61">cancoder</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.hardware.CANcoder</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-59">cancoder</a></span></div>
 </div>
 </section>
 </li>
@@ -311,7 +331,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="voltageRequest">
 <h3>voltageRequest</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.controls.VoltageOut</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-64">voltageRequest</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.controls.VoltageOut</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-62">voltageRequest</a></span></div>
 </div>
 </section>
 </li>
@@ -319,7 +339,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="positionVoltageRequest">
 <h3>positionVoltageRequest</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.controls.PositionVoltage</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-65">positionVoltageRequest</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.controls.PositionVoltage</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-63">positionVoltageRequest</a></span></div>
 </div>
 </section>
 </li>
@@ -327,7 +347,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="velocityVoltageRequest">
 <h3>velocityVoltageRequest</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.controls.VelocityVoltage</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-66">velocityVoltageRequest</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.controls.VelocityVoltage</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-64">velocityVoltageRequest</a></span></div>
 </div>
 </section>
 </li>
@@ -335,7 +355,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="torqueCurrentRequest">
 <h3>torqueCurrentRequest</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.controls.TorqueCurrentFOC</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-69">torqueCurrentRequest</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.controls.TorqueCurrentFOC</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-67">torqueCurrentRequest</a></span></div>
 </div>
 </section>
 </li>
@@ -343,7 +363,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="positionTorqueCurrentRequest">
 <h3>positionTorqueCurrentRequest</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.controls.PositionTorqueCurrentFOC</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-70">positionTorqueCurrentRequest</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.controls.PositionTorqueCurrentFOC</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-68">positionTorqueCurrentRequest</a></span></div>
 </div>
 </section>
 </li>
@@ -351,7 +371,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="velocityTorqueCurrentRequest">
 <h3>velocityTorqueCurrentRequest</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-72">velocityTorqueCurrentRequest</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-70">velocityTorqueCurrentRequest</a></span></div>
 </div>
 </section>
 </li>
@@ -359,7 +379,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="timestampQueue">
 <h3>timestampQueue</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Queue.html" title="class or interface in java.util" class="external-link">Queue</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-76">timestampQueue</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Queue.html" title="class or interface in java.util" class="external-link">Queue</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-74">timestampQueue</a></span></div>
 </div>
 </section>
 </li>
@@ -367,7 +387,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="drivePosition">
 <h3>drivePosition</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.StatusSignal&lt;org.wpilib.units.measure.Angle&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-79">drivePosition</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.StatusSignal&lt;org.wpilib.units.measure.Angle&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-77">drivePosition</a></span></div>
 </div>
 </section>
 </li>
@@ -375,7 +395,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="drivePositionQueue">
 <h3>drivePositionQueue</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Queue.html" title="class or interface in java.util" class="external-link">Queue</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-80">drivePositionQueue</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Queue.html" title="class or interface in java.util" class="external-link">Queue</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-78">drivePositionQueue</a></span></div>
 </div>
 </section>
 </li>
@@ -383,7 +403,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="driveVelocity">
 <h3>driveVelocity</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.StatusSignal&lt;org.wpilib.units.measure.AngularVelocity&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-81">driveVelocity</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.StatusSignal&lt;org.wpilib.units.measure.AngularVelocity&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-79">driveVelocity</a></span></div>
 </div>
 </section>
 </li>
@@ -391,7 +411,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="driveAppliedVolts">
 <h3>driveAppliedVolts</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.StatusSignal&lt;org.wpilib.units.measure.Voltage&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-82">driveAppliedVolts</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.StatusSignal&lt;org.wpilib.units.measure.Voltage&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-80">driveAppliedVolts</a></span></div>
 </div>
 </section>
 </li>
@@ -399,7 +419,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="driveCurrent">
 <h3>driveCurrent</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.StatusSignal&lt;org.wpilib.units.measure.Current&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-83">driveCurrent</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.StatusSignal&lt;org.wpilib.units.measure.Current&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-81">driveCurrent</a></span></div>
 </div>
 </section>
 </li>
@@ -407,7 +427,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="turnAbsolutePosition">
 <h3>turnAbsolutePosition</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.StatusSignal&lt;org.wpilib.units.measure.Angle&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-86">turnAbsolutePosition</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.StatusSignal&lt;org.wpilib.units.measure.Angle&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-84">turnAbsolutePosition</a></span></div>
 </div>
 </section>
 </li>
@@ -415,7 +435,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="turnPosition">
 <h3>turnPosition</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.StatusSignal&lt;org.wpilib.units.measure.Angle&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-87">turnPosition</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.StatusSignal&lt;org.wpilib.units.measure.Angle&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-85">turnPosition</a></span></div>
 </div>
 </section>
 </li>
@@ -423,7 +443,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="turnPositionQueue">
 <h3>turnPositionQueue</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Queue.html" title="class or interface in java.util" class="external-link">Queue</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-88">turnPositionQueue</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Queue.html" title="class or interface in java.util" class="external-link">Queue</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-86">turnPositionQueue</a></span></div>
 </div>
 </section>
 </li>
@@ -431,7 +451,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="turnVelocity">
 <h3>turnVelocity</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.StatusSignal&lt;org.wpilib.units.measure.AngularVelocity&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-89">turnVelocity</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.StatusSignal&lt;org.wpilib.units.measure.AngularVelocity&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-87">turnVelocity</a></span></div>
 </div>
 </section>
 </li>
@@ -439,7 +459,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="turnAppliedVolts">
 <h3>turnAppliedVolts</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.StatusSignal&lt;org.wpilib.units.measure.Voltage&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-90">turnAppliedVolts</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.StatusSignal&lt;org.wpilib.units.measure.Voltage&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-88">turnAppliedVolts</a></span></div>
 </div>
 </section>
 </li>
@@ -447,7 +467,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="turnCurrent">
 <h3>turnCurrent</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.StatusSignal&lt;org.wpilib.units.measure.Current&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-91">turnCurrent</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">com.ctre.phoenix6.StatusSignal&lt;org.wpilib.units.measure.Current&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-89">turnCurrent</a></span></div>
 </div>
 </section>
 </li>
@@ -455,7 +475,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="driveConnectedDebounce">
 <h3>driveConnectedDebounce</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">org.wpilib.math.filter.Debouncer</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-94">driveConnectedDebounce</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">org.wpilib.math.filter.Debouncer</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-92">driveConnectedDebounce</a></span></div>
 </div>
 </section>
 </li>
@@ -463,7 +483,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="turnConnectedDebounce">
 <h3>turnConnectedDebounce</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">org.wpilib.math.filter.Debouncer</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-96">turnConnectedDebounce</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">org.wpilib.math.filter.Debouncer</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-94">turnConnectedDebounce</a></span></div>
 </div>
 </section>
 </li>
@@ -471,7 +491,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="turnEncoderConnectedDebounce">
 <h3>turnEncoderConnectedDebounce</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">org.wpilib.math.filter.Debouncer</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-98">turnEncoderConnectedDebounce</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">org.wpilib.math.filter.Debouncer</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-96">turnEncoderConnectedDebounce</a></span></div>
 </div>
 </section>
 </li>
@@ -487,7 +507,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="&lt;init&gt;(com.ctre.phoenix6.swerve.SwerveModuleConstants)">
 <h3>ModuleIOTalonFX</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-101">ModuleIOTalonFX</a></span><wbr><span class="parameters">(com.ctre.phoenix6.swerve.SwerveModuleConstants&lt;com.ctre.phoenix6.configs.TalonFXConfiguration, com.ctre.phoenix6.configs.TalonFXConfiguration, com.ctre.phoenix6.configs.CANcoderConfiguration&gt;&nbsp;constants)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-99">ModuleIOTalonFX</a></span><wbr><span class="parameters">(com.ctre.phoenix6.swerve.SwerveModuleConstants&lt;com.ctre.phoenix6.configs.TalonFXConfiguration, com.ctre.phoenix6.configs.TalonFXConfiguration, com.ctre.phoenix6.configs.CANcoderConfiguration&gt;&nbsp;constants)</span></div>
 </div>
 </section>
 </li>
@@ -503,7 +523,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="tryUntilOk(int,java.util.function.Supplier)">
 <h3>tryUntilOk</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-47">tryUntilOk</a></span><wbr><span class="parameters">(int&nbsp;maxAttempts,
+<div class="member-signature"><span class="modifiers">private static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-45">tryUntilOk</a></span><wbr><span class="parameters">(int&nbsp;maxAttempts,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;com.ctre.phoenix6.StatusCode&gt;&nbsp;command)</span></div>
 </div>
 </section>
@@ -512,7 +532,7 @@ CANcoder. Configured using a set of module constants from Phoenix.
 <section class="detail" id="updateInputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOInputs)">
 <h3>updateInputs</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-196">updateInputs</a></span><wbr><span class="parameters">(<a href="ModuleIO.ModuleIOInputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOInputs</a>&nbsp;inputs)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-194">updateInputs</a></span><wbr><span class="parameters">(<a href="ModuleIO.ModuleIOInputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOInputs</a>&nbsp;inputs)</span></div>
 <div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="ModuleIO.html#updateInputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOInputs)">ModuleIO</a></code></span></div>
 <div class="block">Updates the set of loggable inputs.</div>
 <dl class="notes">
@@ -523,13 +543,57 @@ CANcoder. Configured using a set of module constants from Phoenix.
 </section>
 </li>
 <li>
-<section class="detail" id="applyOutputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOOutputs)">
-<h3>applyOutputs</h3>
+<section class="detail" id="setDriveOpenLoop(double)">
+<h3>setDriveOpenLoop</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-241">applyOutputs</a></span><wbr><span class="parameters">(<a href="ModuleIO.ModuleIOOutputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOOutputs</a>&nbsp;outputs)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-239">setDriveOpenLoop</a></span><wbr><span class="parameters">(double&nbsp;output)</span></div>
+<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="ModuleIO.html#setDriveOpenLoop(double)">ModuleIO</a></code></span></div>
+<div class="block">Run the drive motor at the specified open loop value.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="ModuleIO.html#applyOutputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOOutputs)">applyOutputs</a></code>&nbsp;in interface&nbsp;<code><a href="ModuleIO.html" title="interface in com.stuypulse.robot.subsystems.swerve">ModuleIO</a></code></dd>
+<dd><code><a href="ModuleIO.html#setDriveOpenLoop(double)">setDriveOpenLoop</a></code>&nbsp;in interface&nbsp;<code><a href="ModuleIO.html" title="interface in com.stuypulse.robot.subsystems.swerve">ModuleIO</a></code></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="setTurnOpenLoop(double)">
+<h3>setTurnOpenLoop</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-248">setTurnOpenLoop</a></span><wbr><span class="parameters">(double&nbsp;output)</span></div>
+<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="ModuleIO.html#setTurnOpenLoop(double)">ModuleIO</a></code></span></div>
+<div class="block">Run the turn motor at the specified open loop value.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="ModuleIO.html#setTurnOpenLoop(double)">setTurnOpenLoop</a></code>&nbsp;in interface&nbsp;<code><a href="ModuleIO.html" title="interface in com.stuypulse.robot.subsystems.swerve">ModuleIO</a></code></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="setDriveVelocity(double)">
+<h3>setDriveVelocity</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-257">setDriveVelocity</a></span><wbr><span class="parameters">(double&nbsp;velocityRadPerSec)</span></div>
+<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="ModuleIO.html#setDriveVelocity(double)">ModuleIO</a></code></span></div>
+<div class="block">Run the drive motor at the specified velocity.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="ModuleIO.html#setDriveVelocity(double)">setDriveVelocity</a></code>&nbsp;in interface&nbsp;<code><a href="ModuleIO.html" title="interface in com.stuypulse.robot.subsystems.swerve">ModuleIO</a></code></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="setTurnPosition(org.wpilib.math.geometry.Rotation2d)">
+<h3>setTurnPosition</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIOTalonFX.html#line-268">setTurnPosition</a></span><wbr><span class="parameters">(org.wpilib.math.geometry.Rotation2d&nbsp;rotation)</span></div>
+<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="ModuleIO.html#setTurnPosition(org.wpilib.math.geometry.Rotation2d)">ModuleIO</a></code></span></div>
+<div class="block">Run the turn motor to the specified rotation.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="ModuleIO.html#setTurnPosition(org.wpilib.math.geometry.Rotation2d)">setTurnPosition</a></code>&nbsp;in interface&nbsp;<code><a href="ModuleIO.html" title="interface in com.stuypulse.robot.subsystems.swerve">ModuleIO</a></code></dd>
 </dl>
 </div>
 </section>

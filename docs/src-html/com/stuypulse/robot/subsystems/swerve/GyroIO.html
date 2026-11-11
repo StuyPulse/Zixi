@@ -7,7 +7,7 @@
 <meta name="description" content="source: package: com.stuypulse.robot.subsystems.swerve, interface: GyroIO">
 <meta name="generator" content="javadoc/SourceToHTMLConverter">
 <link rel="stylesheet" type="text/css" href="../../../../../../resource-files/stylesheet.css">
-<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../../betterjdocs.css"><link rel="icon" href="../../../../../../favicon.svg?t=1794182926569" type="image/x-icon"><script defer type="module" src="../../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../../pages/source-page/source-page.js"></script></head>
+<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../../betterjdocs.css"><link rel="icon" href="../../../../../../favicon.svg?t=1794436036485" type="image/x-icon"><script defer type="module" src="../../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../../pages/source-page/source-page.js"></script></head>
 <body class="source-page">
 <main role="main">
 <div class="source-container">
@@ -17,29 +17,22 @@
 <span class="source-line-no">004</span><span id="line-4">/**************************************************************/</span>
 <span class="source-line-no">005</span><span id="line-5">package com.stuypulse.robot.subsystems.swerve;</span>
 <span class="source-line-no">006</span><span id="line-6"></span>
-<span class="source-line-no">007</span><span id="line-7">import static org.wpilib.units.Units.Radians;</span>
-<span class="source-line-no">008</span><span id="line-8">import static org.wpilib.units.Units.RadiansPerSecond;</span>
-<span class="source-line-no">009</span><span id="line-9"></span>
-<span class="source-line-no">010</span><span id="line-10">import org.wpilib.math.geometry.Rotation2d;</span>
-<span class="source-line-no">011</span><span id="line-11">import org.wpilib.units.measure.Angle;</span>
-<span class="source-line-no">012</span><span id="line-12">import org.wpilib.units.measure.AngularVelocity;</span>
-<span class="source-line-no">013</span><span id="line-13"></span>
-<span class="source-line-no">014</span><span id="line-14">import org.littletonrobotics.junction.AutoLog;</span>
-<span class="source-line-no">015</span><span id="line-15"></span>
-<span class="source-line-no">016</span><span id="line-16">public interface GyroIO {</span>
-<span class="source-line-no">017</span><span id="line-17">    @AutoLog</span>
-<span class="source-line-no">018</span><span id="line-18">    public static class GyroIOInputs {</span>
-<span class="source-line-no">019</span><span id="line-19">        public boolean connected = false;</span>
-<span class="source-line-no">020</span><span id="line-20">        public Angle yawPosition = Radians.zero();</span>
-<span class="source-line-no">021</span><span id="line-21">        public AngularVelocity yawVelocityRadPerSec = RadiansPerSecond.zero();</span>
-<span class="source-line-no">022</span><span id="line-22">        public double[] odometryYawTimestamps = new double[] {}; // double is better for timestamps</span>
-<span class="source-line-no">023</span><span id="line-23">        public Rotation2d[] odometryYawPositions = new Rotation2d[] {};</span>
-<span class="source-line-no">024</span><span id="line-24">        // rotation2d expected by swerve &amp; other downstreams, would require too much allocation to</span>
-<span class="source-line-no">025</span><span id="line-25">        // be worth it</span>
-<span class="source-line-no">026</span><span id="line-26">    }</span>
-<span class="source-line-no">027</span><span id="line-27"></span>
-<span class="source-line-no">028</span><span id="line-28">    public default void updateInputs(GyroIOInputs inputs) {}</span>
-<span class="source-line-no">029</span><span id="line-29">}</span>
+<span class="source-line-no">007</span><span id="line-7">import org.wpilib.math.geometry.Rotation2d;</span>
+<span class="source-line-no">008</span><span id="line-8"></span>
+<span class="source-line-no">009</span><span id="line-9">import org.littletonrobotics.junction.AutoLog;</span>
+<span class="source-line-no">010</span><span id="line-10"></span>
+<span class="source-line-no">011</span><span id="line-11">public interface GyroIO {</span>
+<span class="source-line-no">012</span><span id="line-12">    @AutoLog</span>
+<span class="source-line-no">013</span><span id="line-13">    public static class GyroIOInputs {</span>
+<span class="source-line-no">014</span><span id="line-14">        public boolean connected = false;</span>
+<span class="source-line-no">015</span><span id="line-15">        public Rotation2d yawPosition = Rotation2d.ZERO;</span>
+<span class="source-line-no">016</span><span id="line-16">        public double yawVelocityRadPerSec = 0.0;</span>
+<span class="source-line-no">017</span><span id="line-17">        public double[] odometryYawTimestamps = new double[] {};</span>
+<span class="source-line-no">018</span><span id="line-18">        public Rotation2d[] odometryYawPositions = new Rotation2d[] {};</span>
+<span class="source-line-no">019</span><span id="line-19">    }</span>
+<span class="source-line-no">020</span><span id="line-20"></span>
+<span class="source-line-no">021</span><span id="line-21">    public default void updateInputs(GyroIOInputs inputs) {}</span>
+<span class="source-line-no">022</span><span id="line-22">}</span>
 
 
 

@@ -12,7 +12,7 @@
 <script type="text/javascript" src="../../../../../script-files/script.js"></script>
 <script type="text/javascript" src="../../../../../script-files/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="../../../../../script-files/jquery-ui.min.js"></script>
-<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../betterjdocs.css"><link rel="icon" href="../../../../../favicon.svg?t=1794182926534" type="image/x-icon"><script defer type="module" src="../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
+<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../betterjdocs.css"><link rel="icon" href="../../../../../favicon.svg?t=1794436036454" type="image/x-icon"><script defer type="module" src="../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
 <body class="class-declaration-page">
 <script type="text/javascript">const pathtoroot = "../../../../../";
 loadScripts(document, 'script');</script>
@@ -60,8 +60,8 @@ loadScripts(document, 'script');</script>
 <li><a href="#field-detail" tabindex="0">Field Details</a>
 <ol class="toc-list">
 <li><a href="#driveConnected" tabindex="0">driveConnected</a></li>
-<li><a href="#drivePosition" tabindex="0">drivePosition</a></li>
-<li><a href="#driveVelocity" tabindex="0">driveVelocity</a></li>
+<li><a href="#drivePositionRad" tabindex="0">drivePositionRad</a></li>
+<li><a href="#driveVelocityRadPerSec" tabindex="0">driveVelocityRadPerSec</a></li>
 <li><a href="#driveAppliedVolts" tabindex="0">driveAppliedVolts</a></li>
 <li><a href="#driveCurrentAmps" tabindex="0">driveCurrentAmps</a></li>
 <li><a href="#turnConnected" tabindex="0">turnConnected</a></li>
@@ -72,7 +72,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#turnAppliedVolts" tabindex="0">turnAppliedVolts</a></li>
 <li><a href="#turnCurrentAmps" tabindex="0">turnCurrentAmps</a></li>
 <li><a href="#odometryTimestamps" tabindex="0">odometryTimestamps</a></li>
-<li><a href="#odometryDrivePositions" tabindex="0">odometryDrivePositions</a></li>
+<li><a href="#odometryDrivePositionsRad" tabindex="0">odometryDrivePositionsRad</a></li>
 <li><a href="#odometryTurnPositions" tabindex="0">odometryTurnPositions</a></li>
 </ol>
 </li>
@@ -98,7 +98,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="horizontal-scroll">
-<div class="type-signature"><span class="modifiers">public static class </span><span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.html#line-23">ModuleIO.ModuleIOInputs</a></span>
+<div class="type-signature"><span class="modifiers">public static class </span><span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.html#line-12">ModuleIO.ModuleIOInputs</a></span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 </div>
 </section>
@@ -113,23 +113,23 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>org.wpilib.units.measure.Voltage</code></div>
+<div class="col-first even-row-color"><code>double</code></div>
 <div class="col-second even-row-color"><code><a href="#driveAppliedVolts" class="member-name-link">driveAppliedVolts</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>boolean</code></div>
 <div class="col-second odd-row-color"><code><a href="#driveConnected" class="member-name-link">driveConnected</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>org.wpilib.units.measure.Current</code></div>
+<div class="col-first even-row-color"><code>double</code></div>
 <div class="col-second even-row-color"><code><a href="#driveCurrentAmps" class="member-name-link">driveCurrentAmps</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>org.wpilib.units.measure.Angle</code></div>
-<div class="col-second odd-row-color"><code><a href="#drivePosition" class="member-name-link">drivePosition</a></code></div>
+<div class="col-first odd-row-color"><code>double</code></div>
+<div class="col-second odd-row-color"><code><a href="#drivePositionRad" class="member-name-link">drivePositionRad</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>org.wpilib.units.measure.AngularVelocity</code></div>
-<div class="col-second even-row-color"><code><a href="#driveVelocity" class="member-name-link">driveVelocity</a></code></div>
+<div class="col-first even-row-color"><code>double</code></div>
+<div class="col-second even-row-color"><code><a href="#driveVelocityRadPerSec" class="member-name-link">driveVelocityRadPerSec</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>org.wpilib.units.measure.Angle[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#odometryDrivePositions" class="member-name-link">odometryDrivePositions</a></code></div>
+<div class="col-first odd-row-color"><code>double[]</code></div>
+<div class="col-second odd-row-color"><code><a href="#odometryDrivePositionsRad" class="member-name-link">odometryDrivePositionsRad</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>double[]</code></div>
 <div class="col-second even-row-color"><code><a href="#odometryTimestamps" class="member-name-link">odometryTimestamps</a></code></div>
@@ -196,23 +196,23 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="driveConnected">
 <h3>driveConnected</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-25">driveConnected</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-14">driveConnected</a></span></div>
 </div>
 </section>
 </li>
 <li>
-<section class="detail" id="drivePosition">
-<h3>drivePosition</h3>
+<section class="detail" id="drivePositionRad">
+<h3>drivePositionRad</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.wpilib.units.measure.Angle</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-26">drivePosition</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-15">drivePositionRad</a></span></div>
 </div>
 </section>
 </li>
 <li>
-<section class="detail" id="driveVelocity">
-<h3>driveVelocity</h3>
+<section class="detail" id="driveVelocityRadPerSec">
+<h3>driveVelocityRadPerSec</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.wpilib.units.measure.AngularVelocity</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-27">driveVelocity</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-16">driveVelocityRadPerSec</a></span></div>
 </div>
 </section>
 </li>
@@ -220,7 +220,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="driveAppliedVolts">
 <h3>driveAppliedVolts</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.wpilib.units.measure.Voltage</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-28">driveAppliedVolts</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-17">driveAppliedVolts</a></span></div>
 </div>
 </section>
 </li>
@@ -228,7 +228,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="driveCurrentAmps">
 <h3>driveCurrentAmps</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.wpilib.units.measure.Current</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-29">driveCurrentAmps</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-18">driveCurrentAmps</a></span></div>
 </div>
 </section>
 </li>
@@ -236,7 +236,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="turnConnected">
 <h3>turnConnected</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-31">turnConnected</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-20">turnConnected</a></span></div>
 </div>
 </section>
 </li>
@@ -244,7 +244,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="turnEncoderConnected">
 <h3>turnEncoderConnected</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-32">turnEncoderConnected</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-21">turnEncoderConnected</a></span></div>
 </div>
 </section>
 </li>
@@ -252,7 +252,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="turnAbsolutePosition">
 <h3>turnAbsolutePosition</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.wpilib.math.geometry.Rotation2d</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-33">turnAbsolutePosition</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.wpilib.math.geometry.Rotation2d</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-22">turnAbsolutePosition</a></span></div>
 </div>
 </section>
 </li>
@@ -260,7 +260,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="turnPosition">
 <h3>turnPosition</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.wpilib.math.geometry.Rotation2d</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-34">turnPosition</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.wpilib.math.geometry.Rotation2d</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-23">turnPosition</a></span></div>
 </div>
 </section>
 </li>
@@ -268,7 +268,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="turnVelocityRadPerSec">
 <h3>turnVelocityRadPerSec</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-35">turnVelocityRadPerSec</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-24">turnVelocityRadPerSec</a></span></div>
 </div>
 </section>
 </li>
@@ -276,7 +276,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="turnAppliedVolts">
 <h3>turnAppliedVolts</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-36">turnAppliedVolts</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-25">turnAppliedVolts</a></span></div>
 </div>
 </section>
 </li>
@@ -284,7 +284,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="turnCurrentAmps">
 <h3>turnCurrentAmps</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-37">turnCurrentAmps</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-26">turnCurrentAmps</a></span></div>
 </div>
 </section>
 </li>
@@ -292,15 +292,15 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="odometryTimestamps">
 <h3>odometryTimestamps</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-39">odometryTimestamps</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-28">odometryTimestamps</a></span></div>
 </div>
 </section>
 </li>
 <li>
-<section class="detail" id="odometryDrivePositions">
-<h3>odometryDrivePositions</h3>
+<section class="detail" id="odometryDrivePositionsRad">
+<h3>odometryDrivePositionsRad</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.wpilib.units.measure.Angle[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-40">odometryDrivePositions</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-29">odometryDrivePositionsRad</a></span></div>
 </div>
 </section>
 </li>
@@ -308,7 +308,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="odometryTurnPositions">
 <h3>odometryTurnPositions</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.wpilib.math.geometry.Rotation2d[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-41">odometryTurnPositions</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.wpilib.math.geometry.Rotation2d[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-30">odometryTurnPositions</a></span></div>
 </div>
 </section>
 </li>
@@ -324,7 +324,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;()">
 <h3>ModuleIOInputs</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-24">ModuleIOInputs</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.ModuleIOInputs.html#line-13">ModuleIOInputs</a></span>()</div>
 </div>
 </section>
 </li>

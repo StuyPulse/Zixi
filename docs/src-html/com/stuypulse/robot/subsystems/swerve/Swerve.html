@@ -7,7 +7,7 @@
 <meta name="description" content="source: package: com.stuypulse.robot.subsystems.swerve, class: Swerve">
 <meta name="generator" content="javadoc/SourceToHTMLConverter">
 <link rel="stylesheet" type="text/css" href="../../../../../../resource-files/stylesheet.css">
-<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../../betterjdocs.css"><link rel="icon" href="../../../../../../favicon.svg?t=1794182926573" type="image/x-icon"><script defer type="module" src="../../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../../pages/source-page/source-page.js"></script></head>
+<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../../betterjdocs.css"><link rel="icon" href="../../../../../../favicon.svg?t=1794436036487" type="image/x-icon"><script defer type="module" src="../../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../../pages/source-page/source-page.js"></script></head>
 <body class="source-page">
 <main role="main">
 <div class="source-container">
@@ -201,166 +201,159 @@
 <span class="source-line-no">188</span><span id="line-188">                !gyroInputs.connected &amp;&amp; GlobalSettings.CURRENT_MODE != RobotMode.SIM);</span>
 <span class="source-line-no">189</span><span id="line-189">    }</span>
 <span class="source-line-no">190</span><span id="line-190"></span>
-<span class="source-line-no">191</span><span id="line-191">    @Override</span>
-<span class="source-line-no">192</span><span id="line-192">    public void periodicAfterScheduler() {</span>
-<span class="source-line-no">193</span><span id="line-193">        for (Module module : modules) {</span>
-<span class="source-line-no">194</span><span id="line-194">            module.periodicAfterScheduler();</span>
-<span class="source-line-no">195</span><span id="line-195">        }</span>
-<span class="source-line-no">196</span><span id="line-196">    }</span>
-<span class="source-line-no">197</span><span id="line-197"></span>
-<span class="source-line-no">198</span><span id="line-198">    /**</span>
-<span class="source-line-no">199</span><span id="line-199">     * Runs the drive at the desired velocity.</span>
-<span class="source-line-no">200</span><span id="line-200">     *</span>
-<span class="source-line-no">201</span><span id="line-201">     * @param speeds Speeds in meters/sec</span>
-<span class="source-line-no">202</span><span id="line-202">     */</span>
-<span class="source-line-no">203</span><span id="line-203">    public void runVelocity(ChassisVelocities speeds) {</span>
-<span class="source-line-no">204</span><span id="line-204">        // Calculate module setpoints</span>
-<span class="source-line-no">205</span><span id="line-205">        ChassisVelocities discreteSpeeds = speeds.discretize(0.02);</span>
-<span class="source-line-no">206</span><span id="line-206">        SwerveModuleVelocity[] setpointStates = kinematics.toSwerveModuleVelocities(discreteSpeeds);</span>
-<span class="source-line-no">207</span><span id="line-207">        setpointStates =</span>
-<span class="source-line-no">208</span><span id="line-208">                SwerveDriveKinematics.desaturateWheelVelocities(</span>
-<span class="source-line-no">209</span><span id="line-209">                        setpointStates, TunerConstants.kSpeedAt12Volts);</span>
-<span class="source-line-no">210</span><span id="line-210"></span>
-<span class="source-line-no">211</span><span id="line-211">        // Log unoptimized setpoints and setpoint speeds</span>
-<span class="source-line-no">212</span><span id="line-212">        Logger.recordOutput("SwerveStates/Setpoints", setpointStates);</span>
-<span class="source-line-no">213</span><span id="line-213">        Logger.recordOutput("SwerveChassisSpeeds/Setpoints", discreteSpeeds);</span>
-<span class="source-line-no">214</span><span id="line-214"></span>
-<span class="source-line-no">215</span><span id="line-215">        // Send setpoints to modules</span>
-<span class="source-line-no">216</span><span id="line-216">        for (int i = 0; i &lt; 4; i++) {</span>
-<span class="source-line-no">217</span><span id="line-217">            modules[i].runSetpoint(setpointStates[i]);</span>
-<span class="source-line-no">218</span><span id="line-218">        }</span>
-<span class="source-line-no">219</span><span id="line-219"></span>
-<span class="source-line-no">220</span><span id="line-220">        // Log optimized setpoints (runSetpoint mutates each state)</span>
-<span class="source-line-no">221</span><span id="line-221">        Logger.recordOutput("SwerveStates/SetpointsOptimized", setpointStates);</span>
+<span class="source-line-no">191</span><span id="line-191">    /**</span>
+<span class="source-line-no">192</span><span id="line-192">     * Runs the drive at the desired velocity.</span>
+<span class="source-line-no">193</span><span id="line-193">     *</span>
+<span class="source-line-no">194</span><span id="line-194">     * @param speeds Speeds in meters/sec</span>
+<span class="source-line-no">195</span><span id="line-195">     */</span>
+<span class="source-line-no">196</span><span id="line-196">    public void runVelocity(ChassisVelocities speeds) {</span>
+<span class="source-line-no">197</span><span id="line-197">        // Calculate module setpoints</span>
+<span class="source-line-no">198</span><span id="line-198">        ChassisVelocities discreteSpeeds = speeds.discretize(0.02);</span>
+<span class="source-line-no">199</span><span id="line-199">        SwerveModuleVelocity[] setpointStates = kinematics.toSwerveModuleVelocities(discreteSpeeds);</span>
+<span class="source-line-no">200</span><span id="line-200">        setpointStates =</span>
+<span class="source-line-no">201</span><span id="line-201">                SwerveDriveKinematics.desaturateWheelVelocities(</span>
+<span class="source-line-no">202</span><span id="line-202">                        setpointStates, TunerConstants.kSpeedAt12Volts);</span>
+<span class="source-line-no">203</span><span id="line-203"></span>
+<span class="source-line-no">204</span><span id="line-204">        // Log unoptimized setpoints and setpoint speeds</span>
+<span class="source-line-no">205</span><span id="line-205">        Logger.recordOutput("SwerveStates/Setpoints", setpointStates);</span>
+<span class="source-line-no">206</span><span id="line-206">        Logger.recordOutput("SwerveChassisSpeeds/Setpoints", discreteSpeeds);</span>
+<span class="source-line-no">207</span><span id="line-207"></span>
+<span class="source-line-no">208</span><span id="line-208">        // Send setpoints to modules</span>
+<span class="source-line-no">209</span><span id="line-209">        for (int i = 0; i &lt; 4; i++) {</span>
+<span class="source-line-no">210</span><span id="line-210">            modules[i].runSetpoint(setpointStates[i]);</span>
+<span class="source-line-no">211</span><span id="line-211">        }</span>
+<span class="source-line-no">212</span><span id="line-212"></span>
+<span class="source-line-no">213</span><span id="line-213">        // Log optimized setpoints (runSetpoint mutates each state)</span>
+<span class="source-line-no">214</span><span id="line-214">        Logger.recordOutput("SwerveStates/SetpointsOptimized", setpointStates);</span>
+<span class="source-line-no">215</span><span id="line-215">    }</span>
+<span class="source-line-no">216</span><span id="line-216"></span>
+<span class="source-line-no">217</span><span id="line-217">    /** Runs the drive in a straight line with the specified drive output. */</span>
+<span class="source-line-no">218</span><span id="line-218">    public void runCharacterization(double output) {</span>
+<span class="source-line-no">219</span><span id="line-219">        for (int i = 0; i &lt; 4; i++) {</span>
+<span class="source-line-no">220</span><span id="line-220">            modules[i].runCharacterization(output);</span>
+<span class="source-line-no">221</span><span id="line-221">        }</span>
 <span class="source-line-no">222</span><span id="line-222">    }</span>
 <span class="source-line-no">223</span><span id="line-223"></span>
-<span class="source-line-no">224</span><span id="line-224">    /** Runs the drive in a straight line with the specified drive output. */</span>
-<span class="source-line-no">225</span><span id="line-225">    public void runCharacterization(double output) {</span>
-<span class="source-line-no">226</span><span id="line-226">        for (int i = 0; i &lt; 4; i++) {</span>
-<span class="source-line-no">227</span><span id="line-227">            modules[i].runCharacterization(output);</span>
-<span class="source-line-no">228</span><span id="line-228">        }</span>
-<span class="source-line-no">229</span><span id="line-229">    }</span>
-<span class="source-line-no">230</span><span id="line-230"></span>
-<span class="source-line-no">231</span><span id="line-231">    /** Stops the drive. */</span>
-<span class="source-line-no">232</span><span id="line-232">    public void stop() {</span>
-<span class="source-line-no">233</span><span id="line-233">        runVelocity(new ChassisVelocities());</span>
-<span class="source-line-no">234</span><span id="line-234">    }</span>
-<span class="source-line-no">235</span><span id="line-235"></span>
-<span class="source-line-no">236</span><span id="line-236">    /**</span>
-<span class="source-line-no">237</span><span id="line-237">     * Stops the drive and turns the modules to an X arrangement to resist movement. The modules</span>
-<span class="source-line-no">238</span><span id="line-238">     * will return to their normal orientations the next time a nonzero velocity is requested.</span>
-<span class="source-line-no">239</span><span id="line-239">     */</span>
-<span class="source-line-no">240</span><span id="line-240">    public void stopWithX() {</span>
-<span class="source-line-no">241</span><span id="line-241">        Rotation2d[] headings = new Rotation2d[4];</span>
-<span class="source-line-no">242</span><span id="line-242">        for (int i = 0; i &lt; 4; i++) {</span>
-<span class="source-line-no">243</span><span id="line-243">            Optional&lt;Rotation2d&gt; rotation = getModuleTranslations()[i].getAngle();</span>
-<span class="source-line-no">244</span><span id="line-244">            headings[i] = rotation.isPresent() ? rotation.get() : headings[i];</span>
-<span class="source-line-no">245</span><span id="line-245">        }</span>
-<span class="source-line-no">246</span><span id="line-246">        kinematics.resetHeadings(headings);</span>
-<span class="source-line-no">247</span><span id="line-247">        stop();</span>
-<span class="source-line-no">248</span><span id="line-248">    }</span>
+<span class="source-line-no">224</span><span id="line-224">    /** Stops the drive. */</span>
+<span class="source-line-no">225</span><span id="line-225">    public void stop() {</span>
+<span class="source-line-no">226</span><span id="line-226">        runVelocity(new ChassisVelocities());</span>
+<span class="source-line-no">227</span><span id="line-227">    }</span>
+<span class="source-line-no">228</span><span id="line-228"></span>
+<span class="source-line-no">229</span><span id="line-229">    /**</span>
+<span class="source-line-no">230</span><span id="line-230">     * Stops the drive and turns the modules to an X arrangement to resist movement. The modules</span>
+<span class="source-line-no">231</span><span id="line-231">     * will return to their normal orientations the next time a nonzero velocity is requested.</span>
+<span class="source-line-no">232</span><span id="line-232">     */</span>
+<span class="source-line-no">233</span><span id="line-233">    public void stopWithX() {</span>
+<span class="source-line-no">234</span><span id="line-234">        Rotation2d[] headings = new Rotation2d[4];</span>
+<span class="source-line-no">235</span><span id="line-235">        for (int i = 0; i &lt; 4; i++) {</span>
+<span class="source-line-no">236</span><span id="line-236">            Optional&lt;Rotation2d&gt; rotation = getModuleTranslations()[i].getAngle();</span>
+<span class="source-line-no">237</span><span id="line-237">            headings[i] = rotation.isPresent() ? rotation.get() : headings[i];</span>
+<span class="source-line-no">238</span><span id="line-238">        }</span>
+<span class="source-line-no">239</span><span id="line-239">        kinematics.resetHeadings(headings);</span>
+<span class="source-line-no">240</span><span id="line-240">        stop();</span>
+<span class="source-line-no">241</span><span id="line-241">    }</span>
+<span class="source-line-no">242</span><span id="line-242"></span>
+<span class="source-line-no">243</span><span id="line-243">    /** Returns a command to run a quasistatic test in the specified direction. */</span>
+<span class="source-line-no">244</span><span id="line-244">    // public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {</span>
+<span class="source-line-no">245</span><span id="line-245">    //     return run(() -&gt; runCharacterization(0.0))</span>
+<span class="source-line-no">246</span><span id="line-246">    //             .withTimeout(1.0)</span>
+<span class="source-line-no">247</span><span id="line-247">    //             .andThen(sysId.quasistatic(direction));</span>
+<span class="source-line-no">248</span><span id="line-248">    // }</span>
 <span class="source-line-no">249</span><span id="line-249"></span>
-<span class="source-line-no">250</span><span id="line-250">    /** Returns a command to run a quasistatic test in the specified direction. */</span>
-<span class="source-line-no">251</span><span id="line-251">    // public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {</span>
-<span class="source-line-no">252</span><span id="line-252">    //     return run(() -&gt; runCharacterization(0.0))</span>
-<span class="source-line-no">253</span><span id="line-253">    //             .withTimeout(1.0)</span>
-<span class="source-line-no">254</span><span id="line-254">    //             .andThen(sysId.quasistatic(direction));</span>
-<span class="source-line-no">255</span><span id="line-255">    // }</span>
-<span class="source-line-no">256</span><span id="line-256"></span>
-<span class="source-line-no">257</span><span id="line-257">    // /** Returns a command to run a dynamic test in the specified direction. */</span>
-<span class="source-line-no">258</span><span id="line-258">    // public Command sysIdDynamic(SysIdRoutine.Direction direction) {</span>
-<span class="source-line-no">259</span><span id="line-259">    //     return run(() -&gt;</span>
-<span class="source-line-no">260</span><span id="line-260">    // runCharacterization(0.0)).withTimeout(1.0).andThen(sysId.dynamic(direction));</span>
-<span class="source-line-no">261</span><span id="line-261">    // }</span>
-<span class="source-line-no">262</span><span id="line-262"></span>
-<span class="source-line-no">263</span><span id="line-263">    /** Returns the module states (turn angles and drive velocities) for all of the modules. */</span>
-<span class="source-line-no">264</span><span id="line-264">    @AutoLogOutput(key = "SwerveStates/Measured")</span>
-<span class="source-line-no">265</span><span id="line-265">    private SwerveModuleVelocity[] getModuleVelocities() {</span>
-<span class="source-line-no">266</span><span id="line-266">        SwerveModuleVelocity[] states = new SwerveModuleVelocity[4];</span>
-<span class="source-line-no">267</span><span id="line-267">        for (int i = 0; i &lt; 4; i++) {</span>
-<span class="source-line-no">268</span><span id="line-268">            states[i] = modules[i].getVelocity();</span>
-<span class="source-line-no">269</span><span id="line-269">        }</span>
-<span class="source-line-no">270</span><span id="line-270">        return states;</span>
-<span class="source-line-no">271</span><span id="line-271">    }</span>
-<span class="source-line-no">272</span><span id="line-272"></span>
-<span class="source-line-no">273</span><span id="line-273">    /** Returns the module positions (turn angles and drive positions) for all of the modules. */</span>
-<span class="source-line-no">274</span><span id="line-274">    private SwerveModulePosition[] getModulePositions() {</span>
-<span class="source-line-no">275</span><span id="line-275">        SwerveModulePosition[] states = new SwerveModulePosition[4];</span>
-<span class="source-line-no">276</span><span id="line-276">        for (int i = 0; i &lt; 4; i++) {</span>
-<span class="source-line-no">277</span><span id="line-277">            states[i] = modules[i].getPosition();</span>
-<span class="source-line-no">278</span><span id="line-278">        }</span>
-<span class="source-line-no">279</span><span id="line-279">        return states;</span>
-<span class="source-line-no">280</span><span id="line-280">    }</span>
-<span class="source-line-no">281</span><span id="line-281"></span>
-<span class="source-line-no">282</span><span id="line-282">    /** Returns the measured chassis speeds of the robot. */</span>
-<span class="source-line-no">283</span><span id="line-283">    @AutoLogOutput(key = "SwerveChassisSpeeds/Measured")</span>
-<span class="source-line-no">284</span><span id="line-284">    private ChassisVelocities getChassisSpeeds() {</span>
-<span class="source-line-no">285</span><span id="line-285">        return kinematics.toChassisVelocities(getModuleVelocities());</span>
-<span class="source-line-no">286</span><span id="line-286">    }</span>
-<span class="source-line-no">287</span><span id="line-287"></span>
-<span class="source-line-no">288</span><span id="line-288">    /** Returns the position of each module in radians. */</span>
-<span class="source-line-no">289</span><span id="line-289">    public double[] getWheelRadiusCharacterizationPositions() {</span>
-<span class="source-line-no">290</span><span id="line-290">        double[] values = new double[4];</span>
-<span class="source-line-no">291</span><span id="line-291">        for (int i = 0; i &lt; 4; i++) {</span>
-<span class="source-line-no">292</span><span id="line-292">            values[i] = modules[i].getWheelRadiusCharacterizationPosition();</span>
-<span class="source-line-no">293</span><span id="line-293">        }</span>
-<span class="source-line-no">294</span><span id="line-294">        return values;</span>
-<span class="source-line-no">295</span><span id="line-295">    }</span>
-<span class="source-line-no">296</span><span id="line-296"></span>
-<span class="source-line-no">297</span><span id="line-297">    /** Returns the average velocity of the modules in rotations/sec (Phoenix native units). */</span>
-<span class="source-line-no">298</span><span id="line-298">    public double getFFCharacterizationVelocity() {</span>
-<span class="source-line-no">299</span><span id="line-299">        double output = 0.0;</span>
-<span class="source-line-no">300</span><span id="line-300">        for (int i = 0; i &lt; 4; i++) {</span>
-<span class="source-line-no">301</span><span id="line-301">            output += modules[i].getFFCharacterizationVelocity() / 4.0;</span>
-<span class="source-line-no">302</span><span id="line-302">        }</span>
-<span class="source-line-no">303</span><span id="line-303">        return output;</span>
-<span class="source-line-no">304</span><span id="line-304">    }</span>
-<span class="source-line-no">305</span><span id="line-305"></span>
-<span class="source-line-no">306</span><span id="line-306">    /** Returns the current odometry pose. */</span>
-<span class="source-line-no">307</span><span id="line-307">    @AutoLogOutput(key = "Odometry/Robot")</span>
-<span class="source-line-no">308</span><span id="line-308">    public Pose2d getPose() {</span>
-<span class="source-line-no">309</span><span id="line-309">        return poseEstimator.getEstimatedPosition();</span>
-<span class="source-line-no">310</span><span id="line-310">    }</span>
-<span class="source-line-no">311</span><span id="line-311"></span>
-<span class="source-line-no">312</span><span id="line-312">    /** Returns the current odometry rotation. */</span>
-<span class="source-line-no">313</span><span id="line-313">    public Rotation2d getRotation() {</span>
-<span class="source-line-no">314</span><span id="line-314">        return getPose().getRotation();</span>
-<span class="source-line-no">315</span><span id="line-315">    }</span>
-<span class="source-line-no">316</span><span id="line-316"></span>
-<span class="source-line-no">317</span><span id="line-317">    /** Resets the current odometry pose. */</span>
-<span class="source-line-no">318</span><span id="line-318">    public void resetPose(Pose2d pose) {</span>
-<span class="source-line-no">319</span><span id="line-319">        poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);</span>
-<span class="source-line-no">320</span><span id="line-320">    }</span>
-<span class="source-line-no">321</span><span id="line-321"></span>
-<span class="source-line-no">322</span><span id="line-322">    public void resetRotation(Rotation2d rotation) {</span>
-<span class="source-line-no">323</span><span id="line-323">        poseEstimator.resetRotation(rotation);</span>
+<span class="source-line-no">250</span><span id="line-250">    // /** Returns a command to run a dynamic test in the specified direction. */</span>
+<span class="source-line-no">251</span><span id="line-251">    // public Command sysIdDynamic(SysIdRoutine.Direction direction) {</span>
+<span class="source-line-no">252</span><span id="line-252">    //     return run(() -&gt;</span>
+<span class="source-line-no">253</span><span id="line-253">    // runCharacterization(0.0)).withTimeout(1.0).andThen(sysId.dynamic(direction));</span>
+<span class="source-line-no">254</span><span id="line-254">    // }</span>
+<span class="source-line-no">255</span><span id="line-255"></span>
+<span class="source-line-no">256</span><span id="line-256">    /** Returns the module states (turn angles and drive velocities) for all of the modules. */</span>
+<span class="source-line-no">257</span><span id="line-257">    @AutoLogOutput(key = "SwerveStates/Measured")</span>
+<span class="source-line-no">258</span><span id="line-258">    private SwerveModuleVelocity[] getModuleVelocities() {</span>
+<span class="source-line-no">259</span><span id="line-259">        SwerveModuleVelocity[] states = new SwerveModuleVelocity[4];</span>
+<span class="source-line-no">260</span><span id="line-260">        for (int i = 0; i &lt; 4; i++) {</span>
+<span class="source-line-no">261</span><span id="line-261">            states[i] = modules[i].getVelocity();</span>
+<span class="source-line-no">262</span><span id="line-262">        }</span>
+<span class="source-line-no">263</span><span id="line-263">        return states;</span>
+<span class="source-line-no">264</span><span id="line-264">    }</span>
+<span class="source-line-no">265</span><span id="line-265"></span>
+<span class="source-line-no">266</span><span id="line-266">    /** Returns the module positions (turn angles and drive positions) for all of the modules. */</span>
+<span class="source-line-no">267</span><span id="line-267">    private SwerveModulePosition[] getModulePositions() {</span>
+<span class="source-line-no">268</span><span id="line-268">        SwerveModulePosition[] states = new SwerveModulePosition[4];</span>
+<span class="source-line-no">269</span><span id="line-269">        for (int i = 0; i &lt; 4; i++) {</span>
+<span class="source-line-no">270</span><span id="line-270">            states[i] = modules[i].getPosition();</span>
+<span class="source-line-no">271</span><span id="line-271">        }</span>
+<span class="source-line-no">272</span><span id="line-272">        return states;</span>
+<span class="source-line-no">273</span><span id="line-273">    }</span>
+<span class="source-line-no">274</span><span id="line-274"></span>
+<span class="source-line-no">275</span><span id="line-275">    /** Returns the measured chassis speeds of the robot. */</span>
+<span class="source-line-no">276</span><span id="line-276">    @AutoLogOutput(key = "SwerveChassisSpeeds/Measured")</span>
+<span class="source-line-no">277</span><span id="line-277">    private ChassisVelocities getChassisSpeeds() {</span>
+<span class="source-line-no">278</span><span id="line-278">        return kinematics.toChassisVelocities(getModuleVelocities());</span>
+<span class="source-line-no">279</span><span id="line-279">    }</span>
+<span class="source-line-no">280</span><span id="line-280"></span>
+<span class="source-line-no">281</span><span id="line-281">    /** Returns the position of each module in radians. */</span>
+<span class="source-line-no">282</span><span id="line-282">    public double[] getWheelRadiusCharacterizationPositions() {</span>
+<span class="source-line-no">283</span><span id="line-283">        double[] values = new double[4];</span>
+<span class="source-line-no">284</span><span id="line-284">        for (int i = 0; i &lt; 4; i++) {</span>
+<span class="source-line-no">285</span><span id="line-285">            values[i] = modules[i].getWheelRadiusCharacterizationPosition();</span>
+<span class="source-line-no">286</span><span id="line-286">        }</span>
+<span class="source-line-no">287</span><span id="line-287">        return values;</span>
+<span class="source-line-no">288</span><span id="line-288">    }</span>
+<span class="source-line-no">289</span><span id="line-289"></span>
+<span class="source-line-no">290</span><span id="line-290">    /** Returns the average velocity of the modules in rotations/sec (Phoenix native units). */</span>
+<span class="source-line-no">291</span><span id="line-291">    public double getFFCharacterizationVelocity() {</span>
+<span class="source-line-no">292</span><span id="line-292">        double output = 0.0;</span>
+<span class="source-line-no">293</span><span id="line-293">        for (int i = 0; i &lt; 4; i++) {</span>
+<span class="source-line-no">294</span><span id="line-294">            output += modules[i].getFFCharacterizationVelocity() / 4.0;</span>
+<span class="source-line-no">295</span><span id="line-295">        }</span>
+<span class="source-line-no">296</span><span id="line-296">        return output;</span>
+<span class="source-line-no">297</span><span id="line-297">    }</span>
+<span class="source-line-no">298</span><span id="line-298"></span>
+<span class="source-line-no">299</span><span id="line-299">    /** Returns the current odometry pose. */</span>
+<span class="source-line-no">300</span><span id="line-300">    @AutoLogOutput(key = "Odometry/Robot")</span>
+<span class="source-line-no">301</span><span id="line-301">    public Pose2d getPose() {</span>
+<span class="source-line-no">302</span><span id="line-302">        return poseEstimator.getEstimatedPosition();</span>
+<span class="source-line-no">303</span><span id="line-303">    }</span>
+<span class="source-line-no">304</span><span id="line-304"></span>
+<span class="source-line-no">305</span><span id="line-305">    /** Returns the current odometry rotation. */</span>
+<span class="source-line-no">306</span><span id="line-306">    public Rotation2d getRotation() {</span>
+<span class="source-line-no">307</span><span id="line-307">        return getPose().getRotation();</span>
+<span class="source-line-no">308</span><span id="line-308">    }</span>
+<span class="source-line-no">309</span><span id="line-309"></span>
+<span class="source-line-no">310</span><span id="line-310">    /** Resets the current odometry pose. */</span>
+<span class="source-line-no">311</span><span id="line-311">    public void resetPose(Pose2d pose) {</span>
+<span class="source-line-no">312</span><span id="line-312">        poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);</span>
+<span class="source-line-no">313</span><span id="line-313">    }</span>
+<span class="source-line-no">314</span><span id="line-314"></span>
+<span class="source-line-no">315</span><span id="line-315">    public void resetRotation(Rotation2d rotation) {</span>
+<span class="source-line-no">316</span><span id="line-316">        poseEstimator.resetRotation(rotation);</span>
+<span class="source-line-no">317</span><span id="line-317">    }</span>
+<span class="source-line-no">318</span><span id="line-318"></span>
+<span class="source-line-no">319</span><span id="line-319">    public VisionConsumer visionConsumer = poseEstimator::addVisionMeasurement;</span>
+<span class="source-line-no">320</span><span id="line-320"></span>
+<span class="source-line-no">321</span><span id="line-321">    /** Returns the maximum linear speed in meters per sec. */</span>
+<span class="source-line-no">322</span><span id="line-322">    public double getMaxLinearSpeedMetersPerSec() {</span>
+<span class="source-line-no">323</span><span id="line-323">        return TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);</span>
 <span class="source-line-no">324</span><span id="line-324">    }</span>
 <span class="source-line-no">325</span><span id="line-325"></span>
-<span class="source-line-no">326</span><span id="line-326">    public VisionConsumer visionConsumer = poseEstimator::addVisionMeasurement;</span>
-<span class="source-line-no">327</span><span id="line-327"></span>
-<span class="source-line-no">328</span><span id="line-328">    /** Returns the maximum linear speed in meters per sec. */</span>
-<span class="source-line-no">329</span><span id="line-329">    public double getMaxLinearSpeedMetersPerSec() {</span>
-<span class="source-line-no">330</span><span id="line-330">        return TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);</span>
-<span class="source-line-no">331</span><span id="line-331">    }</span>
-<span class="source-line-no">332</span><span id="line-332"></span>
-<span class="source-line-no">333</span><span id="line-333">    /** Returns the maximum angular speed in radians per sec. */</span>
-<span class="source-line-no">334</span><span id="line-334">    public double getMaxAngularSpeedRadPerSec() {</span>
-<span class="source-line-no">335</span><span id="line-335">        return getMaxLinearSpeedMetersPerSec() / DRIVE_BASE_RADIUS;</span>
-<span class="source-line-no">336</span><span id="line-336">    }</span>
-<span class="source-line-no">337</span><span id="line-337"></span>
-<span class="source-line-no">338</span><span id="line-338">    /** Returns an array of module translations. */</span>
-<span class="source-line-no">339</span><span id="line-339">    public static Translation2d[] getModuleTranslations() {</span>
-<span class="source-line-no">340</span><span id="line-340">        return new Translation2d[] {</span>
-<span class="source-line-no">341</span><span id="line-341">            new Translation2d(</span>
-<span class="source-line-no">342</span><span id="line-342">                    TunerConstants.FrontLeft.LocationX, TunerConstants.FrontLeft.LocationY),</span>
-<span class="source-line-no">343</span><span id="line-343">            new Translation2d(</span>
-<span class="source-line-no">344</span><span id="line-344">                    TunerConstants.FrontRight.LocationX, TunerConstants.FrontRight.LocationY),</span>
-<span class="source-line-no">345</span><span id="line-345">            new Translation2d(TunerConstants.BackLeft.LocationX, TunerConstants.BackLeft.LocationY),</span>
-<span class="source-line-no">346</span><span id="line-346">            new Translation2d(</span>
-<span class="source-line-no">347</span><span id="line-347">                    TunerConstants.BackRight.LocationX, TunerConstants.BackRight.LocationY)</span>
-<span class="source-line-no">348</span><span id="line-348">        };</span>
-<span class="source-line-no">349</span><span id="line-349">    }</span>
-<span class="source-line-no">350</span><span id="line-350">}</span>
+<span class="source-line-no">326</span><span id="line-326">    /** Returns the maximum angular speed in radians per sec. */</span>
+<span class="source-line-no">327</span><span id="line-327">    public double getMaxAngularSpeedRadPerSec() {</span>
+<span class="source-line-no">328</span><span id="line-328">        return getMaxLinearSpeedMetersPerSec() / DRIVE_BASE_RADIUS;</span>
+<span class="source-line-no">329</span><span id="line-329">    }</span>
+<span class="source-line-no">330</span><span id="line-330"></span>
+<span class="source-line-no">331</span><span id="line-331">    /** Returns an array of module translations. */</span>
+<span class="source-line-no">332</span><span id="line-332">    public static Translation2d[] getModuleTranslations() {</span>
+<span class="source-line-no">333</span><span id="line-333">        return new Translation2d[] {</span>
+<span class="source-line-no">334</span><span id="line-334">            new Translation2d(</span>
+<span class="source-line-no">335</span><span id="line-335">                    TunerConstants.FrontLeft.LocationX, TunerConstants.FrontLeft.LocationY),</span>
+<span class="source-line-no">336</span><span id="line-336">            new Translation2d(</span>
+<span class="source-line-no">337</span><span id="line-337">                    TunerConstants.FrontRight.LocationX, TunerConstants.FrontRight.LocationY),</span>
+<span class="source-line-no">338</span><span id="line-338">            new Translation2d(TunerConstants.BackLeft.LocationX, TunerConstants.BackLeft.LocationY),</span>
+<span class="source-line-no">339</span><span id="line-339">            new Translation2d(</span>
+<span class="source-line-no">340</span><span id="line-340">                    TunerConstants.BackRight.LocationX, TunerConstants.BackRight.LocationY)</span>
+<span class="source-line-no">341</span><span id="line-341">        };</span>
+<span class="source-line-no">342</span><span id="line-342">    }</span>
+<span class="source-line-no">343</span><span id="line-343">}</span>
 
 
 

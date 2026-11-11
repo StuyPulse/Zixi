@@ -12,7 +12,7 @@
 <script type="text/javascript" src="../../../../../script-files/script.js"></script>
 <script type="text/javascript" src="../../../../../script-files/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="../../../../../script-files/jquery-ui.min.js"></script>
-<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../betterjdocs.css"><link rel="icon" href="../../../../../favicon.svg?t=1794182926536" type="image/x-icon"><script defer type="module" src="../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
+<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../betterjdocs.css"><link rel="icon" href="../../../../../favicon.svg?t=1794436036454" type="image/x-icon"><script defer type="module" src="../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
 <body class="class-declaration-page">
 <script type="text/javascript">const pathtoroot = "../../../../../";
 loadScripts(document, 'script');</script>
@@ -58,7 +58,10 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
 <li><a href="#updateInputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOInputs)" tabindex="0">updateInputs(ModuleIO.ModuleIOInputs)</a></li>
-<li><a href="#applyOutputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOOutputs)" tabindex="0">applyOutputs(ModuleIO.ModuleIOOutputs)</a></li>
+<li><a href="#setDriveOpenLoop(double)" tabindex="0">setDriveOpenLoop(double)</a></li>
+<li><a href="#setTurnOpenLoop(double)" tabindex="0">setTurnOpenLoop(double)</a></li>
+<li><a href="#setDriveVelocity(double)" tabindex="0">setDriveVelocity(double)</a></li>
+<li><a href="#setTurnPosition(org.wpilib.math.geometry.Rotation2d)" tabindex="0">setTurnPosition(Rotation2d)</a></li>
 </ol>
 </li>
 </ol>
@@ -75,7 +78,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="horizontal-scroll">
-<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.html#line-22">ModuleIO</a></span></div>
+<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.html#line-11">ModuleIO</a></span></div>
 </div>
 </section>
 <section class="summary">
@@ -89,18 +92,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Interface</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>static enum&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="ModuleIO.DriveOutputMode.html" class="type-name-link" title="enum class in com.stuypulse.robot.subsystems.swerve">ModuleIO.DriveOutputMode</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>static class&nbsp;</code></div>
-<div class="col-second odd-row-color"><code><a href="ModuleIO.ModuleIOInputs.html" class="type-name-link" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOInputs</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>static class&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="ModuleIO.ModuleIOOutputs.html" class="type-name-link" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOOutputs</a></code></div>
+<div class="col-second even-row-color"><code><a href="ModuleIO.ModuleIOInputs.html" class="type-name-link" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOInputs</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>static enum&nbsp;</code></div>
-<div class="col-second odd-row-color"><code><a href="ModuleIO.TurnOutputMode.html" class="type-name-link" title="enum class in com.stuypulse.robot.subsystems.swerve">ModuleIO.TurnOutputMode</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -116,11 +110,28 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#applyOutputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOOutputs)" class="member-name-link">applyOutputs</a><wbr>(<a href="ModuleIO.ModuleIOOutputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOOutputs</a>&nbsp;outputs)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">&nbsp;</div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#setDriveOpenLoop(double)" class="member-name-link">setDriveOpenLoop</a><wbr>(double&nbsp;output)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Run the drive motor at the specified open loop value.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#updateInputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOInputs)" class="member-name-link">updateInputs</a><wbr>(<a href="ModuleIO.ModuleIOInputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOInputs</a>&nbsp;inputs)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#setDriveVelocity(double)" class="member-name-link">setDriveVelocity</a><wbr>(double&nbsp;velocityRadPerSec)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Run the drive motor at the specified velocity.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#setTurnOpenLoop(double)" class="member-name-link">setTurnOpenLoop</a><wbr>(double&nbsp;output)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Run the turn motor at the specified open loop value.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#setTurnPosition(org.wpilib.math.geometry.Rotation2d)" class="member-name-link">setTurnPosition</a><wbr>(org.wpilib.math.geometry.Rotation2d&nbsp;rotation)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Run the turn motor to the specified rotation.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#updateInputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOInputs)" class="member-name-link">updateInputs</a><wbr>(<a href="ModuleIO.ModuleIOInputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOInputs</a>&nbsp;inputs)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
 <div class="block">Updates the set of loggable inputs.</div>
 </div>
 </div>
@@ -141,16 +152,44 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="updateInputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOInputs)">
 <h3>updateInputs</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.html#line-45">updateInputs</a></span><wbr><span class="parameters">(<a href="ModuleIO.ModuleIOInputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOInputs</a>&nbsp;inputs)</span></div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.html#line-34">updateInputs</a></span><wbr><span class="parameters">(<a href="ModuleIO.ModuleIOInputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOInputs</a>&nbsp;inputs)</span></div>
 <div class="block">Updates the set of loggable inputs.</div>
 </div>
 </section>
 </li>
 <li>
-<section class="detail" id="applyOutputs(com.stuypulse.robot.subsystems.swerve.ModuleIO.ModuleIOOutputs)">
-<h3>applyOutputs</h3>
+<section class="detail" id="setDriveOpenLoop(double)">
+<h3>setDriveOpenLoop</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.html#line-79">applyOutputs</a></span><wbr><span class="parameters">(<a href="ModuleIO.ModuleIOOutputs.html" title="class in com.stuypulse.robot.subsystems.swerve">ModuleIO.ModuleIOOutputs</a>&nbsp;outputs)</span></div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.html#line-37">setDriveOpenLoop</a></span><wbr><span class="parameters">(double&nbsp;output)</span></div>
+<div class="block">Run the drive motor at the specified open loop value.</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="setTurnOpenLoop(double)">
+<h3>setTurnOpenLoop</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.html#line-40">setTurnOpenLoop</a></span><wbr><span class="parameters">(double&nbsp;output)</span></div>
+<div class="block">Run the turn motor at the specified open loop value.</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="setDriveVelocity(double)">
+<h3>setDriveVelocity</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.html#line-43">setDriveVelocity</a></span><wbr><span class="parameters">(double&nbsp;velocityRadPerSec)</span></div>
+<div class="block">Run the drive motor at the specified velocity.</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="setTurnPosition(org.wpilib.math.geometry.Rotation2d)">
+<h3>setTurnPosition</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/ModuleIO.html#line-46">setTurnPosition</a></span><wbr><span class="parameters">(org.wpilib.math.geometry.Rotation2d&nbsp;rotation)</span></div>
+<div class="block">Run the turn motor to the specified rotation.</div>
 </div>
 </section>
 </li>
