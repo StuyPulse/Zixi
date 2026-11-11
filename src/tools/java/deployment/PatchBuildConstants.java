@@ -16,6 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand.ListMode;
 import org.eclipse.jgit.api.errors.TransportException;
@@ -72,7 +73,6 @@ public class PatchBuildConstants {
                     lastCommit = commits.next();
 
                     message = getCommitMessage();
-                    message = escapeJavaString(message);
                     pushStatus = getCommitPushStatus();
 
                     if (pushStatus == PushStatus.PUSHED) {
@@ -121,12 +121,12 @@ public class PatchBuildConstants {
                     .append("public static final String ")
                     .append(entry.getKey())
                     .append(" = \"")
-                    .append(entry.getValue())
+                    .append(escapeJavaString(entry.getValue()))
                     .append("\";\n");
         }
         newFields.append("}");
 
-        content = content.replaceAll("}\\s*$", newFields.toString());
+        content = content.replaceAll("}\\s*$", Matcher.quoteReplacement(newFields.toString()));
         Files.writeString(targetPath, content, StandardCharsets.UTF_8);
     }
 
