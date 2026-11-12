@@ -4,7 +4,7 @@
 /**************************************************************/
 package com.stuypulse.robot.commands.auton;
 
-import com.stuypulse.robot.RobotContainer;
+import com.stuypulse.robot.Robot;
 
 import org.wpilib.command3.Command;
 
@@ -18,7 +18,7 @@ import org.wpilib.command3.Command;
  * <p>The selected path disappears when a different auton is selected or when the robot is enabled
  *
  * <p>Define an auton in {@link AutonFactory} and add it to the auton chooser as shown in the
- * example auton in {@link RobotContainer}
+ * example auton in {@link Robot}
  *
  * <p>Auton routines without paths like characterization routines can be constructed using the
  * {@link #noPaths} method
