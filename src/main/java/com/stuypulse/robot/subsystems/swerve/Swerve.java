@@ -191,13 +191,6 @@ public class Swerve extends PeriodicSubsystem {
         FieldConstants.FIELD_2D.setRobotPose(getPose());
     }
 
-    @Override
-    public void periodicAfterScheduler() {
-        for (Module module : modules) {
-            module.periodicAfterScheduler();
-        }
-    }
-
     /**
      * Runs the drive at the desired velocity.
      *

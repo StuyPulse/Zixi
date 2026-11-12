@@ -67,7 +67,8 @@ public class RobotContainer {
                                             camera.getName(),
                                             camera.getRobotToCamera(),
                                             swerve::getRotation)
-                                    : new VisionIOPhoton(camera.getName(), camera.getRobotToCamera()));
+                                    : new VisionIOPhoton(
+                                            camera.getName(), camera.getRobotToCamera()));
                 }
             }
 
