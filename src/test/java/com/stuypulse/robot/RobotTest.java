@@ -11,7 +11,7 @@ import org.wpilib.hardware.hal.HAL;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class RobotContainerTest {
+public class RobotTest {
     @BeforeEach
     public void setup() {
         assert HAL.initialize();
@@ -19,6 +19,6 @@ public class RobotContainerTest {
 
     @Test
     public void testRobotContainer() {
-        assertDoesNotThrow(RobotContainer::new);
+        assertDoesNotThrow(Robot::new);
     }
 }

@@ -5,19 +5,48 @@
 package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.auton.Auton;
+import com.stuypulse.robot.commands.auton.AutonFactory;
+import com.stuypulse.robot.commands.subsystems.DriveCommands;
+import com.stuypulse.robot.constants.DriverConstants;
+import com.stuypulse.robot.constants.FieldConstants;
 import com.stuypulse.robot.constants.GlobalSettings;
 import com.stuypulse.robot.generated.BuildConstants;
+import com.stuypulse.robot.opmodes.AutonOpMode;
+import com.stuypulse.robot.opmodes.sysid.SwerveDriveSysId;
+import com.stuypulse.robot.subsystems.swerve.GyroIO;
+import com.stuypulse.robot.subsystems.swerve.GyroIOPigeon2;
+import com.stuypulse.robot.subsystems.swerve.ModuleIO;
+import com.stuypulse.robot.subsystems.swerve.ModuleIOSim;
+import com.stuypulse.robot.subsystems.swerve.ModuleIOTalonFX;
+import com.stuypulse.robot.subsystems.swerve.Swerve;
+import com.stuypulse.robot.subsystems.swerve.TunerConstants;
+import com.stuypulse.robot.subsystems.vision.Vision;
+import com.stuypulse.robot.subsystems.vision.VisionConstants;
+import com.stuypulse.robot.subsystems.vision.VisionConstants.Camera;
+import com.stuypulse.robot.subsystems.vision.VisionConstants.VisionMode;
+import com.stuypulse.robot.subsystems.vision.VisionIO;
+import com.stuypulse.robot.subsystems.vision.VisionIOLimelight;
+import com.stuypulse.robot.subsystems.vision.VisionIOPhoton;
+import com.stuypulse.robot.subsystems.vision.VisionIOPhotonSim;
 import com.stuypulse.robot.util.PeriodicSubsystem;
 
 import org.wpilib.command3.Scheduler;
+import org.wpilib.command3.button.CommandGamepad;
+import org.wpilib.command3.sysid.SysIdRoutine;
+import org.wpilib.command3.sysid.SysIdRoutine.Direction;
 import org.wpilib.driverstation.Alliance;
 import org.wpilib.driverstation.MatchState;
+import org.wpilib.hardware.hal.RobotMode;
+import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.tunable.Tunables;
 import org.wpilib.util.Alert;
 
+import java.util.EnumMap;
 import java.util.Optional;
 import org.littletonrobotics.junction.LogFileUtil;
-import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.LoggedOpModeRobot;
 import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.LoggedNetworkChooser;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
@@ -29,7 +58,7 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
  * extends TimedRobot, meaning that the methods in this class are called automatically during
  * specific states of the robot.
  */
-public class Robot extends LoggedRobot {
+public class Robot extends LoggedOpModeRobot {
     private static final Alert allianceMissing =
             new Alert(
                     "MissingAllianceWarning",
@@ -53,41 +82,85 @@ public class Robot extends LoggedRobot {
         return false;
     }
 
-    private final RobotContainer robot;
-    private final Scheduler defaultScheduler;
-    private Auton auto;
+    // Gamepads
+    public final CommandGamepad driver =
+            new CommandGamepad(DriverConstants.Driver.DRIVER_INDEX); // model-agnostic controller
+    public final Swerve swerve;
+    public final Vision vision;
+    private final LoggedNetworkChooser<Auton> autonChooser = new LoggedNetworkChooser<>("Auton");
+    public final Scheduler defaultScheduler;
 
     public Robot() {
-        robot = new RobotContainer();
-        defaultScheduler = Scheduler.getDefault();
+        this.defaultScheduler = Scheduler.getDefault();
+        configureLogging();
 
-        logGitInfo();
+        EnumMap<Camera, VisionIO> visionIOMap = new EnumMap<>(Camera.class);
         switch (GlobalSettings.CURRENT_MODE) {
             case REAL -> {
-                // Running on a real robot, log to a USB stick ("/U/logs")
-                Logger.addDataReceiver(new WPILOGWriter());
-                Logger.addDataReceiver(new NT4Publisher());
+                swerve =
+                        new Swerve(
+                                new GyroIOPigeon2(),
+                                new ModuleIOTalonFX(TunerConstants.FrontLeft),
+                                new ModuleIOTalonFX(TunerConstants.FrontRight),
+                                new ModuleIOTalonFX(TunerConstants.BackLeft),
+                                new ModuleIOTalonFX(TunerConstants.BackRight));
+                for (Camera camera : VisionConstants.Camera.values()) {
+                    visionIOMap.put(
+                            camera,
+                            VisionConstants.VISION_MODE == VisionMode.LIMELIGHT
+                                    ? new VisionIOLimelight(
+                                            camera.getName(),
+                                            camera.getRobotToCamera(),
+                                            swerve::getRotation)
+                                    : new VisionIOPhoton(
+                                            camera.getName(), camera.getRobotToCamera()));
+                }
             }
 
             case SIM -> {
-                // Running a physics simulator, log to NT
-                Logger.addDataReceiver(new NT4Publisher());
+                swerve =
+                        new Swerve(
+                                new GyroIO() {},
+                                new ModuleIOSim(TunerConstants.FrontLeft),
+                                new ModuleIOSim(TunerConstants.FrontRight),
+                                new ModuleIOSim(TunerConstants.BackLeft),
+                                new ModuleIOSim(TunerConstants.BackRight));
+                for (Camera camera : Camera.values()) {
+                    visionIOMap.put(
+                            camera,
+                            new VisionIOPhotonSim(
+                                    camera.getName(), camera.getRobotToCamera(), swerve::getPose));
+                }
             }
 
-            case REPLAY -> {
-                // Replaying a log, set up replay source
-                setUseTiming(false); // Run as fast as possible
-                String logPath = LogFileUtil.findReplayLog();
-                Logger.setReplaySource(new WPILOGReader(logPath));
-                Logger.addDataReceiver(
-                        new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_replay")));
+            default -> {
+                swerve =
+                        new Swerve(
+                                new GyroIO() {},
+                                new ModuleIO() {},
+                                new ModuleIO() {},
+                                new ModuleIO() {},
+                                new ModuleIO() {});
+                for (Camera camera : Camera.values()) {
+                    visionIOMap.put(camera, new VisionIO() {});
+                }
             }
         }
+        vision = new Vision(swerve.visionConsumer, visionIOMap);
 
-        Logger.start();
+        configureDefaultCommands();
+        configureButtonBindings();
+        configureAutons();
+        configureSysIds();
+        publishOpModes();
     }
 
-    private void logGitInfo() {
+    /*********************/
+    /*** CONFIGURATION ***/
+    /*********************/
+
+    private void configureLogging() {
+        // Git metadata
         Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
         Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
         Logger.recordMetadata("GitCommitMessage", BuildConstants.GIT_MESSAGE);
@@ -112,96 +185,84 @@ public class Robot extends LoggedRobot {
                     case 1 -> "Uncommitted changes";
                     default -> "Unknown";
                 });
+
+        // Log setup
+        switch (GlobalSettings.CURRENT_MODE) {
+            case REAL -> {
+                // Running on a real robot, log to a USB stick ("/U/logs")
+                Logger.addDataReceiver(new WPILOGWriter());
+                Logger.addDataReceiver(new NT4Publisher());
+            }
+
+            case SIM -> {
+                // Running a physics simulator, log to NT
+                Logger.addDataReceiver(new NT4Publisher());
+            }
+
+            case REPLAY -> {
+                // Replaying a log, set up replay source
+                // setUseTiming(false); // Run as fast as possible
+                String logPath = LogFileUtil.findReplayLog();
+                Logger.setReplaySource(new WPILOGReader(logPath));
+                Logger.addDataReceiver(
+                        new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_replay")));
+            }
+        }
+
+        Logger.start();
+        Tunables.publish("Field", FieldConstants.FIELD_2D);
     }
 
-    /*************************/
-    /*** ROBOT SCHEDULEING ***/
-    /*************************/
+    private void configureDefaultCommands() {
+        swerve.setDefaultCommand(DriveCommands.joystickDrive(swerve, driver));
+    }
+
+    private void configureButtonBindings() {
+        driver.dpadUp().onTrue(DriveCommands.resetHeading(swerve, Rotation2d.ZERO));
+    }
+
+    private void configureAutons() {
+        AutonFactory autonFactory = new AutonFactory();
+
+        autonChooser.addDefault("Do Nothing", autonFactory.doNothingAuton());
+
+        addOpMode(RobotMode.AUTONOMOUS, "Chooser Auton", () -> new AutonOpMode(this));
+    }
+
+    public Auton getSelectedAuton() {
+        return autonChooser.getSelected();
+    }
+
+    private void configureSysIds() {
+        addOpMode(
+                RobotMode.UTILITY,
+                "Quasistatic Reverse",
+                "SysId",
+                () -> new SwerveDriveSysId(swerve, Direction.REVERSE, SysIdRoutine::quasistatic));
+        addOpMode(
+                RobotMode.UTILITY,
+                "Quasistatic Forward",
+                "SysId",
+                () -> new SwerveDriveSysId(swerve, Direction.FORWARD, SysIdRoutine::quasistatic));
+        addOpMode(
+                RobotMode.UTILITY,
+                "Dynamic Forward",
+                "SysId",
+                () -> new SwerveDriveSysId(swerve, Direction.FORWARD, SysIdRoutine::dynamic));
+        addOpMode(
+                RobotMode.UTILITY,
+                "Dynamic Reverse",
+                "SysId",
+                () -> new SwerveDriveSysId(swerve, Direction.REVERSE, SysIdRoutine::dynamic));
+    }
+
+    /************************/
+    /*** ROBOT SCHEDULING ***/
+    /************************/
 
     @Override
     public void robotPeriodic() {
         defaultScheduler.run();
         PeriodicSubsystem.runAllPeriodicAfterScheduler();
     }
-
-    /*********************/
-    /*** DISABLED MODE ***/
-    /*********************/
-
-    @Override
-    public void disabledInit() {}
-
-    @Override
-    public void disabledPeriodic() {
-        if (auto != robot.getAutonomousCommand() && auto != null) {
-            auto.clearPaths();
-
-            auto = robot.getAutonomousCommand();
-
-            auto.displayPaths();
-        }
-
-        if (auto == null) {
-            auto = robot.getAutonomousCommand();
-            if (auto != null) {
-                auto.displayPaths();
-            }
-        }
-    }
-
-    /***********************/
-    /*** AUTONOMOUS MODE ***/
-    /***********************/
-
-    @Override
-    public void autonomousInit() {
-        if (auto != null) {
-            auto.clearPaths();
-        }
-
-        auto = robot.getAutonomousCommand();
-
-        if (auto != null) {
-            defaultScheduler.schedule(auto.getCommand());
-        }
-    }
-
-    @Override
-    public void autonomousPeriodic() {}
-
-    @Override
-    public void autonomousExit() {}
-
-    /*******************/
-    /*** TELEOP MODE ***/
-    /*******************/
-
-    @Override
-    public void teleopInit() {
-        if (auto != null) {
-            auto.clearPaths();
-            defaultScheduler.cancel(auto.getCommand());
-        }
-    }
-
-    @Override
-    public void teleopPeriodic() {}
-
-    @Override
-    public void teleopExit() {}
-
-    /*************************/
-    /*** UTILITY/TEST MODE ***/
-    /*************************/
-
-    @Override
-    public void utilityInit() {
-        defaultScheduler.cancelAll();
-    }
-
-    @Override
-    public void utilityPeriodic() {}
-
-    @Override
-    public void utilityExit() {}
 }
