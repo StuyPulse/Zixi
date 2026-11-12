@@ -7,23 +7,33 @@ package com.stuypulse.robot.opmodes;
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.commands.auton.Auton;
 
-import org.wpilib.command3.Command;
 import org.wpilib.opmode.OpMode;
 
-public abstract class AutonOpMode implements OpMode {
+public class AutonOpMode implements OpMode {
     protected final Robot robot;
-    protected final Auton auto;
-    protected final Command command;
+    protected Auton auto;
 
-    protected AutonOpMode(Robot robot, Auton auto) {
+    public AutonOpMode(Robot robot) {
         this.robot = robot;
-        this.auto = auto;
-        this.command = auto.getCommand();
     }
 
     @Override
     public final void disabledPeriodic() {
-        auto.displayPaths();
+        if (auto != robot.getSelectedAuton() && auto != null) {
+            auto.clearPaths();
+
+            auto = robot.getSelectedAuton();
+
+            auto.displayPaths();
+        }
+
+        if (auto == null) {
+            auto = robot.getSelectedAuton();
+            if (auto != null) {
+                auto.displayPaths();
+            }
+        }
+
         this.disabledCallback();
     }
 
@@ -33,12 +43,18 @@ public abstract class AutonOpMode implements OpMode {
      * <p>Will run periodically after paths are shown on the display
      */
     protected void disabledCallback() {}
-    ;
 
     @Override
     public final void start() {
-        auto.clearPaths();
-        robot.defaultScheduler.schedule(command);
+        if (auto != null) {
+            auto.clearPaths();
+        }
+
+        auto = robot.getSelectedAuton();
+
+        if (auto != null) {
+            robot.defaultScheduler.schedule(auto.getCommand());
+        }
 
         this.startCallback();
     }
@@ -52,8 +68,9 @@ public abstract class AutonOpMode implements OpMode {
 
     @Override
     public final void end() {
-        robot.defaultScheduler.cancel(command);
-        auto.clearPaths();
+        if (auto != null) {
+            robot.defaultScheduler.cancel(auto.getCommand());
+        }
         this.endCallback();
     }
 

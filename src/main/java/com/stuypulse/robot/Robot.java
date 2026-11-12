@@ -11,6 +11,7 @@ import com.stuypulse.robot.constants.DriverConstants;
 import com.stuypulse.robot.constants.FieldConstants;
 import com.stuypulse.robot.constants.GlobalSettings;
 import com.stuypulse.robot.generated.BuildConstants;
+import com.stuypulse.robot.opmodes.AutonOpMode;
 import com.stuypulse.robot.opmodes.sysid.SwerveDriveSysId;
 import com.stuypulse.robot.subsystems.swerve.GyroIO;
 import com.stuypulse.robot.subsystems.swerve.GyroIOPigeon2;
@@ -224,6 +225,8 @@ public class Robot extends LoggedOpModeRobot {
         AutonFactory autonFactory = new AutonFactory();
 
         autonChooser.addDefault("Do Nothing", autonFactory.doNothingAuton());
+
+        addOpMode(RobotMode.AUTONOMOUS, "Chooser Auton", () -> new AutonOpMode(this));
     }
 
     public Auton getSelectedAuton() {
