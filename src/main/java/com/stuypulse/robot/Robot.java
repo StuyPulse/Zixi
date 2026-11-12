@@ -226,6 +226,10 @@ public class Robot extends LoggedOpModeRobot {
         autonChooser.addDefault("Do Nothing", autonFactory.doNothingAuton());
     }
 
+    public Auton getSelectedAuton() {
+        return autonChooser.getSelected();
+    }
+
     private void configureSysIds() {
         addOpMode(
                 RobotMode.UTILITY,
