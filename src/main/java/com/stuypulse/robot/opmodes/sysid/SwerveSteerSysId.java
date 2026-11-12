@@ -24,7 +24,7 @@ import org.wpilib.units.measure.Time;
 import org.littletonrobotics.junction.Logger;
 
 @Utility(
-        name = "SysId: Swerve Steer",
+        name = "Swerve Steer",
         group = "SysId",
         description = "Runs only the steer motors. Put the robot on blocks.")
 public class SwerveSteerSysId implements OpMode {

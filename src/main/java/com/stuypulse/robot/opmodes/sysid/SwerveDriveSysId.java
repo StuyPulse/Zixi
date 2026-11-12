@@ -18,7 +18,7 @@ import org.wpilib.opmode.OpMode;
 import java.util.function.BiFunction;
 import org.littletonrobotics.junction.Logger;
 
-abstract class SwerveDriveSysId implements OpMode {
+public class SwerveDriveSysId implements OpMode {
     private final Command routine;
 
     public SwerveDriveSysId(

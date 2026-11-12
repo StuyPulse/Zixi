@@ -11,6 +11,7 @@ import com.stuypulse.robot.constants.DriverConstants;
 import com.stuypulse.robot.constants.FieldConstants;
 import com.stuypulse.robot.constants.GlobalSettings;
 import com.stuypulse.robot.generated.BuildConstants;
+import com.stuypulse.robot.opmodes.sysid.SwerveDriveSysId;
 import com.stuypulse.robot.subsystems.swerve.GyroIO;
 import com.stuypulse.robot.subsystems.swerve.GyroIOPigeon2;
 import com.stuypulse.robot.subsystems.swerve.ModuleIO;
@@ -30,8 +31,11 @@ import com.stuypulse.robot.util.PeriodicSubsystem;
 
 import org.wpilib.command3.Scheduler;
 import org.wpilib.command3.button.CommandGamepad;
+import org.wpilib.command3.sysid.SysIdRoutine;
+import org.wpilib.command3.sysid.SysIdRoutine.Direction;
 import org.wpilib.driverstation.Alliance;
 import org.wpilib.driverstation.MatchState;
+import org.wpilib.hardware.hal.RobotMode;
 import org.wpilib.math.geometry.Rotation2d;
 import org.wpilib.tunable.Tunables;
 import org.wpilib.util.Alert;
@@ -146,6 +150,8 @@ public class Robot extends LoggedOpModeRobot {
         configureDefaultCommands();
         configureButtonBindings();
         configureAutons();
+        configureSysIds();
+        publishOpModes();
     }
 
     /*********************/
@@ -218,6 +224,29 @@ public class Robot extends LoggedOpModeRobot {
         AutonFactory autonFactory = new AutonFactory();
 
         autonChooser.addDefault("Do Nothing", autonFactory.doNothingAuton());
+    }
+
+    private void configureSysIds() {
+        addOpMode(
+                RobotMode.UTILITY,
+                "Quasistatic Reverse",
+                "SysId",
+                () -> new SwerveDriveSysId(swerve, Direction.REVERSE, SysIdRoutine::quasistatic));
+        addOpMode(
+                RobotMode.UTILITY,
+                "Quasistatic Forward",
+                "SysId",
+                () -> new SwerveDriveSysId(swerve, Direction.FORWARD, SysIdRoutine::quasistatic));
+        addOpMode(
+                RobotMode.UTILITY,
+                "Dynamic Forward",
+                "SysId",
+                () -> new SwerveDriveSysId(swerve, Direction.FORWARD, SysIdRoutine::dynamic));
+        addOpMode(
+                RobotMode.UTILITY,
+                "Dynamic Reverse",
+                "SysId",
+                () -> new SwerveDriveSysId(swerve, Direction.REVERSE, SysIdRoutine::dynamic));
     }
 
     /************************/
