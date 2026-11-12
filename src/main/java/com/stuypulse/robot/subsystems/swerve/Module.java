@@ -90,6 +90,11 @@ public class Module {
         io.setTurnPosition(Rotation2d.ZERO);
     }
 
+    public void runTurnCharacterization(double output) {
+        io.setDriveOpenLoop(0.0);
+        io.setTurnOpenLoop(output);
+    }
+
     /** Disables all outputs to motors. */
     public void stop() {
         io.setDriveOpenLoop(0.0);
