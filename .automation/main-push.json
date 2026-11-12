@@ -1,7 +1,7 @@
 {
-  "message": "fix: java string escaping in PatchBuildConstants not working with replaceAll",
-  "hash": "1d57887ca66cf6b8dff87721864a3e22948c60d4",
-  "commitTimestamp": "2026-11-11T17:24:33-05:00",
-  "triggerTimestamp": "2026-11-11T22:24:42.678Z",
+  "message": "fix(ci): add contents: read and actions: read permission to build.yml",
+  "hash": "851ec6a5ce71702165bee7924bb72bc6d54dc2e5",
+  "commitTimestamp": "2026-11-11T20:13:17-05:00",
+  "triggerTimestamp": "2026-11-12T01:13:25.849Z",
   "manuallyTriggered": false
 }
