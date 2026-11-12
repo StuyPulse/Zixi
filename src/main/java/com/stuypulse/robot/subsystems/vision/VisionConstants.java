@@ -10,7 +10,6 @@ import org.wpilib.math.geometry.Rotation3d;
 import org.wpilib.math.geometry.Transform3d;
 import org.wpilib.units.measure.Time;
 
-import com.limelightvision.Limelight;
 import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean;
 
 public interface VisionConstants {
@@ -49,7 +48,7 @@ public interface VisionConstants {
      * </code>
      */
     public enum Camera {
-        USB(Limelight.SYSTEMCORE_USB1, new Transform3d(), 0);
+        ;
         private final CameraData data;
 
         /**
