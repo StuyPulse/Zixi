@@ -15,47 +15,48 @@ public class AutonOpMode implements OpMode {
 
     public AutonOpMode(Robot robot) {
         this.robot = robot;
+
+        setAuto(robot.getSelectedAuton());
+        robot.onAutonChange(this::setAuto);
     }
 
-    @Override
-    public final void disabledPeriodic() {
-        if (auto != robot.getSelectedAuton() && auto != null) {
-            auto.clearPaths();
-
-            auto = robot.getSelectedAuton();
-
-            auto.displayPaths();
-        }
-
-        if (auto == null) {
-            auto = robot.getSelectedAuton();
-            if (auto != null) {
-                auto.displayPaths();
-            }
-        }
-
-        this.disabledCallback();
+    private void setAuto(Auton auton) {
+        clearPaths();
+        auto = auton;
+        displayPaths();
     }
 
-    /**
-     * Disabled periodic callback method for being overriden by extending autons
-     *
-     * <p>Will run periodically after paths are shown on the display
-     */
-    protected void disabledCallback() {}
-
-    @Override
-    public final void start() {
+    private void clearPaths() {
         if (auto != null) {
             auto.clearPaths();
         }
+    }
 
-        auto = robot.getSelectedAuton();
+    private void displayPaths() {
+        if (auto != null) {
+            auto.displayPaths();
+        }
+    }
 
+    private void scheduleAuto() {
         if (auto != null) {
             robot.defaultScheduler.schedule(auto.getCommand());
         }
+    }
 
+    private void cancelAuto() {
+        if (auto != null) {
+            robot.defaultScheduler.cancel(auto.getCommand());
+        }
+    }
+
+    @Override
+    public final void start() {
+        clearPaths();
+
+        auto = robot.getSelectedAuton();
+
+        scheduleAuto();
         this.startCallback();
     }
 
@@ -68,10 +69,15 @@ public class AutonOpMode implements OpMode {
 
     @Override
     public final void end() {
-        if (auto != null) {
-            robot.defaultScheduler.cancel(auto.getCommand());
-        }
+        cancelAuto();
         this.endCallback();
+    }
+
+    @Override
+    public final void close() {
+        cancelAuto();
+        clearPaths();
+        robot.onAutonChange(null);
     }
 
     /**

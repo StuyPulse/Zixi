@@ -43,6 +43,8 @@ import org.wpilib.util.Alert;
 
 import java.util.EnumMap;
 import java.util.Optional;
+import java.util.function.Consumer;
+
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedOpModeRobot;
 import org.littletonrobotics.junction.Logger;
@@ -231,6 +233,10 @@ public class Robot extends LoggedOpModeRobot {
 
     public Auton getSelectedAuton() {
         return autonChooser.getSelected();
+    }
+
+    public void onAutonChange(Consumer<Auton> listener) {
+        autonChooser.onChange(listener);
     }
 
     private void configureSysIds() {
