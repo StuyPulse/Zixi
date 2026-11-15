@@ -4,11 +4,12 @@ let themeState = "system";
 const themeChangeCallbacks = [];
 const themes = ["system", "dark", "light"];
 const systemThemeQuery = window.matchMedia("(prefers-color-scheme: light)");
-const interactionQuery = window.matchMedia("(prefers-reduced-motion: reduce), (hover: none), (max-width: 800px)");
+const interactionQuery = window.matchMedia("(hover: none), (max-width: 800px)");
 const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 const narrowViewportQuery = window.matchMedia("(max-width: 800px)");
 let interactionMode = interactionQuery.matches ? "click" : "hover";
 let isOpen = false;
+let positionFrame = null;
 const themeContainer = (() => {
     if (isSourcePage())
         return null;
@@ -33,6 +34,9 @@ const themeContainer = (() => {
         button.setAttribute("data-theme-target", theme);
         button.appendChild(getSvgFromName(theme));
         button.addEventListener("click", (event) => {
+            interactionMode = interactionQuery.matches ? "click" : "hover";
+            wrapper.classList.toggle("interaction-click", interactionMode === "click");
+            wrapper.classList.toggle("is-vertical", narrowViewportQuery.matches);
             if (button.classList.contains("is-active") && !isOpen) {
                 event.preventDefault();
                 if (interactionMode === "click")
@@ -96,6 +100,13 @@ const themeContainer = (() => {
     return wrapper;
 })();
 positionVerticalMenu();
+if (themeContainer && typeof ResizeObserver !== "undefined") {
+    const menuResizeObserver = new ResizeObserver(positionVerticalMenu);
+    menuResizeObserver.observe(themeContainer);
+    if (themeContainer.parentElement) {
+        menuResizeObserver.observe(themeContainer.parentElement);
+    }
+}
 const updateMenuAccessibility = () => {
     if (!themeContainer)
         return;
@@ -114,36 +125,65 @@ const updateMenuAccessibility = () => {
         }
     });
 };
-function openMenu() {
+const openMenu = () => {
     if (!themeContainer || isOpen)
         return;
+    themeContainer.classList.toggle("is-vertical", narrowViewportQuery.matches);
     isOpen = true;
     themeContainer.classList.add("is-open");
     positionVerticalMenu();
     updateMenuAccessibility();
-}
-function closeMenu() {
+};
+const closeMenu = () => {
     if (!themeContainer || !isOpen)
         return;
     isOpen = false;
     themeContainer.classList.remove("is-open");
     updateMenuAccessibility();
-}
-function toggleMenu() {
+};
+const toggleMenu = () => {
     if (isOpen)
         closeMenu();
     else
         openMenu();
-}
+};
 function positionVerticalMenu() {
-    if (!themeContainer || !narrowViewportQuery.matches)
+    if (!themeContainer)
         return;
-    const bounds = themeContainer.getBoundingClientRect();
-    themeContainer.style.setProperty("--theme-menu-top", `${bounds.top + bounds.height / 2}px`);
-    themeContainer.style.setProperty("--theme-menu-left", `${bounds.left}px`);
+    const isVertical = narrowViewportQuery.matches;
+    themeContainer.classList.toggle("is-vertical", isVertical);
+    if (!isVertical) {
+        if (positionFrame !== null) {
+            cancelAnimationFrame(positionFrame);
+            positionFrame = null;
+        }
+        themeContainer.style.removeProperty("--theme-menu-top");
+        themeContainer.style.removeProperty("--theme-menu-left");
+        return;
+    }
+    if (positionFrame !== null)
+        return;
+    positionFrame = requestAnimationFrame(() => {
+        positionFrame = null;
+        if (!themeContainer)
+            return;
+        const isStillVertical = narrowViewportQuery.matches;
+        themeContainer.classList.toggle("is-vertical", isStillVertical);
+        if (!isStillVertical) {
+            themeContainer.style.removeProperty("--theme-menu-top");
+            themeContainer.style.removeProperty("--theme-menu-left");
+            return;
+        }
+        const bounds = themeContainer.getBoundingClientRect();
+        themeContainer.style.setProperty("--theme-menu-top", `${bounds.top + bounds.height / 2}px`);
+        themeContainer.style.setProperty("--theme-menu-left", `${bounds.left}px`);
+    });
 }
 window.addEventListener("scroll", positionVerticalMenu, true);
 window.addEventListener("resize", positionVerticalMenu);
+window.addEventListener("orientationchange", positionVerticalMenu);
+window.visualViewport?.addEventListener("resize", positionVerticalMenu);
+window.visualViewport?.addEventListener("scroll", positionVerticalMenu);
 interactionQuery.addEventListener("change", (event) => {
     const nextMode = event.matches ? "click" : "hover";
     if (nextMode === interactionMode)
@@ -159,8 +199,7 @@ interactionQuery.addEventListener("change", (event) => {
 reducedMotionQuery.addEventListener("change", (event) => {
     themeContainer?.classList.toggle("no-motion", event.matches);
 });
-narrowViewportQuery.addEventListener("change", (event) => {
-    themeContainer?.classList.toggle("is-vertical", event.matches);
+narrowViewportQuery.addEventListener("change", () => {
     positionVerticalMenu();
 });
 const handleThemeChangeEvent = () => {
