@@ -18,13 +18,6 @@ public class AutonOpMode implements OpMode {
     protected static final LoggedNetworkChooser<Auton> chooser =
             new LoggedNetworkChooser<>("Auton");
 
-    public AutonOpMode(Robot robot) {
-        this.robot = robot;
-
-        setAuto(chooser.getSelected());
-        chooser.onChange(this::setAuto);
-    }
-
     public static void addDefaultAuton(String name, Auton auton) {
         chooser.addDefault(name, auton);
     }
@@ -32,7 +25,15 @@ public class AutonOpMode implements OpMode {
     public static void addAuton(String name, Auton auton) {
         chooser.add(name, auton);
     }
+    
+    public AutonOpMode(Robot robot) {
+        this.robot = robot;
 
+        setAuto(chooser.getSelected());
+        chooser.onChange(this::setAuto);
+    }
+
+    
     private void setAuto(Auton auton) {
         ifNotNull(Auton::clearPaths);
         auto = auton;
