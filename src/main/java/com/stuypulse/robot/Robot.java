@@ -42,7 +42,6 @@ import org.wpilib.util.Alert;
 
 import java.util.EnumMap;
 import java.util.Optional;
-
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedOpModeRobot;
 import org.littletonrobotics.junction.Logger;
