@@ -4,6 +4,8 @@
 /**************************************************************/
 package com.stuypulse.robot.util.auton;
 
+import com.stuypulse.robot.util.auton.AutonUtil.AutonType;
+
 import com.stuypulse.robot.commands.auton.Auton;
 import com.stuypulse.robot.commands.auton.BLineAuton;
 import com.stuypulse.robot.opmodes.AutonOpMode;
@@ -11,14 +13,6 @@ import com.stuypulse.robot.opmodes.AutonOpMode;
 import org.wpilib.driverstation.DriverStationErrors;
 
 import bline.path.Path;
-import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 import java.util.function.Function;
 import org.littletonrobotics.junction.networktables.LoggedNetworkChooser;
 
@@ -45,7 +39,9 @@ public class BLineUtil {
                             "BLine path \""
                                     + path
                                     + "\" not found. Did you mean \""
-                                    + findClosestMatch(getPathFileNames(), path)
+                                    + AutonUtil.findClosestMatch(
+                                            AutonUtil.getPathFileNames(AutonType.BLINE),
+                                            path)
                                     + "\"?",
                             false);
                 }
@@ -94,82 +90,5 @@ public class BLineUtil {
             DriverStationErrors.reportError("BLine path \"" + name + "\" not found.", false);
             return null;
         }
-    }
-
-    /*** PATH FILENAME CORRECTION ***/
-
-    public static List<String> getPathFileNames() {
-        // ../../../../../deploy/bline/autos/paths
-        java.nio.file.Path dir =
-                Paths.get("").toAbsolutePath().resolve("src/main/deploy/bline/autos/paths");
-        ArrayList<String> fileList = new ArrayList<String>();
-        try (DirectoryStream<java.nio.file.Path> stream = Files.newDirectoryStream(dir, "*.json")) {
-            for (java.nio.file.Path file : stream) {
-                fileList.add(file.getFileName().toString().replaceFirst(".json", ""));
-            }
-        } catch (IOException error) {
-            DriverStationErrors.reportError(error.getMessage(), false);
-        }
-        Collections.sort(fileList);
-        return fileList;
-    }
-
-    public static String findClosestMatch(List<String> paths, String input) {
-        double closestValue = 10.0;
-        String matching = "";
-
-        for (String fileName : paths) {
-            HashMap<Character, Integer> fileChars = countChars(fileName.toCharArray());
-            HashMap<Character, Integer> inputChars = countChars(input.toCharArray());
-
-            double proximity = compareNameProximity(fileChars, inputChars);
-            closestValue = Math.min(proximity, closestValue);
-
-            if (proximity == closestValue) {
-                matching = fileName;
-            }
-        }
-
-        return matching;
-    }
-
-    public static HashMap<Character, Integer> countChars(char[] chars) {
-        HashMap<Character, Integer> letterMap = new HashMap<>();
-        for (char i = 'a'; i <= 'z'; i++) letterMap.put(i, 0);
-        letterMap.put('(', 0);
-        letterMap.put(' ', 0);
-        letterMap.put(')', 0);
-        for (char letter : chars) {
-            if (letterMap.containsKey(letter)) {
-                letterMap.put(letter, letterMap.get(letter));
-            } else {
-                letterMap.put(letter, 1);
-            }
-        }
-        return letterMap;
-    }
-
-    public static double compareNameProximity(
-            HashMap<Character, Integer> list1, HashMap<Character, Integer> list2) {
-        double proximity = 0.0;
-        int list1sum = 0, list2sum = 0;
-        for (char key : list1.keySet()) {
-            if (!list2.containsKey(key)) {
-                proximity += 0.1;
-                continue;
-            }
-            proximity += 0.05 * Math.abs(list1.get(key) - list2.get(key));
-        }
-        for (char key : list2.keySet()) {
-            if (!list1.containsKey(key)) {
-                proximity += 0.1;
-                continue;
-            }
-            proximity += 0.05 * Math.abs(list1.get(key) - list2.get(key));
-        }
-        for (int count : list1.values()) list1sum += count;
-        for (int count : list2.values()) list2sum += count;
-        proximity += 0.4 * Math.abs(list2sum - list1sum);
-        return proximity;
     }
 }
