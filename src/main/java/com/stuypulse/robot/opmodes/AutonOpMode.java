@@ -7,17 +7,27 @@ package com.stuypulse.robot.opmodes;
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.commands.auton.Auton;
 
+import org.littletonrobotics.junction.networktables.LoggedNetworkChooser;
 import org.wpilib.opmode.OpMode;
 
 public class AutonOpMode implements OpMode {
     protected final Robot robot;
     protected Auton auto;
+    protected static final LoggedNetworkChooser<Auton> chooser = new LoggedNetworkChooser<>("Auton");
 
     public AutonOpMode(Robot robot) {
         this.robot = robot;
 
-        setAuto(robot.getSelectedAuton());
-        robot.onAutonChange(this::setAuto);
+        setAuto(chooser.getSelected());
+        chooser.onChange(this::setAuto);
+    }
+
+    public static void addDefaultAuton(String name, Auton auton) {
+        chooser.addDefault(name, auton);
+    }
+
+    public static void addAuton(String name, Auton auton) {
+        chooser.add(name, auton);
     }
 
     private void setAuto(Auton auton) {
@@ -54,7 +64,7 @@ public class AutonOpMode implements OpMode {
     public final void start() {
         clearPaths();
 
-        auto = robot.getSelectedAuton();
+        auto = chooser.getSelected();
 
         scheduleAuto();
         this.startCallback();
@@ -77,7 +87,7 @@ public class AutonOpMode implements OpMode {
     public final void close() {
         cancelAuto();
         clearPaths();
-        robot.onAutonChange(null);
+        chooser.onChange(null);
     }
 
     /**
