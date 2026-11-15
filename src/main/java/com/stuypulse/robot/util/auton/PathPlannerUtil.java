@@ -17,7 +17,10 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import java.util.function.Function;
 import org.littletonrobotics.junction.networktables.LoggedNetworkChooser;
 
-public class PathPlannerUtil {
+public final class PathPlannerUtil {
+    private PathPlannerUtil() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
 
     public static class PathPlannerConfig {
 

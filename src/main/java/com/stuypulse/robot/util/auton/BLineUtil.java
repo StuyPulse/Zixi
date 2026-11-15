@@ -19,7 +19,11 @@ import org.littletonrobotics.junction.networktables.LoggedNetworkChooser;
 /**
  * @author Taryn Huang (https://github.com/7arymisu)
  */
-public class BLineUtil {
+public final class BLineUtil {
+    private BLineUtil() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
+    
     public static class BLineConfig {
 
         private final String name;
