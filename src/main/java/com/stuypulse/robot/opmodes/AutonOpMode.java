@@ -7,10 +7,10 @@ package com.stuypulse.robot.opmodes;
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.commands.auton.Auton;
 
-import java.util.function.Consumer;
-
-import org.littletonrobotics.junction.networktables.LoggedNetworkChooser;
 import org.wpilib.opmode.OpMode;
+
+import java.util.function.Consumer;
+import org.littletonrobotics.junction.networktables.LoggedNetworkChooser;
 
 public class AutonOpMode implements OpMode {
     protected static final LoggedNetworkChooser<Auton> chooser =
@@ -88,8 +88,8 @@ public class AutonOpMode implements OpMode {
     /**
      * Close callback method for being overridden by extending autons
      *
-     * <p>Will run after the command is canceled, auto paths cleared 
-     * from the display, and the chooser listener is removed
+     * <p>Will run after the command is canceled, auto paths cleared from the display, and the
+     * chooser listener is removed
      */
     public void closeCallback() {}
 }
