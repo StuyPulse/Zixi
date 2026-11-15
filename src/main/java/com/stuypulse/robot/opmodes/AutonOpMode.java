@@ -13,10 +13,11 @@ import java.util.function.Consumer;
 import org.littletonrobotics.junction.networktables.LoggedNetworkChooser;
 
 public class AutonOpMode implements OpMode {
-    protected final Robot robot;
-    protected Auton auto;
     protected static final LoggedNetworkChooser<Auton> chooser =
             new LoggedNetworkChooser<>("Auton");
+
+    protected final Robot robot;
+    protected Auton auto;
 
     public static void addDefaultAuton(String name, Auton auton) {
         chooser.addDefault(name, auton);
