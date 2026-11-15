@@ -4,7 +4,6 @@
 /**************************************************************/
 package com.stuypulse.robot;
 
-import com.stuypulse.robot.commands.auton.Auton;
 import com.stuypulse.robot.commands.auton.AutonFactory;
 import com.stuypulse.robot.commands.subsystems.DriveCommands;
 import com.stuypulse.robot.constants.DriverConstants;
@@ -43,10 +42,10 @@ import org.wpilib.util.Alert;
 
 import java.util.EnumMap;
 import java.util.Optional;
+
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedOpModeRobot;
 import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.networktables.LoggedNetworkChooser;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
@@ -87,7 +86,6 @@ public class Robot extends LoggedOpModeRobot {
             new CommandGamepad(DriverConstants.Driver.DRIVER_INDEX); // model-agnostic controller
     public final Swerve swerve;
     public final Vision vision;
-    private final LoggedNetworkChooser<Auton> autonChooser = new LoggedNetworkChooser<>("Auton");
     public final Scheduler defaultScheduler;
 
     public Robot() {
@@ -224,13 +222,9 @@ public class Robot extends LoggedOpModeRobot {
     private void configureAutons() {
         AutonFactory autonFactory = new AutonFactory();
 
-        autonChooser.addDefault("Do Nothing", autonFactory.doNothingAuton());
+        AutonOpMode.addDefaultAuton("Do Nothing", autonFactory.doNothingAuton());
 
         addOpMode(RobotMode.AUTONOMOUS, "Chooser Auton", () -> new AutonOpMode(this));
-    }
-
-    public Auton getSelectedAuton() {
-        return autonChooser.getSelected();
     }
 
     private void configureSysIds() {

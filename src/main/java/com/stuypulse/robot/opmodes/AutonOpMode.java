@@ -7,60 +7,58 @@ package com.stuypulse.robot.opmodes;
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.commands.auton.Auton;
 
+import java.util.function.Consumer;
+
+import org.littletonrobotics.junction.networktables.LoggedNetworkChooser;
 import org.wpilib.opmode.OpMode;
 
 public class AutonOpMode implements OpMode {
+    protected static final LoggedNetworkChooser<Auton> chooser =
+            new LoggedNetworkChooser<>("Auton");
+
     protected final Robot robot;
     protected Auton auto;
 
+    public static void addDefaultAuton(String name, Auton auton) {
+        chooser.addDefault(name, auton);
+    }
+
+    public static void addAuton(String name, Auton auton) {
+        chooser.add(name, auton);
+    }
+    
     public AutonOpMode(Robot robot) {
         this.robot = robot;
+
+        setAuto(chooser.getSelected());
+        chooser.onChange(this::setAuto);
     }
 
-    @Override
-    public final void disabledPeriodic() {
-        if (auto != robot.getSelectedAuton() && auto != null) {
-            auto.clearPaths();
-
-            auto = robot.getSelectedAuton();
-
-            auto.displayPaths();
-        }
-
-        if (auto == null) {
-            auto = robot.getSelectedAuton();
-            if (auto != null) {
-                auto.displayPaths();
-            }
-        }
-
-        this.disabledCallback();
+    
+    private void setAuto(Auton auton) {
+        ifNotNull(Auton::clearPaths);
+        auto = auton;
+        ifNotNull(Auton::displayPaths);
     }
 
-    /**
-     * Disabled periodic callback method for being overriden by extending autons
-     *
-     * <p>Will run periodically after paths are shown on the display
-     */
-    protected void disabledCallback() {}
+    private void ifNotNull(Consumer<Auton> consumer) {
+        if (auto != null) {
+            consumer.accept(auto);
+        }
+    }
 
     @Override
     public final void start() {
-        if (auto != null) {
-            auto.clearPaths();
-        }
+        ifNotNull(Auton::clearPaths);
 
-        auto = robot.getSelectedAuton();
+        auto = chooser.getSelected();
 
-        if (auto != null) {
-            robot.defaultScheduler.schedule(auto.getCommand());
-        }
-
+        ifNotNull(a -> robot.defaultScheduler.schedule(a.getCommand()));
         this.startCallback();
     }
 
     /**
-     * Start callback method for being overriden by extending autons
+     * Start callback method for being overridden by extending autons
      *
      * <p>Will run after the command is scheduled and auto paths cleared from the display
      */
@@ -68,16 +66,30 @@ public class AutonOpMode implements OpMode {
 
     @Override
     public final void end() {
-        if (auto != null) {
-            robot.defaultScheduler.cancel(auto.getCommand());
-        }
+        ifNotNull(a -> robot.defaultScheduler.cancel(a.getCommand()));
         this.endCallback();
     }
 
+    @Override
+    public final void close() {
+        ifNotNull(a -> robot.defaultScheduler.cancel(a.getCommand()));
+        ifNotNull(Auton::clearPaths);
+        chooser.onChange(null);
+        this.closeCallback();
+    }
+
     /**
-     * End callback method for being overriden by extending autons
+     * End callback method for being overridden by extending autons
      *
      * <p>Will run after the command is canceled and auto paths cleared from the display
      */
     public void endCallback() {}
+
+    /**
+     * Close callback method for being overridden by extending autons
+     *
+     * <p>Will run after the command is canceled, auto paths cleared 
+     * from the display, and the chooser listener is removed
+     */
+    public void closeCallback() {}
 }

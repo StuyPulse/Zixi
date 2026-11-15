@@ -6,6 +6,8 @@ package com.stuypulse.robot.util.auton;
 
 import com.stuypulse.robot.commands.auton.Auton;
 import com.stuypulse.robot.commands.auton.PathPlannerAuton;
+import com.stuypulse.robot.opmodes.AutonOpMode;
+import com.stuypulse.robot.util.auton.BLineUtil.BLineConfig;
 
 import org.wpilib.driverstation.DriverStationErrors;
 
@@ -62,8 +64,18 @@ public class PathPlannerUtil {
             return this;
         }
 
+        public PathPlannerConfig register() {
+            AutonOpMode.addAuton(name, buildPathPlannerAuton());
+            return this;
+        }
+
         public PathPlannerConfig registerDefault(LoggedNetworkChooser<Auton> chooser) {
             chooser.add(name, buildPathPlannerAuton());
+            return this;
+        }
+
+        public PathPlannerConfig registerDefault() {
+            AutonOpMode.addDefaultAuton(name, buildPathPlannerAuton());
             return this;
         }
     }

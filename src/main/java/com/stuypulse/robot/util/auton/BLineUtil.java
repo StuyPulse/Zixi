@@ -6,6 +6,7 @@ package com.stuypulse.robot.util.auton;
 
 import com.stuypulse.robot.commands.auton.Auton;
 import com.stuypulse.robot.commands.auton.BLineAuton;
+import com.stuypulse.robot.opmodes.AutonOpMode;
 
 import org.wpilib.driverstation.DriverStationErrors;
 
@@ -60,8 +61,18 @@ public class BLineUtil {
             return this;
         }
 
+        public BLineConfig register() {
+            AutonOpMode.addAuton(name, buildBLineAuton());
+            return this;
+        }
+
         public BLineConfig registerDefault(LoggedNetworkChooser<Auton> chooser) {
             chooser.addDefault(name, buildBLineAuton());
+            return this;
+        }
+
+        public BLineConfig registerDefault() {
+            AutonOpMode.addDefaultAuton(name, buildBLineAuton());
             return this;
         }
     }
