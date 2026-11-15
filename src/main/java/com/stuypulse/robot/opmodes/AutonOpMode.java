@@ -13,9 +13,11 @@ import org.littletonrobotics.junction.networktables.LoggedNetworkChooser;
 import org.wpilib.opmode.OpMode;
 
 public class AutonOpMode implements OpMode {
+    protected static final LoggedNetworkChooser<Auton> chooser =
+            new LoggedNetworkChooser<>("Auton");
+
     protected final Robot robot;
     protected Auton auto;
-    protected static final LoggedNetworkChooser<Auton> chooser = new LoggedNetworkChooser<>("Auton");
 
     public static void addDefaultAuton(String name, Auton auton) {
         chooser.addDefault(name, auton);
