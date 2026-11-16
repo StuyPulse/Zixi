@@ -219,7 +219,7 @@ public class Robot extends LoggedOpModeRobot {
     }
 
     private void configureAutons() {
-        AutonFactory autonFactory = new AutonFactory();
+        AutonFactory autonFactory = new AutonFactory(swerve, vision);
 
         AutonOpMode.addDefaultAuton("Do Nothing", autonFactory.doNothingAuton());
 
