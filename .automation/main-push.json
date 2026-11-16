@@ -1,7 +1,7 @@
 {
-  "message": "fix(ci): add contents: read and actions: read permission to build.yml",
-  "hash": "851ec6a5ce71702165bee7924bb72bc6d54dc2e5",
-  "commitTimestamp": "2026-11-12T01:13:17Z",
-  "triggerTimestamp": "2026-11-15T00:08:25.458Z",
-  "manuallyTriggered": true
+  "message": "OpModes 💖 (#39)\n\n* refactor: setup opmodes, remove robotcontainer for opmodes\n\n* feat: use characterization opmodes from tumbleweed\n\n* refactor: replace redundant SysId op mode classes with centralized registration\n\nRegister all four SysId routines manually through new configureSysIds() method in Robot.java, so that we don't have to verbosely create multiple separate classes.\n\n* feat: get selected auton in robot.java\n\n* feat: default auton opmode\n\n* refactor: move auton chooser to AutonOpMode and use onChange callbacks to detect auton choice changes (#40)\n\n* feat: use LoggedNetworkChooser's onChange method instead of using periodic loop to check path updates\n\n* refactor: transfer ownership of auton chooser from Robot to AutonOpMode\n\n* feat: add register and registerDefault methods for AutonOpMode\n\n* refactor: simplify auton path management using ifNotNull method\n\n* style: move static auton adder methods to top\n\n* style: move static chooser field to top of AutonOpMode\n\n* refactor: consolidate duplicate methods in PathPlannerUtil/BLineUtil into new AutonUtil class + document all three classes (#41)\n\n* refactor: consolidate duplicate path file handling methods into AutonUtil for BLine and PathPlanner\n\n* refactor: make BLineUtil and PathPlannerUtil unable to be instantiated directly\n\n* docs: document AutonUtil, BLineUtil, PathPlannerUtil\n\n* style: spotlessApply\n\n* fix: uncomment setUseTiming for replay log execution speed\n\n* feat: make AutonFactory have access to swerve and vision subsystems for autons to use\n\n---------\n\nCo-authored-by: Faizaan-J <125227430+Faizaan-J@users.noreply.github.com>\nCo-authored-by: aidenzhang21345 <aidenz27@nycstudents.net>",
+  "hash": "00c22fb546dada0db544705184214174a932b9ef",
+  "commitTimestamp": "2026-11-15T22:37:16-05:00",
+  "triggerTimestamp": "2026-11-16T03:37:21.100Z",
+  "manuallyTriggered": false
 }
