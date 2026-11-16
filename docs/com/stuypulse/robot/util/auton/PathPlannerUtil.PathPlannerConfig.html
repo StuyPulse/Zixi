@@ -12,7 +12,7 @@
 <script type="text/javascript" src="../../../../../script-files/script.js"></script>
 <script type="text/javascript" src="../../../../../script-files/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="../../../../../script-files/jquery-ui.min.js"></script>
-<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../betterjdocs.css"><link rel="icon" href="../../../../../favicon.svg?t=1794701387512" type="image/x-icon"><script defer type="module" src="../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
+<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../betterjdocs.css"><link rel="icon" href="../../../../../favicon.svg?t=1794800351835" type="image/x-icon"><script defer type="module" src="../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
 <body class="class-declaration-page">
 <script type="text/javascript">const pathtoroot = "../../../../../";
 loadScripts(document, 'script');</script>
@@ -53,7 +53,11 @@ loadScripts(document, 'script');</script>
 <nav role="navigation" class="toc" aria-label="Table of contents">
 <div class="toc-header">Contents&nbsp;<input type="text" class="filter-input" disabled placeholder="Filter contents (type .)" aria-label="Filter table of contents" autocomplete="off" spellcheck="false"><input type="reset" class="reset-filter" disabled tabindex="-1" value="Reset"></div>
 <ol class="toc-list" tabindex="-1">
-<li><a href="#" tabindex="0">Description</a></li>
+<li><a href="#" tabindex="0">Description</a>
+<ol class="toc-list">
+<li><a href="#pathplanner-configuration-heading" tabindex="0">PathPlanner Configuration</a></li>
+</ol>
+</li>
 <li><a href="#field-summary" tabindex="0">Field Summary</a></li>
 <li><a href="#constructor-summary" tabindex="0">Constructor Summary</a></li>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
@@ -73,7 +77,9 @@ loadScripts(document, 'script');</script>
 <ol class="toc-list">
 <li><a href="#buildPathPlannerAuton()" tabindex="0">buildPathPlannerAuton()</a></li>
 <li><a href="#register(org.littletonrobotics.junction.networktables.LoggedNetworkChooser)" tabindex="0">register(LoggedNetworkChooser)</a></li>
+<li><a href="#register()" tabindex="0">register()</a></li>
 <li><a href="#registerDefault(org.littletonrobotics.junction.networktables.LoggedNetworkChooser)" tabindex="0">registerDefault(LoggedNetworkChooser)</a></li>
+<li><a href="#registerDefault()" tabindex="0">registerDefault()</a></li>
 </ol>
 </li>
 </ol>
@@ -93,8 +99,14 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="horizontal-scroll">
-<div class="type-signature"><span class="modifiers">public static class </span><span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.html#line-27">PathPlannerUtil.PathPlannerConfig</a></span>
+<div class="type-signature"><span class="modifiers">public static class </span><span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.html#line-68">PathPlannerUtil.PathPlannerConfig</a></span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block"><h2 id="pathplanner-configuration-heading">PathPlanner Configuration</h2>
+
+<p>Associates an autonomous routine name and one or more PathPlanner path names with a
+factory method that creates the corresponding <a href="../../commands/auton/PathPlannerAuton.html" title="class in com.stuypulse.robot.commands.auton"><code>PathPlannerAuton</code></a>. Create one
+configuration for each routine, then call one of the <code>register</code> methods to add it to an
+autonomous chooser.</div>
 </div>
 </section>
 <section class="summary">
@@ -131,7 +143,9 @@ loadScripts(document, 'script');</script>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.util.function.Function,java.lang.String...)" class="member-name-link">PathPlannerConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;com.pathplanner.lib.path.PathPlannerPath[], <a href="../../commands/auton/PathPlannerAuton.html" title="class in com.stuypulse.robot.commands.auton">PathPlannerAuton</a>&gt;&nbsp;auton,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;paths)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Constructor for a PathPlannerConfig</div>
+</div>
 </div>
 </section>
 </li>
@@ -148,13 +162,29 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>private <a href="../../commands/auton/PathPlannerAuton.html" title="class in com.stuypulse.robot.commands.auton">PathPlannerAuton</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#buildPathPlannerAuton()" class="member-name-link">buildPathPlannerAuton</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Loads the configured paths and passes them to the routine factory.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="PathPlannerUtil.PathPlannerConfig.html" title="class in com.stuypulse.robot.util.auton">PathPlannerUtil.PathPlannerConfig</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#register(org.littletonrobotics.junction.networktables.LoggedNetworkChooser)" class="member-name-link">register</a><wbr>(org.littletonrobotics.junction.networktables.LoggedNetworkChooser&lt;<a href="../../commands/auton/Auton.html" title="interface in com.stuypulse.robot.commands.auton">Auton</a>&gt;&nbsp;chooser)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#register()" class="member-name-link">register</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Registers this routine with <a href="../../opmodes/AutonOpMode.html" title="class in com.stuypulse.robot.opmodes"><code>AutonOpMode</code></a>'s internal chooser.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="PathPlannerUtil.PathPlannerConfig.html" title="class in com.stuypulse.robot.util.auton">PathPlannerUtil.PathPlannerConfig</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#register(org.littletonrobotics.junction.networktables.LoggedNetworkChooser)" class="member-name-link">register</a><wbr>(org.littletonrobotics.junction.networktables.LoggedNetworkChooser&lt;<a href="../../commands/auton/Auton.html" title="interface in com.stuypulse.robot.commands.auton">Auton</a>&gt;&nbsp;chooser)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Adds this routine to a <code>LoggedNetworkChooser</code> under the configured name.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="PathPlannerUtil.PathPlannerConfig.html" title="class in com.stuypulse.robot.util.auton">PathPlannerUtil.PathPlannerConfig</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerDefault()" class="member-name-link">registerDefault</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Registers this routine as the default with <a href="../../opmodes/AutonOpMode.html" title="class in com.stuypulse.robot.opmodes"><code>AutonOpMode</code></a>'s internal chooser.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="PathPlannerUtil.PathPlannerConfig.html" title="class in com.stuypulse.robot.util.auton">PathPlannerUtil.PathPlannerConfig</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerDefault(org.littletonrobotics.junction.networktables.LoggedNetworkChooser)" class="member-name-link">registerDefault</a><wbr>(org.littletonrobotics.junction.networktables.LoggedNetworkChooser&lt;<a href="../../commands/auton/Auton.html" title="interface in com.stuypulse.robot.commands.auton">Auton</a>&gt;&nbsp;chooser)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Adds this routine to a <code>LoggedNetworkChooser</code> as its default option.</div>
+</div>
 </div>
 </div>
 </div>
@@ -176,7 +206,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="name">
 <h3>name</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.PathPlannerConfig.html#line-29">name</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.PathPlannerConfig.html#line-70">name</a></span></div>
 </div>
 </section>
 </li>
@@ -184,7 +214,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="auton">
 <h3>auton</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;com.pathplanner.lib.path.PathPlannerPath[], <a href="../../commands/auton/PathPlannerAuton.html" title="class in com.stuypulse.robot.commands.auton">PathPlannerAuton</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.PathPlannerConfig.html#line-31">auton</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;com.pathplanner.lib.path.PathPlannerPath[], <a href="../../commands/auton/PathPlannerAuton.html" title="class in com.stuypulse.robot.commands.auton">PathPlannerAuton</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.PathPlannerConfig.html#line-72">auton</a></span></div>
 </div>
 </section>
 </li>
@@ -192,7 +222,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="paths">
 <h3>paths</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.PathPlannerConfig.html#line-33">paths</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.PathPlannerConfig.html#line-74">paths</a></span></div>
 </div>
 </section>
 </li>
@@ -208,9 +238,20 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(java.lang.String,java.util.function.Function,java.lang.String...)">
 <h3>PathPlannerConfig</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.PathPlannerConfig.html#line-35">PathPlannerConfig</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.PathPlannerConfig.html#line-89">PathPlannerConfig</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;com.pathplanner.lib.path.PathPlannerPath[], <a href="../../commands/auton/PathPlannerAuton.html" title="class in com.stuypulse.robot.commands.auton">PathPlannerAuton</a>&gt;&nbsp;auton,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;paths)</span></div>
+<div class="block"><h4 id="constructor-for-a-pathplannerconfig-heading">Constructor for a PathPlannerConfig</h4>
+
+<p>Stores the routine name, path names, and factory. Checks if every path exists and
+reports missing paths and suggested closest matches to the Driver Station.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>name</code> - The name to display for this autonomous routine</dd>
+<dd><code>auton</code> - Factory that creates the routine from the loaded paths</dd>
+<dd><code>paths</code> - PathPlanner path names used by the routine, in the order expected by the
+    factory</dd>
+</dl>
 </div>
 </section>
 </li>
@@ -226,7 +267,12 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="buildPathPlannerAuton()">
 <h3>buildPathPlannerAuton</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type"><a href="../../commands/auton/PathPlannerAuton.html" title="class in com.stuypulse.robot.commands.auton">PathPlannerAuton</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.PathPlannerConfig.html#line-56">buildPathPlannerAuton</a></span>()</div>
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type"><a href="../../commands/auton/PathPlannerAuton.html" title="class in com.stuypulse.robot.commands.auton">PathPlannerAuton</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.PathPlannerConfig.html#line-115">buildPathPlannerAuton</a></span>()</div>
+<div class="block">Loads the configured paths and passes them to the routine factory.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>The autonomous routine created from the configured paths</dd>
+</dl>
 </div>
 </section>
 </li>
@@ -234,7 +280,27 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="register(org.littletonrobotics.junction.networktables.LoggedNetworkChooser)">
 <h3>register</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="PathPlannerUtil.PathPlannerConfig.html" title="class in com.stuypulse.robot.util.auton">PathPlannerUtil.PathPlannerConfig</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.PathPlannerConfig.html#line-60">register</a></span><wbr><span class="parameters">(org.littletonrobotics.junction.networktables.LoggedNetworkChooser&lt;<a href="../../commands/auton/Auton.html" title="interface in com.stuypulse.robot.commands.auton">Auton</a>&gt;&nbsp;chooser)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="PathPlannerUtil.PathPlannerConfig.html" title="class in com.stuypulse.robot.util.auton">PathPlannerUtil.PathPlannerConfig</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.PathPlannerConfig.html#line-125">register</a></span><wbr><span class="parameters">(org.littletonrobotics.junction.networktables.LoggedNetworkChooser&lt;<a href="../../commands/auton/Auton.html" title="interface in com.stuypulse.robot.commands.auton">Auton</a>&gt;&nbsp;chooser)</span></div>
+<div class="block">Adds this routine to a <code>LoggedNetworkChooser</code> under the configured name.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>chooser</code> - The chooser that will display this routine</dd>
+<dt>Returns:</dt>
+<dd>This instance of the class, for method chaining</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="register()">
+<h3>register</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="PathPlannerUtil.PathPlannerConfig.html" title="class in com.stuypulse.robot.util.auton">PathPlannerUtil.PathPlannerConfig</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.PathPlannerConfig.html#line-135">register</a></span>()</div>
+<div class="block">Registers this routine with <a href="../../opmodes/AutonOpMode.html" title="class in com.stuypulse.robot.opmodes"><code>AutonOpMode</code></a>'s internal chooser.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>This instance of the class, for method chaining</dd>
+</dl>
 </div>
 </section>
 </li>
@@ -242,7 +308,27 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="registerDefault(org.littletonrobotics.junction.networktables.LoggedNetworkChooser)">
 <h3>registerDefault</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="PathPlannerUtil.PathPlannerConfig.html" title="class in com.stuypulse.robot.util.auton">PathPlannerUtil.PathPlannerConfig</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.PathPlannerConfig.html#line-65">registerDefault</a></span><wbr><span class="parameters">(org.littletonrobotics.junction.networktables.LoggedNetworkChooser&lt;<a href="../../commands/auton/Auton.html" title="interface in com.stuypulse.robot.commands.auton">Auton</a>&gt;&nbsp;chooser)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="PathPlannerUtil.PathPlannerConfig.html" title="class in com.stuypulse.robot.util.auton">PathPlannerUtil.PathPlannerConfig</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.PathPlannerConfig.html#line-146">registerDefault</a></span><wbr><span class="parameters">(org.littletonrobotics.junction.networktables.LoggedNetworkChooser&lt;<a href="../../commands/auton/Auton.html" title="interface in com.stuypulse.robot.commands.auton">Auton</a>&gt;&nbsp;chooser)</span></div>
+<div class="block">Adds this routine to a <code>LoggedNetworkChooser</code> as its default option.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>chooser</code> - The chooser that will display this routine.</dd>
+<dt>Returns:</dt>
+<dd>This instance of the class, for method chaining</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="registerDefault()">
+<h3>registerDefault</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="PathPlannerUtil.PathPlannerConfig.html" title="class in com.stuypulse.robot.util.auton">PathPlannerUtil.PathPlannerConfig</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.PathPlannerConfig.html#line-156">registerDefault</a></span>()</div>
+<div class="block">Registers this routine as the default with <a href="../../opmodes/AutonOpMode.html" title="class in com.stuypulse.robot.opmodes"><code>AutonOpMode</code></a>'s internal chooser.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>This instance of the class, for method chaining</dd>
+</dl>
 </div>
 </section>
 </li>

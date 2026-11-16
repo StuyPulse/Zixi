@@ -7,7 +7,7 @@
 <meta name="description" content="source: package: com.stuypulse.robot.subsystems.swerve, class: Module">
 <meta name="generator" content="javadoc/SourceToHTMLConverter">
 <link rel="stylesheet" type="text/css" href="../../../../../../resource-files/stylesheet.css">
-<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../../betterjdocs.css"><link rel="icon" href="../../../../../../favicon.svg?t=1794701387527" type="image/x-icon"><script defer type="module" src="../../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../../pages/source-page/source-page.js"></script></head>
+<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../../betterjdocs.css"><link rel="icon" href="../../../../../../favicon.svg?t=1794800351869" type="image/x-icon"><script defer type="module" src="../../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../../pages/source-page/source-page.js"></script></head>
 <body class="source-page">
 <main role="main">
 <div class="source-container">
@@ -103,57 +103,62 @@
 <span class="source-line-no">090</span><span id="line-90">        io.setTurnPosition(Rotation2d.ZERO);</span>
 <span class="source-line-no">091</span><span id="line-91">    }</span>
 <span class="source-line-no">092</span><span id="line-92"></span>
-<span class="source-line-no">093</span><span id="line-93">    /** Disables all outputs to motors. */</span>
-<span class="source-line-no">094</span><span id="line-94">    public void stop() {</span>
-<span class="source-line-no">095</span><span id="line-95">        io.setDriveOpenLoop(0.0);</span>
-<span class="source-line-no">096</span><span id="line-96">        io.setTurnOpenLoop(0.0);</span>
-<span class="source-line-no">097</span><span id="line-97">    }</span>
-<span class="source-line-no">098</span><span id="line-98"></span>
-<span class="source-line-no">099</span><span id="line-99">    /** Returns the current turn angle of the module. */</span>
-<span class="source-line-no">100</span><span id="line-100">    public Rotation2d getAngle() {</span>
-<span class="source-line-no">101</span><span id="line-101">        return inputs.turnPosition;</span>
+<span class="source-line-no">093</span><span id="line-93">    public void runTurnCharacterization(double output) {</span>
+<span class="source-line-no">094</span><span id="line-94">        io.setDriveOpenLoop(0.0);</span>
+<span class="source-line-no">095</span><span id="line-95">        io.setTurnOpenLoop(output);</span>
+<span class="source-line-no">096</span><span id="line-96">    }</span>
+<span class="source-line-no">097</span><span id="line-97"></span>
+<span class="source-line-no">098</span><span id="line-98">    /** Disables all outputs to motors. */</span>
+<span class="source-line-no">099</span><span id="line-99">    public void stop() {</span>
+<span class="source-line-no">100</span><span id="line-100">        io.setDriveOpenLoop(0.0);</span>
+<span class="source-line-no">101</span><span id="line-101">        io.setTurnOpenLoop(0.0);</span>
 <span class="source-line-no">102</span><span id="line-102">    }</span>
 <span class="source-line-no">103</span><span id="line-103"></span>
-<span class="source-line-no">104</span><span id="line-104">    /** Returns the current drive position of the module in meters. */</span>
-<span class="source-line-no">105</span><span id="line-105">    public double getPositionMeters() {</span>
-<span class="source-line-no">106</span><span id="line-106">        return inputs.drivePositionRad * constants.WheelRadius;</span>
+<span class="source-line-no">104</span><span id="line-104">    /** Returns the current turn angle of the module. */</span>
+<span class="source-line-no">105</span><span id="line-105">    public Rotation2d getAngle() {</span>
+<span class="source-line-no">106</span><span id="line-106">        return inputs.turnPosition;</span>
 <span class="source-line-no">107</span><span id="line-107">    }</span>
 <span class="source-line-no">108</span><span id="line-108"></span>
-<span class="source-line-no">109</span><span id="line-109">    /** Returns the current drive velocity of the module in meters per second. */</span>
-<span class="source-line-no">110</span><span id="line-110">    public double getVelocityMetersPerSec() {</span>
-<span class="source-line-no">111</span><span id="line-111">        return inputs.driveVelocityRadPerSec * constants.WheelRadius;</span>
+<span class="source-line-no">109</span><span id="line-109">    /** Returns the current drive position of the module in meters. */</span>
+<span class="source-line-no">110</span><span id="line-110">    public double getPositionMeters() {</span>
+<span class="source-line-no">111</span><span id="line-111">        return inputs.drivePositionRad * constants.WheelRadius;</span>
 <span class="source-line-no">112</span><span id="line-112">    }</span>
 <span class="source-line-no">113</span><span id="line-113"></span>
-<span class="source-line-no">114</span><span id="line-114">    /** Returns the module position (turn angle and drive position). */</span>
-<span class="source-line-no">115</span><span id="line-115">    public SwerveModulePosition getPosition() {</span>
-<span class="source-line-no">116</span><span id="line-116">        return new SwerveModulePosition(getPositionMeters(), getAngle());</span>
+<span class="source-line-no">114</span><span id="line-114">    /** Returns the current drive velocity of the module in meters per second. */</span>
+<span class="source-line-no">115</span><span id="line-115">    public double getVelocityMetersPerSec() {</span>
+<span class="source-line-no">116</span><span id="line-116">        return inputs.driveVelocityRadPerSec * constants.WheelRadius;</span>
 <span class="source-line-no">117</span><span id="line-117">    }</span>
 <span class="source-line-no">118</span><span id="line-118"></span>
-<span class="source-line-no">119</span><span id="line-119">    /** Returns the module velocity (turn angle and drive velocity). */</span>
-<span class="source-line-no">120</span><span id="line-120">    public SwerveModuleVelocity getVelocity() {</span>
-<span class="source-line-no">121</span><span id="line-121">        return new SwerveModuleVelocity(getVelocityMetersPerSec(), getAngle());</span>
+<span class="source-line-no">119</span><span id="line-119">    /** Returns the module position (turn angle and drive position). */</span>
+<span class="source-line-no">120</span><span id="line-120">    public SwerveModulePosition getPosition() {</span>
+<span class="source-line-no">121</span><span id="line-121">        return new SwerveModulePosition(getPositionMeters(), getAngle());</span>
 <span class="source-line-no">122</span><span id="line-122">    }</span>
 <span class="source-line-no">123</span><span id="line-123"></span>
-<span class="source-line-no">124</span><span id="line-124">    /** Returns the module positions received this cycle. */</span>
-<span class="source-line-no">125</span><span id="line-125">    public SwerveModulePosition[] getOdometryPositions() {</span>
-<span class="source-line-no">126</span><span id="line-126">        return odometryPositions;</span>
+<span class="source-line-no">124</span><span id="line-124">    /** Returns the module velocity (turn angle and drive velocity). */</span>
+<span class="source-line-no">125</span><span id="line-125">    public SwerveModuleVelocity getVelocity() {</span>
+<span class="source-line-no">126</span><span id="line-126">        return new SwerveModuleVelocity(getVelocityMetersPerSec(), getAngle());</span>
 <span class="source-line-no">127</span><span id="line-127">    }</span>
 <span class="source-line-no">128</span><span id="line-128"></span>
-<span class="source-line-no">129</span><span id="line-129">    /** Returns the timestamps of the samples received this cycle. */</span>
-<span class="source-line-no">130</span><span id="line-130">    public double[] getOdometryTimestamps() {</span>
-<span class="source-line-no">131</span><span id="line-131">        return inputs.odometryTimestamps;</span>
+<span class="source-line-no">129</span><span id="line-129">    /** Returns the module positions received this cycle. */</span>
+<span class="source-line-no">130</span><span id="line-130">    public SwerveModulePosition[] getOdometryPositions() {</span>
+<span class="source-line-no">131</span><span id="line-131">        return odometryPositions;</span>
 <span class="source-line-no">132</span><span id="line-132">    }</span>
 <span class="source-line-no">133</span><span id="line-133"></span>
-<span class="source-line-no">134</span><span id="line-134">    /** Returns the module position in radians. */</span>
-<span class="source-line-no">135</span><span id="line-135">    public double getWheelRadiusCharacterizationPosition() {</span>
-<span class="source-line-no">136</span><span id="line-136">        return inputs.drivePositionRad;</span>
+<span class="source-line-no">134</span><span id="line-134">    /** Returns the timestamps of the samples received this cycle. */</span>
+<span class="source-line-no">135</span><span id="line-135">    public double[] getOdometryTimestamps() {</span>
+<span class="source-line-no">136</span><span id="line-136">        return inputs.odometryTimestamps;</span>
 <span class="source-line-no">137</span><span id="line-137">    }</span>
 <span class="source-line-no">138</span><span id="line-138"></span>
-<span class="source-line-no">139</span><span id="line-139">    /** Returns the module velocity in rotations/sec (Phoenix native units). */</span>
-<span class="source-line-no">140</span><span id="line-140">    public double getFFCharacterizationVelocity() {</span>
-<span class="source-line-no">141</span><span id="line-141">        return Units.radiansToRotations(inputs.driveVelocityRadPerSec);</span>
+<span class="source-line-no">139</span><span id="line-139">    /** Returns the module position in radians. */</span>
+<span class="source-line-no">140</span><span id="line-140">    public double getWheelRadiusCharacterizationPosition() {</span>
+<span class="source-line-no">141</span><span id="line-141">        return inputs.drivePositionRad;</span>
 <span class="source-line-no">142</span><span id="line-142">    }</span>
-<span class="source-line-no">143</span><span id="line-143">}</span>
+<span class="source-line-no">143</span><span id="line-143"></span>
+<span class="source-line-no">144</span><span id="line-144">    /** Returns the module velocity in rotations/sec (Phoenix native units). */</span>
+<span class="source-line-no">145</span><span id="line-145">    public double getFFCharacterizationVelocity() {</span>
+<span class="source-line-no">146</span><span id="line-146">        return Units.radiansToRotations(inputs.driveVelocityRadPerSec);</span>
+<span class="source-line-no">147</span><span id="line-147">    }</span>
+<span class="source-line-no">148</span><span id="line-148">}</span>
 
 
 

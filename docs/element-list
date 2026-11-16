@@ -3,6 +3,9 @@ com.stuypulse.robot.commands
 com.stuypulse.robot.commands.auton
 com.stuypulse.robot.commands.subsystems
 com.stuypulse.robot.constants
+com.stuypulse.robot.opmodes
+com.stuypulse.robot.opmodes.characterization
+com.stuypulse.robot.opmodes.sysid
 com.stuypulse.robot.subsystems.swerve
 com.stuypulse.robot.subsystems.vision
 com.stuypulse.robot.util

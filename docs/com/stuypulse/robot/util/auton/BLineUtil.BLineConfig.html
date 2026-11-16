@@ -12,7 +12,7 @@
 <script type="text/javascript" src="../../../../../script-files/script.js"></script>
 <script type="text/javascript" src="../../../../../script-files/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="../../../../../script-files/jquery-ui.min.js"></script>
-<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../betterjdocs.css"><link rel="icon" href="../../../../../favicon.svg?t=1794701387511" type="image/x-icon"><script defer type="module" src="../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
+<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../betterjdocs.css"><link rel="icon" href="../../../../../favicon.svg?t=1794800351834" type="image/x-icon"><script defer type="module" src="../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
 <body class="class-declaration-page">
 <script type="text/javascript">const pathtoroot = "../../../../../";
 loadScripts(document, 'script');</script>
@@ -53,7 +53,11 @@ loadScripts(document, 'script');</script>
 <nav role="navigation" class="toc" aria-label="Table of contents">
 <div class="toc-header">Contents&nbsp;<input type="text" class="filter-input" disabled placeholder="Filter contents (type .)" aria-label="Filter table of contents" autocomplete="off" spellcheck="false"><input type="reset" class="reset-filter" disabled tabindex="-1" value="Reset"></div>
 <ol class="toc-list" tabindex="-1">
-<li><a href="#" tabindex="0">Description</a></li>
+<li><a href="#" tabindex="0">Description</a>
+<ol class="toc-list">
+<li><a href="#bline-configuration-heading" tabindex="0">BLine Configuration</a></li>
+</ol>
+</li>
 <li><a href="#field-summary" tabindex="0">Field Summary</a></li>
 <li><a href="#constructor-summary" tabindex="0">Constructor Summary</a></li>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
@@ -73,7 +77,9 @@ loadScripts(document, 'script');</script>
 <ol class="toc-list">
 <li><a href="#buildBLineAuton()" tabindex="0">buildBLineAuton()</a></li>
 <li><a href="#register(org.littletonrobotics.junction.networktables.LoggedNetworkChooser)" tabindex="0">register(LoggedNetworkChooser)</a></li>
+<li><a href="#register()" tabindex="0">register()</a></li>
 <li><a href="#registerDefault(org.littletonrobotics.junction.networktables.LoggedNetworkChooser)" tabindex="0">registerDefault(LoggedNetworkChooser)</a></li>
+<li><a href="#registerDefault()" tabindex="0">registerDefault()</a></li>
 </ol>
 </li>
 </ol>
@@ -93,8 +99,13 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="horizontal-scroll">
-<div class="type-signature"><span class="modifiers">public static class </span><span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/BLineUtil.html#line-28">BLineUtil.BLineConfig</a></span>
+<div class="type-signature"><span class="modifiers">public static class </span><span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/BLineUtil.html#line-69">BLineUtil.BLineConfig</a></span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block"><h2 id="bline-configuration-heading">BLine Configuration</h2>
+
+<p>Associates an autonomous routine name and one or more BLine path names with a factory
+method that creates the corresponding <a href="../../commands/auton/BLineAuton.html" title="class in com.stuypulse.robot.commands.auton"><code>BLineAuton</code></a>. Create one configuration for each
+routine, then call one of the <code>register</code> methods to add it to an autonomous chooser.</div>
 </div>
 </section>
 <section class="summary">
@@ -131,7 +142,9 @@ loadScripts(document, 'script');</script>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.util.function.Function,java.lang.String...)" class="member-name-link">BLineConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;bline.path.Path[], <a href="../../commands/auton/BLineAuton.html" title="class in com.stuypulse.robot.commands.auton">BLineAuton</a>&gt;&nbsp;auton,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;paths)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Constructor for a BLineConfig</div>
+</div>
 </div>
 </section>
 </li>
@@ -148,13 +161,29 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>private <a href="../../commands/auton/BLineAuton.html" title="class in com.stuypulse.robot.commands.auton">BLineAuton</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#buildBLineAuton()" class="member-name-link">buildBLineAuton</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Loads the configured paths and passes them to the routine factory.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="BLineUtil.BLineConfig.html" title="class in com.stuypulse.robot.util.auton">BLineUtil.BLineConfig</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#register(org.littletonrobotics.junction.networktables.LoggedNetworkChooser)" class="member-name-link">register</a><wbr>(org.littletonrobotics.junction.networktables.LoggedNetworkChooser&lt;<a href="../../commands/auton/Auton.html" title="interface in com.stuypulse.robot.commands.auton">Auton</a>&gt;&nbsp;chooser)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#register()" class="member-name-link">register</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Registers this routine with <a href="../../opmodes/AutonOpMode.html" title="class in com.stuypulse.robot.opmodes"><code>AutonOpMode</code></a>'s internal chooser.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="BLineUtil.BLineConfig.html" title="class in com.stuypulse.robot.util.auton">BLineUtil.BLineConfig</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#register(org.littletonrobotics.junction.networktables.LoggedNetworkChooser)" class="member-name-link">register</a><wbr>(org.littletonrobotics.junction.networktables.LoggedNetworkChooser&lt;<a href="../../commands/auton/Auton.html" title="interface in com.stuypulse.robot.commands.auton">Auton</a>&gt;&nbsp;chooser)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Adds this routine to a <code>LoggedNetworkChooser</code> under the configured name.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="BLineUtil.BLineConfig.html" title="class in com.stuypulse.robot.util.auton">BLineUtil.BLineConfig</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerDefault()" class="member-name-link">registerDefault</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Registers this routine as the default with <a href="../../opmodes/AutonOpMode.html" title="class in com.stuypulse.robot.opmodes"><code>AutonOpMode</code></a>'s internal chooser.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="BLineUtil.BLineConfig.html" title="class in com.stuypulse.robot.util.auton">BLineUtil.BLineConfig</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerDefault(org.littletonrobotics.junction.networktables.LoggedNetworkChooser)" class="member-name-link">registerDefault</a><wbr>(org.littletonrobotics.junction.networktables.LoggedNetworkChooser&lt;<a href="../../commands/auton/Auton.html" title="interface in com.stuypulse.robot.commands.auton">Auton</a>&gt;&nbsp;chooser)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Adds this routine as the default option in a <code>LoggedNetworkChooser</code>.</div>
+</div>
 </div>
 </div>
 </div>
@@ -176,7 +205,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="name">
 <h3>name</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/BLineUtil.BLineConfig.html#line-30">name</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/BLineUtil.BLineConfig.html#line-71">name</a></span></div>
 </div>
 </section>
 </li>
@@ -184,7 +213,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="auton">
 <h3>auton</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;bline.path.Path[], <a href="../../commands/auton/BLineAuton.html" title="class in com.stuypulse.robot.commands.auton">BLineAuton</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/BLineUtil.BLineConfig.html#line-31">auton</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;bline.path.Path[], <a href="../../commands/auton/BLineAuton.html" title="class in com.stuypulse.robot.commands.auton">BLineAuton</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/BLineUtil.BLineConfig.html#line-73">auton</a></span></div>
 </div>
 </section>
 </li>
@@ -192,7 +221,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="paths">
 <h3>paths</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/BLineUtil.BLineConfig.html#line-32">paths</a></span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/BLineUtil.BLineConfig.html#line-75">paths</a></span></div>
 </div>
 </section>
 </li>
@@ -208,9 +237,19 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(java.lang.String,java.util.function.Function,java.lang.String...)">
 <h3>BLineConfig</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/BLineUtil.BLineConfig.html#line-34">BLineConfig</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/BLineUtil.BLineConfig.html#line-89">BLineConfig</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;bline.path.Path[], <a href="../../commands/auton/BLineAuton.html" title="class in com.stuypulse.robot.commands.auton">BLineAuton</a>&gt;&nbsp;auton,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;paths)</span></div>
+<div class="block"><h4 id="constructor-for-a-blineconfig-heading">Constructor for a BLineConfig</h4>
+
+<p>Stores the routine name, path names, and factory. Checks if every path exists and
+reports missing paths and suggested closest matches to the Driver Station.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>name</code> - The name to display for this autonomous routine</dd>
+<dd><code>auton</code> - Factory that creates the routine from the loaded paths</dd>
+<dd><code>paths</code> - BLine path names used by the routine, in the order expected by the factory</dd>
+</dl>
 </div>
 </section>
 </li>
@@ -226,7 +265,12 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="buildBLineAuton()">
 <h3>buildBLineAuton</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type"><a href="../../commands/auton/BLineAuton.html" title="class in com.stuypulse.robot.commands.auton">BLineAuton</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/BLineUtil.BLineConfig.html#line-54">buildBLineAuton</a></span>()</div>
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type"><a href="../../commands/auton/BLineAuton.html" title="class in com.stuypulse.robot.commands.auton">BLineAuton</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/BLineUtil.BLineConfig.html#line-115">buildBLineAuton</a></span>()</div>
+<div class="block">Loads the configured paths and passes them to the routine factory.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>The autonomous routine created from the configured paths</dd>
+</dl>
 </div>
 </section>
 </li>
@@ -234,7 +278,27 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="register(org.littletonrobotics.junction.networktables.LoggedNetworkChooser)">
 <h3>register</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="BLineUtil.BLineConfig.html" title="class in com.stuypulse.robot.util.auton">BLineUtil.BLineConfig</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/BLineUtil.BLineConfig.html#line-58">register</a></span><wbr><span class="parameters">(org.littletonrobotics.junction.networktables.LoggedNetworkChooser&lt;<a href="../../commands/auton/Auton.html" title="interface in com.stuypulse.robot.commands.auton">Auton</a>&gt;&nbsp;chooser)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="BLineUtil.BLineConfig.html" title="class in com.stuypulse.robot.util.auton">BLineUtil.BLineConfig</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/BLineUtil.BLineConfig.html#line-125">register</a></span><wbr><span class="parameters">(org.littletonrobotics.junction.networktables.LoggedNetworkChooser&lt;<a href="../../commands/auton/Auton.html" title="interface in com.stuypulse.robot.commands.auton">Auton</a>&gt;&nbsp;chooser)</span></div>
+<div class="block">Adds this routine to a <code>LoggedNetworkChooser</code> under the configured name.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>chooser</code> - The chooser that will display this routine</dd>
+<dt>Returns:</dt>
+<dd>This instance of the class, for method chaining</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="register()">
+<h3>register</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="BLineUtil.BLineConfig.html" title="class in com.stuypulse.robot.util.auton">BLineUtil.BLineConfig</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/BLineUtil.BLineConfig.html#line-135">register</a></span>()</div>
+<div class="block">Registers this routine with <a href="../../opmodes/AutonOpMode.html" title="class in com.stuypulse.robot.opmodes"><code>AutonOpMode</code></a>'s internal chooser.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>This instance of the class, for method chaining</dd>
+</dl>
 </div>
 </section>
 </li>
@@ -242,7 +306,27 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="registerDefault(org.littletonrobotics.junction.networktables.LoggedNetworkChooser)">
 <h3>registerDefault</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="BLineUtil.BLineConfig.html" title="class in com.stuypulse.robot.util.auton">BLineUtil.BLineConfig</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/BLineUtil.BLineConfig.html#line-63">registerDefault</a></span><wbr><span class="parameters">(org.littletonrobotics.junction.networktables.LoggedNetworkChooser&lt;<a href="../../commands/auton/Auton.html" title="interface in com.stuypulse.robot.commands.auton">Auton</a>&gt;&nbsp;chooser)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="BLineUtil.BLineConfig.html" title="class in com.stuypulse.robot.util.auton">BLineUtil.BLineConfig</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/BLineUtil.BLineConfig.html#line-146">registerDefault</a></span><wbr><span class="parameters">(org.littletonrobotics.junction.networktables.LoggedNetworkChooser&lt;<a href="../../commands/auton/Auton.html" title="interface in com.stuypulse.robot.commands.auton">Auton</a>&gt;&nbsp;chooser)</span></div>
+<div class="block">Adds this routine as the default option in a <code>LoggedNetworkChooser</code>.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>chooser</code> - The chooser that will display this routine</dd>
+<dt>Returns:</dt>
+<dd>This instance of the class, for method chaining</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="registerDefault()">
+<h3>registerDefault</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="BLineUtil.BLineConfig.html" title="class in com.stuypulse.robot.util.auton">BLineUtil.BLineConfig</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/BLineUtil.BLineConfig.html#line-156">registerDefault</a></span>()</div>
+<div class="block">Registers this routine as the default with <a href="../../opmodes/AutonOpMode.html" title="class in com.stuypulse.robot.opmodes"><code>AutonOpMode</code></a>'s internal chooser.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>This instance of the class, for method chaining</dd>
+</dl>
 </div>
 </section>
 </li>

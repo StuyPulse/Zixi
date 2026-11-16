@@ -12,7 +12,7 @@
 <script type="text/javascript" src="script-files/script.js"></script>
 <script type="text/javascript" src="script-files/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="script-files/jquery-ui.min.js"></script>
-<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="betterjdocs.css"><link rel="icon" href="favicon.svg?t=1794701387522" type="image/x-icon"><script defer type="module" src="shared/hash-navigation.js"></script><script defer type="module" src="shared/svgs.js"></script><script defer type="module" src="shared/syntax-highlighting.js"></script><script defer type="module" src="shared/theme.js"></script><script defer type="module" src="shared/utils.js"></script></head>
+<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="betterjdocs.css"><link rel="icon" href="favicon.svg?t=1794800351848" type="image/x-icon"><script defer type="module" src="shared/hash-navigation.js"></script><script defer type="module" src="shared/svgs.js"></script><script defer type="module" src="shared/syntax-highlighting.js"></script><script defer type="module" src="shared/theme.js"></script><script defer type="module" src="shared/utils.js"></script></head>
 <body class="tree-page">
 <script type="text/javascript">const pathtoroot = "./";
 loadScripts(document, 'script');</script>
@@ -56,6 +56,9 @@ loadScripts(document, 'script');</script>
 <li><a href="com/stuypulse/robot/commands/auton/package-tree.html">com.stuypulse.robot.commands.auton</a>, </li>
 <li><a href="com/stuypulse/robot/commands/subsystems/package-tree.html">com.stuypulse.robot.commands.subsystems</a>, </li>
 <li><a href="com/stuypulse/robot/constants/package-tree.html">com.stuypulse.robot.constants</a>, </li>
+<li><a href="com/stuypulse/robot/opmodes/package-tree.html">com.stuypulse.robot.opmodes</a>, </li>
+<li><a href="com/stuypulse/robot/opmodes/characterization/package-tree.html">com.stuypulse.robot.opmodes.characterization</a>, </li>
+<li><a href="com/stuypulse/robot/opmodes/sysid/package-tree.html">com.stuypulse.robot.opmodes.sysid</a>, </li>
 <li><a href="com/stuypulse/robot/subsystems/swerve/package-tree.html">com.stuypulse.robot.subsystems.swerve</a>, </li>
 <li><a href="com/stuypulse/robot/subsystems/vision/package-tree.html">com.stuypulse.robot.subsystems.vision</a>, </li>
 <li><a href="com/stuypulse/robot/util/package-tree.html">com.stuypulse.robot.util</a>, </li>
@@ -72,12 +75,16 @@ loadScripts(document, 'script');</script>
 <li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" class="type-name-link external-link" title="class or interface in java.lang">Object</a>
 <ul>
 <li class="circle">com.stuypulse.robot.commands.auton.<a href="com/stuypulse/robot/commands/auton/AutonFactory.html" class="type-name-link" title="class in com.stuypulse.robot.commands.auton">AutonFactory</a></li>
+<li class="circle">com.stuypulse.robot.opmodes.<a href="com/stuypulse/robot/opmodes/AutonOpMode.html" class="type-name-link" title="class in com.stuypulse.robot.opmodes">AutonOpMode</a> (implements org.wpilib.opmode.OpMode)</li>
+<li class="circle">com.stuypulse.robot.util.auton.<a href="com/stuypulse/robot/util/auton/AutonUtil.html" class="type-name-link" title="class in com.stuypulse.robot.util.auton">AutonUtil</a></li>
 <li class="circle">com.stuypulse.robot.commands.auton.<a href="com/stuypulse/robot/commands/auton/BLineAuton.html" class="type-name-link" title="class in com.stuypulse.robot.commands.auton">BLineAuton</a> (implements com.stuypulse.robot.commands.auton.<a href="com/stuypulse/robot/commands/auton/Auton.html" title="interface in com.stuypulse.robot.commands.auton">Auton</a>)</li>
 <li class="circle">com.stuypulse.robot.util.auton.<a href="com/stuypulse/robot/util/auton/BLineUtil.html" class="type-name-link" title="class in com.stuypulse.robot.util.auton">BLineUtil</a></li>
 <li class="circle">com.stuypulse.robot.util.auton.<a href="com/stuypulse/robot/util/auton/BLineUtil.BLineConfig.html" class="type-name-link" title="class in com.stuypulse.robot.util.auton">BLineUtil.BLineConfig</a></li>
 <li class="circle">com.stuypulse.robot.util.talonfx.config.<a href="com/stuypulse/robot/util/talonfx/config/CANCoderConfig.html" class="type-name-link" title="class in com.stuypulse.robot.util.talonfx.config">CANCoderConfig</a></li>
+<li class="circle">com.stuypulse.robot.opmodes.<a href="com/stuypulse/robot/opmodes/DefaultUtility.html" class="type-name-link" title="class in com.stuypulse.robot.opmodes">DefaultUtility</a> (implements org.wpilib.opmode.OpMode)</li>
 <li class="circle">com.stuypulse.robot.commands.subsystems.<a href="com/stuypulse/robot/commands/subsystems/DriveCommands.WheelRadiusCharacterizationState.html" class="type-name-link" title="class in com.stuypulse.robot.commands.subsystems">DriveCommands.WheelRadiusCharacterizationState</a></li>
 <li class="circle">com.stuypulse.robot.util.swerve.<a href="com/stuypulse/robot/util/swerve/DriveInputProcessor.html" class="type-name-link" title="class in com.stuypulse.robot.util.swerve">DriveInputProcessor</a></li>
+<li class="circle">com.stuypulse.robot.opmodes.<a href="com/stuypulse/robot/opmodes/DriverTeleop.html" class="type-name-link" title="class in com.stuypulse.robot.opmodes">DriverTeleop</a> (implements org.wpilib.opmode.OpMode)</li>
 <li class="circle">com.stuypulse.robot.util.swerve.<a href="com/stuypulse/robot/util/swerve/DriveTurnInputProcessor.html" class="type-name-link" title="class in com.stuypulse.robot.util.swerve">DriveTurnInputProcessor</a></li>
 <li class="circle">com.stuypulse.robot.subsystems.swerve.<a href="com/stuypulse/robot/subsystems/swerve/GyroIO.GyroIOInputs.html" class="type-name-link" title="class in com.stuypulse.robot.subsystems.swerve">GyroIO.GyroIOInputs</a></li>
 <li class="circle">com.stuypulse.robot.subsystems.swerve.<a href="com/stuypulse/robot/subsystems/swerve/GyroIOPigeon2.html" class="type-name-link" title="class in com.stuypulse.robot.subsystems.swerve">GyroIOPigeon2</a> (implements com.stuypulse.robot.subsystems.swerve.<a href="com/stuypulse/robot/subsystems/swerve/GyroIO.html" title="interface in com.stuypulse.robot.subsystems.swerve">GyroIO</a>)</li>
@@ -116,23 +123,21 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="circle">org.wpilib.framework.RobotBase (implements java.lang.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/AutoCloseable.html" title="class or interface in java.lang" class="external-link">AutoCloseable</a>)
 <ul>
-<li class="circle">org.wpilib.framework.IterativeRobotBase
-<ul>
-<li class="circle">org.littletonrobotics.junction.LoggedRobot
+<li class="circle">org.littletonrobotics.junction.LoggedOpModeRobot
 <ul>
 <li class="circle">com.stuypulse.robot.<a href="com/stuypulse/robot/Robot.html" class="type-name-link" title="class in com.stuypulse.robot">Robot</a></li>
 </ul>
 </li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="circle">com.stuypulse.robot.<a href="com/stuypulse/robot/RobotContainer.html" class="type-name-link" title="class in com.stuypulse.robot">RobotContainer</a></li>
+<li class="circle">com.stuypulse.robot.opmodes.sysid.<a href="com/stuypulse/robot/opmodes/sysid/SwerveDriveSysId.html" class="type-name-link" title="class in com.stuypulse.robot.opmodes.sysid">SwerveDriveSysId</a> (implements org.wpilib.opmode.OpMode)</li>
 <li class="circle">com.ctre.phoenix6.swerve.SwerveDrivetrain&lt;DriveMotorT, SteerMotorT, EncoderT&gt; (implements java.lang.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/AutoCloseable.html" title="class or interface in java.lang" class="external-link">AutoCloseable</a>)
 <ul>
 <li class="circle">com.stuypulse.robot.subsystems.swerve.<a href="com/stuypulse/robot/subsystems/swerve/TunerConstants.TunerSwerveDrivetrain.html" class="type-name-link" title="class in com.stuypulse.robot.subsystems.swerve">TunerConstants.TunerSwerveDrivetrain</a></li>
 </ul>
 </li>
+<li class="circle">com.stuypulse.robot.opmodes.characterization.<a href="com/stuypulse/robot/opmodes/characterization/SwerveFFCharacterization.html" class="type-name-link" title="class in com.stuypulse.robot.opmodes.characterization">SwerveFFCharacterization</a> (implements org.wpilib.opmode.OpMode)</li>
+<li class="circle">com.stuypulse.robot.opmodes.sysid.<a href="com/stuypulse/robot/opmodes/sysid/SwerveSteerSysId.html" class="type-name-link" title="class in com.stuypulse.robot.opmodes.sysid">SwerveSteerSysId</a> (implements org.wpilib.opmode.OpMode)</li>
 <li class="circle">com.stuypulse.robot.util.talonfx.config.<a href="com/stuypulse/robot/util/talonfx/config/TalonFXConfig.html" class="type-name-link" title="class in com.stuypulse.robot.util.talonfx.config">TalonFXConfig</a></li>
 <li class="circle">com.stuypulse.robot.util.talonfx.logged.<a href="com/stuypulse/robot/util/talonfx/logged/TalonFXInputs.html" class="type-name-link" title="class in com.stuypulse.robot.util.talonfx.logged">TalonFXInputs</a> (implements java.lang.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Cloneable.html" title="class or interface in java.lang" class="external-link">Cloneable</a>, org.littletonrobotics.junction.inputs.LoggableInputs)</li>
 <li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Thread.html" class="type-name-link external-link" title="class or interface in java.lang">Thread</a> (implements java.lang.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a>)
@@ -174,6 +179,9 @@ loadScripts(document, 'script');</script>
 <li class="circle">com.stuypulse.robot.util.robotsimulation.<a href="com/stuypulse/robot/util/robotsimulation/SimulatedMechanism.html" class="type-name-link" title="interface in com.stuypulse.robot.util.robotsimulation">SimulatedMechanism</a></li>
 <li class="circle">com.stuypulse.robot.subsystems.swerve.<a href="com/stuypulse/robot/subsystems/swerve/SwerveConstants.html" class="type-name-link" title="interface in com.stuypulse.robot.subsystems.swerve">SwerveConstants</a></li>
 <li class="circle">com.stuypulse.robot.subsystems.swerve.<a href="com/stuypulse/robot/subsystems/swerve/SwerveConstants.Characterization.html" class="type-name-link" title="interface in com.stuypulse.robot.subsystems.swerve">SwerveConstants.Characterization</a></li>
+<li class="circle">com.stuypulse.robot.subsystems.swerve.<a href="com/stuypulse/robot/subsystems/swerve/SwerveConstants.SwerveCharacterization.html" class="type-name-link" title="interface in com.stuypulse.robot.subsystems.swerve">SwerveConstants.SwerveCharacterization</a></li>
+<li class="circle">com.stuypulse.robot.subsystems.swerve.<a href="com/stuypulse/robot/subsystems/swerve/SwerveConstants.SwerveCharacterization.DriveSysId.html" class="type-name-link" title="interface in com.stuypulse.robot.subsystems.swerve">SwerveConstants.SwerveCharacterization.DriveSysId</a></li>
+<li class="circle">com.stuypulse.robot.subsystems.swerve.<a href="com/stuypulse/robot/subsystems/swerve/SwerveConstants.SwerveCharacterization.SteerSysId.html" class="type-name-link" title="interface in com.stuypulse.robot.subsystems.swerve">SwerveConstants.SwerveCharacterization.SteerSysId</a></li>
 <li class="circle">com.stuypulse.robot.util.talonfx.sim.<a href="com/stuypulse/robot/util/talonfx/sim/SystemSim.html" class="type-name-link" title="interface in com.stuypulse.robot.util.talonfx.sim">SystemSim</a>&lt;T&gt;</li>
 <li class="circle">com.stuypulse.robot.subsystems.vision.<a href="com/stuypulse/robot/subsystems/vision/Vision.VisionConsumer.html" class="type-name-link" title="interface in com.stuypulse.robot.subsystems.vision">Vision.VisionConsumer</a></li>
 <li class="circle">com.stuypulse.robot.subsystems.vision.<a href="com/stuypulse/robot/subsystems/vision/VisionConstants.html" class="type-name-link" title="interface in com.stuypulse.robot.subsystems.vision">VisionConstants</a></li>
@@ -188,6 +196,7 @@ loadScripts(document, 'script');</script>
 <ul>
 <li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Enum.html" class="type-name-link external-link" title="class or interface in java.lang">Enum</a>&lt;E&gt; (implements java.lang.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;T&gt;, java.lang.constant.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a>, java.io.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
 <ul>
+<li class="circle">com.stuypulse.robot.util.auton.<a href="com/stuypulse/robot/util/auton/AutonUtil.AutonType.html" class="type-name-link" title="enum class in com.stuypulse.robot.util.auton">AutonUtil.AutonType</a></li>
 <li class="circle">com.stuypulse.robot.constants.<a href="com/stuypulse/robot/constants/GlobalSettings.RobotMode.html" class="type-name-link" title="enum class in com.stuypulse.robot.constants">GlobalSettings.RobotMode</a></li>
 <li class="circle">com.stuypulse.robot.subsystems.vision.<a href="com/stuypulse/robot/subsystems/vision/VisionConstants.Camera.html" class="type-name-link" title="enum class in com.stuypulse.robot.subsystems.vision">VisionConstants.Camera</a></li>
 <li class="circle">com.stuypulse.robot.subsystems.vision.<a href="com/stuypulse/robot/subsystems/vision/VisionConstants.Pipeline.html" class="type-name-link" title="enum class in com.stuypulse.robot.subsystems.vision">VisionConstants.Pipeline</a></li>

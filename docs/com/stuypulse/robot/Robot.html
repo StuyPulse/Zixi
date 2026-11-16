@@ -12,7 +12,7 @@
 <script type="text/javascript" src="../../../script-files/script.js"></script>
 <script type="text/javascript" src="../../../script-files/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="../../../script-files/jquery-ui.min.js"></script>
-<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../betterjdocs.css"><link rel="icon" href="../../../favicon.svg?t=1794701387489" type="image/x-icon"><script defer type="module" src="../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../shared/svgs.js"></script><script defer type="module" src="../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../shared/theme.js"></script><script defer type="module" src="../../../shared/utils.js"></script><script defer type="module" src="../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
+<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../betterjdocs.css"><link rel="icon" href="../../../favicon.svg?t=1794800351788" type="image/x-icon"><script defer type="module" src="../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../shared/svgs.js"></script><script defer type="module" src="../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../shared/theme.js"></script><script defer type="module" src="../../../shared/utils.js"></script><script defer type="module" src="../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
 <body class="class-declaration-page">
 <script type="text/javascript">const pathtoroot = "../../../";
 loadScripts(document, 'script');</script>
@@ -59,9 +59,10 @@ loadScripts(document, 'script');</script>
 <li><a href="#field-detail" tabindex="0">Field Details</a>
 <ol class="toc-list">
 <li><a href="#allianceMissing" tabindex="0">allianceMissing</a></li>
-<li><a href="#robot" tabindex="0">robot</a></li>
+<li><a href="#driver" tabindex="0">driver</a></li>
+<li><a href="#swerve" tabindex="0">swerve</a></li>
+<li><a href="#vision" tabindex="0">vision</a></li>
 <li><a href="#defaultScheduler" tabindex="0">defaultScheduler</a></li>
-<li><a href="#auto" tabindex="0">auto</a></li>
 </ol>
 </li>
 <li><a href="#constructor-detail" tabindex="0">Constructor Details</a>
@@ -72,19 +73,12 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
 <li><a href="#isBlue()" tabindex="0">isBlue()</a></li>
-<li><a href="#logGitInfo()" tabindex="0">logGitInfo()</a></li>
+<li><a href="#configureLogging()" tabindex="0">configureLogging()</a></li>
+<li><a href="#configureDefaultCommands()" tabindex="0">configureDefaultCommands()</a></li>
+<li><a href="#configureButtonBindings()" tabindex="0">configureButtonBindings()</a></li>
+<li><a href="#configureAutons()" tabindex="0">configureAutons()</a></li>
+<li><a href="#configureSysIds()" tabindex="0">configureSysIds()</a></li>
 <li><a href="#robotPeriodic()" tabindex="0">robotPeriodic()</a></li>
-<li><a href="#disabledInit()" tabindex="0">disabledInit()</a></li>
-<li><a href="#disabledPeriodic()" tabindex="0">disabledPeriodic()</a></li>
-<li><a href="#autonomousInit()" tabindex="0">autonomousInit()</a></li>
-<li><a href="#autonomousPeriodic()" tabindex="0">autonomousPeriodic()</a></li>
-<li><a href="#autonomousExit()" tabindex="0">autonomousExit()</a></li>
-<li><a href="#teleopInit()" tabindex="0">teleopInit()</a></li>
-<li><a href="#teleopPeriodic()" tabindex="0">teleopPeriodic()</a></li>
-<li><a href="#teleopExit()" tabindex="0">teleopExit()</a></li>
-<li><a href="#utilityInit()" tabindex="0">utilityInit()</a></li>
-<li><a href="#utilityPeriodic()" tabindex="0">utilityPeriodic()</a></li>
-<li><a href="#utilityExit()" tabindex="0">utilityExit()</a></li>
 </ol>
 </li>
 </ol>
@@ -96,10 +90,8 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance">org.wpilib.framework.RobotBase
-<div class="inheritance">org.wpilib.framework.IterativeRobotBase
-<div class="inheritance">org.littletonrobotics.junction.LoggedRobot
+<div class="inheritance">org.littletonrobotics.junction.LoggedOpModeRobot
 <div class="inheritance">com.stuypulse.robot.Robot</div>
-</div>
 </div>
 </div>
 </div>
@@ -110,8 +102,8 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="horizontal-scroll">
-<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-32">Robot</a></span>
-<span class="extends-implements">extends org.littletonrobotics.junction.LoggedRobot</span></div>
+<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-59">Robot</a></span>
+<span class="extends-implements">extends org.littletonrobotics.junction.LoggedOpModeRobot</span></div>
 <div class="block">Robot Class
 
 <p>This is the main class for robot code, instantiated in <a href="Main.html" title="class in com.stuypulse.robot"><code>Main</code></a> It
@@ -133,19 +125,22 @@ specific states of the robot.</div>
 <div class="col-first even-row-color"><code>private static final org.wpilib.util.Alert</code></div>
 <div class="col-second even-row-color"><code><a href="#allianceMissing" class="member-name-link">allianceMissing</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>private <a href="commands/auton/Auton.html" title="interface in com.stuypulse.robot.commands.auton">Auton</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#auto" class="member-name-link">auto</a></code></div>
+<div class="col-first odd-row-color"><code>final org.wpilib.command3.Scheduler</code></div>
+<div class="col-second odd-row-color"><code><a href="#defaultScheduler" class="member-name-link">defaultScheduler</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>private final org.wpilib.command3.Scheduler</code></div>
-<div class="col-second even-row-color"><code><a href="#defaultScheduler" class="member-name-link">defaultScheduler</a></code></div>
+<div class="col-first even-row-color"><code>final org.wpilib.command3.button.CommandGamepad</code></div>
+<div class="col-second even-row-color"><code><a href="#driver" class="member-name-link">driver</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>private final <a href="RobotContainer.html" title="class in com.stuypulse.robot">RobotContainer</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#robot" class="member-name-link">robot</a></code></div>
+<div class="col-first odd-row-color"><code>final <a href="subsystems/swerve/Swerve.html" title="class in com.stuypulse.robot.subsystems.swerve">Swerve</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#swerve" class="member-name-link">swerve</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>final <a href="subsystems/vision/Vision.html" title="class in com.stuypulse.robot.subsystems.vision">Vision</a></code></div>
+<div class="col-second even-row-color"><code><a href="#vision" class="member-name-link">vision</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
-<h3 id="fields-inherited-from-class-org.littletonrobotics.junction.LoggedRobot">Fields inherited from class&nbsp;org.littletonrobotics.junction.LoggedRobot</h3>
-<code>defaultPeriodSecs</code></div>
+<h3 id="fields-inherited-from-class-org.littletonrobotics.junction.LoggedOpModeRobot">Fields inherited from class&nbsp;org.littletonrobotics.junction.LoggedOpModeRobot</h3>
+<code>DEFAULT_PERIOD</code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -172,59 +167,35 @@ specific states of the robot.</div>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#autonomousExit()" class="member-name-link">autonomousExit</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>private void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#configureAutons()" class="member-name-link">configureAutons</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#autonomousInit()" class="member-name-link">autonomousInit</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>private void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#configureButtonBindings()" class="member-name-link">configureButtonBindings</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#autonomousPeriodic()" class="member-name-link">autonomousPeriodic</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>private void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#configureDefaultCommands()" class="member-name-link">configureDefaultCommands</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disabledInit()" class="member-name-link">disabledInit</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>private void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#configureLogging()" class="member-name-link">configureLogging</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disabledPeriodic()" class="member-name-link">disabledPeriodic</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>private void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#configureSysIds()" class="member-name-link">configureSysIds</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#isBlue()" class="member-name-link">isBlue</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Checks the alliance the robot is on</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>private void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#logGitInfo()" class="member-name-link">logGitInfo</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#robotPeriodic()" class="member-name-link">robotPeriodic</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#teleopExit()" class="member-name-link">teleopExit</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#robotPeriodic()" class="member-name-link">robotPeriodic</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#teleopInit()" class="member-name-link">teleopInit</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#teleopPeriodic()" class="member-name-link">teleopPeriodic</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#utilityExit()" class="member-name-link">utilityExit</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#utilityInit()" class="member-name-link">utilityInit</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#utilityPeriodic()" class="member-name-link">utilityPeriodic</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.littletonrobotics.junction.LoggedRobot">Methods inherited from class&nbsp;org.littletonrobotics.junction.LoggedRobot</h3>
-<code>close, endCompetition, getLoopStartTime, setLoopOverrunWarningTimeout, setUseTiming, startCompetition</code></div>
-<div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.wpilib.framework.IterativeRobotBase">Methods inherited from class&nbsp;org.wpilib.framework.IterativeRobotBase</h3>
-<code>disabledExit, driverStationConnected, getPeriod, loopFunc, printWatchdogEpochs, simulationInit, simulationPeriodic</code></div>
+<h3 id="methods-inherited-from-class-org.littletonrobotics.junction.LoggedOpModeRobot">Methods inherited from class&nbsp;org.littletonrobotics.junction.LoggedOpModeRobot</h3>
+<code>addAnnotatedOpMode, addAnnotatedOpModeClasses, addOpMode, addOpMode, addOpMode, addOpMode, addOpMode, addOpMode, addOpMode, addOpMode, clearOpModes, close, disabledExit, disabledInit, disabledPeriodic, driverStationConnected, endCompetition, getLoopStartTime, getPeriod, nonePeriodic, printWatchdogEpochs, publishOpModes, removeOpMode, setLoopOverrunWarningTimeout, setUseTiming, simulationInit, simulationPeriodic, startCompetition</code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.wpilib.framework.RobotBase">Methods inherited from class&nbsp;org.wpilib.framework.RobotBase</h3>
 <code>getMainThreadId, getOpMode, getOpModeId, getRobotName, getRuntimeType, isAutonomous, isAutonomousEnabled, isDisabled, isEnabled, isReal, isSimulation, isTeleop, isTeleopEnabled, isUtility, isUtilityEnabled, startRobot, suppressExitWarning</code></div>
@@ -246,15 +217,31 @@ specific states of the robot.</div>
 <section class="detail" id="allianceMissing">
 <h3>allianceMissing</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private static final</span>&nbsp;<span class="return-type">org.wpilib.util.Alert</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-33">allianceMissing</a></span></div>
+<div class="member-signature"><span class="modifiers">private static final</span>&nbsp;<span class="return-type">org.wpilib.util.Alert</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-60">allianceMissing</a></span></div>
 </div>
 </section>
 </li>
 <li>
-<section class="detail" id="robot">
-<h3>robot</h3>
+<section class="detail" id="driver">
+<h3>driver</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="RobotContainer.html" title="class in com.stuypulse.robot">RobotContainer</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-56">robot</a></span></div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">org.wpilib.command3.button.CommandGamepad</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-84">driver</a></span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="swerve">
+<h3>swerve</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="subsystems/swerve/Swerve.html" title="class in com.stuypulse.robot.subsystems.swerve">Swerve</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-86">swerve</a></span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="vision">
+<h3>vision</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="subsystems/vision/Vision.html" title="class in com.stuypulse.robot.subsystems.vision">Vision</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-87">vision</a></span></div>
 </div>
 </section>
 </li>
@@ -262,15 +249,7 @@ specific states of the robot.</div>
 <section class="detail" id="defaultScheduler">
 <h3>defaultScheduler</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type">org.wpilib.command3.Scheduler</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-57">defaultScheduler</a></span></div>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="auto">
-<h3>auto</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type"><a href="commands/auton/Auton.html" title="interface in com.stuypulse.robot.commands.auton">Auton</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-58">auto</a></span></div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">org.wpilib.command3.Scheduler</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-88">defaultScheduler</a></span></div>
 </div>
 </section>
 </li>
@@ -286,7 +265,7 @@ specific states of the robot.</div>
 <section class="detail" id="&lt;init&gt;()">
 <h3>Robot</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-60">Robot</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-90">Robot</a></span>()</div>
 </div>
 </section>
 </li>
@@ -302,7 +281,7 @@ specific states of the robot.</div>
 <section class="detail" id="isBlue()">
 <h3>isBlue</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-45">isBlue</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-72">isBlue</a></span>()</div>
 <div class="block">Checks the alliance the robot is on</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -313,10 +292,42 @@ specific states of the robot.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="logGitInfo()">
-<h3>logGitInfo</h3>
+<section class="detail" id="configureLogging()">
+<h3>configureLogging</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-90">logGitInfo</a></span>()</div>
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-159">configureLogging</a></span>()</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="configureDefaultCommands()">
+<h3>configureDefaultCommands</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-213">configureDefaultCommands</a></span>()</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="configureButtonBindings()">
+<h3>configureButtonBindings</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-217">configureButtonBindings</a></span>()</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="configureAutons()">
+<h3>configureAutons</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-221">configureAutons</a></span>()</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="configureSysIds()">
+<h3>configureSysIds</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-229">configureSysIds</a></span>()</div>
 </div>
 </section>
 </li>
@@ -324,142 +335,10 @@ specific states of the robot.</div>
 <section class="detail" id="robotPeriodic()">
 <h3>robotPeriodic</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-121">robotPeriodic</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-256">robotPeriodic</a></span>()</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code>robotPeriodic</code>&nbsp;in class&nbsp;<code>org.wpilib.framework.IterativeRobotBase</code></dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="disabledInit()">
-<h3>disabledInit</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-131">disabledInit</a></span>()</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code>disabledInit</code>&nbsp;in class&nbsp;<code>org.wpilib.framework.IterativeRobotBase</code></dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="disabledPeriodic()">
-<h3>disabledPeriodic</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-134">disabledPeriodic</a></span>()</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code>disabledPeriodic</code>&nbsp;in class&nbsp;<code>org.wpilib.framework.IterativeRobotBase</code></dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="autonomousInit()">
-<h3>autonomousInit</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-156">autonomousInit</a></span>()</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code>autonomousInit</code>&nbsp;in class&nbsp;<code>org.wpilib.framework.IterativeRobotBase</code></dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="autonomousPeriodic()">
-<h3>autonomousPeriodic</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-169">autonomousPeriodic</a></span>()</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code>autonomousPeriodic</code>&nbsp;in class&nbsp;<code>org.wpilib.framework.IterativeRobotBase</code></dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="autonomousExit()">
-<h3>autonomousExit</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-172">autonomousExit</a></span>()</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code>autonomousExit</code>&nbsp;in class&nbsp;<code>org.wpilib.framework.IterativeRobotBase</code></dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="teleopInit()">
-<h3>teleopInit</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-179">teleopInit</a></span>()</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code>teleopInit</code>&nbsp;in class&nbsp;<code>org.wpilib.framework.IterativeRobotBase</code></dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="teleopPeriodic()">
-<h3>teleopPeriodic</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-187">teleopPeriodic</a></span>()</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code>teleopPeriodic</code>&nbsp;in class&nbsp;<code>org.wpilib.framework.IterativeRobotBase</code></dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="teleopExit()">
-<h3>teleopExit</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-190">teleopExit</a></span>()</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code>teleopExit</code>&nbsp;in class&nbsp;<code>org.wpilib.framework.IterativeRobotBase</code></dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="utilityInit()">
-<h3>utilityInit</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-197">utilityInit</a></span>()</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code>utilityInit</code>&nbsp;in class&nbsp;<code>org.wpilib.framework.IterativeRobotBase</code></dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="utilityPeriodic()">
-<h3>utilityPeriodic</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-202">utilityPeriodic</a></span>()</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code>utilityPeriodic</code>&nbsp;in class&nbsp;<code>org.wpilib.framework.IterativeRobotBase</code></dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="utilityExit()">
-<h3>utilityExit</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/com/stuypulse/robot/Robot.html#line-205">utilityExit</a></span>()</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code>utilityExit</code>&nbsp;in class&nbsp;<code>org.wpilib.framework.IterativeRobotBase</code></dd>
+<dd><code>robotPeriodic</code>&nbsp;in class&nbsp;<code>org.littletonrobotics.junction.LoggedOpModeRobot</code></dd>
 </dl>
 </div>
 </section>

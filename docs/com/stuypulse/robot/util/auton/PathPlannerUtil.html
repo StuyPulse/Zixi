@@ -12,7 +12,7 @@
 <script type="text/javascript" src="../../../../../script-files/script.js"></script>
 <script type="text/javascript" src="../../../../../script-files/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="../../../../../script-files/jquery-ui.min.js"></script>
-<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../betterjdocs.css"><link rel="icon" href="../../../../../favicon.svg?t=1794701387512" type="image/x-icon"><script defer type="module" src="../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
+<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../betterjdocs.css"><link rel="icon" href="../../../../../favicon.svg?t=1794800351835" type="image/x-icon"><script defer type="module" src="../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
 <body class="class-declaration-page">
 <script type="text/javascript">const pathtoroot = "../../../../../";
 loadScripts(document, 'script');</script>
@@ -52,7 +52,15 @@ loadScripts(document, 'script');</script>
 <nav role="navigation" class="toc" aria-label="Table of contents">
 <div class="toc-header">Contents&nbsp;<input type="text" class="filter-input" disabled placeholder="Filter contents (type .)" aria-label="Filter table of contents" autocomplete="off" spellcheck="false"><input type="reset" class="reset-filter" disabled tabindex="-1" value="Reset"></div>
 <ol class="toc-list" tabindex="-1">
-<li><a href="#" tabindex="0">Description</a></li>
+<li><a href="#" tabindex="0">Description</a>
+<ol class="toc-list">
+<li><a href="#pathplanner-utility-heading" tabindex="0">PathPlanner Utility</a>
+<ol class="toc-list">
+<li><a href="#usage-heading" tabindex="0">Usage</a></li>
+</ol>
+</li>
+</ol>
+</li>
 <li><a href="#nested-class-summary" tabindex="0">Nested Class Summary</a></li>
 <li><a href="#constructor-summary" tabindex="0">Constructor Summary</a></li>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
@@ -65,10 +73,6 @@ loadScripts(document, 'script');</script>
 <ol class="toc-list">
 <li><a href="#loadPaths(java.lang.String...)" tabindex="0">loadPaths(String...)</a></li>
 <li><a href="#load(java.lang.String)" tabindex="0">load(String)</a></li>
-<li><a href="#getPathFileNames()" tabindex="0">getPathFileNames()</a></li>
-<li><a href="#findClosestMatch(java.util.List,java.lang.String)" tabindex="0">findClosestMatch(List, String)</a></li>
-<li><a href="#countChars(char%5B%5D)" tabindex="0">countChars(char[])</a></li>
-<li><a href="#compareNameProximity(java.util.HashMap,java.util.HashMap)" tabindex="0">compareNameProximity(HashMap, HashMap)</a></li>
 </ol>
 </li>
 </ol>
@@ -84,8 +88,35 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="horizontal-scroll">
-<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.html#line-25">PathPlannerUtil</a></span>
+<div class="type-signature"><span class="modifiers">public final class </span><span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.html#line-52">PathPlannerUtil</a></span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block"><h2 id="pathplanner-utility-heading">PathPlanner Utility</h2>
+
+<p>Loads PathPlanner path (.path) files from the deploy directory and builds named autonomous
+routines from those paths.
+
+<h3 id="usage-heading">Usage</h3>
+
+<p>For example, inside <a href="../../Robot.html#configureAutons()"><code>Robot.configureAutons()</code></a>, you can create a
+<a href="PathPlannerUtil.PathPlannerConfig.html" title="class in com.stuypulse.robot.util.auton"><code>PathPlannerUtil.PathPlannerConfig</code></a>, pass in the auton name, factory method, and path names, then register
+it with <a href="../../opmodes/AutonOpMode.html" title="class in com.stuypulse.robot.opmodes"><code>AutonOpMode</code></a> via <a href="PathPlannerUtil.PathPlannerConfig.html#register()"><code>PathPlannerUtil.PathPlannerConfig.register()</code></a>.
+
+<pre><code>AutonFactory factory = new AutonFactory(swerve);
+
+PathPlannerConfig scoreAutonConfig = new PathPlannerConfig(
+                "Score",
+                factory::score,
+                "Score Path");
+
+scoreAutonConfig.register();
+</code></pre>
+
+<p>The factory method receives the loaded paths in the order listed and returns a <a href="../../commands/auton/PathPlannerAuton.html" title="class in com.stuypulse.robot.commands.auton"><code>PathPlannerAuton</code></a>. Use <a href="PathPlannerUtil.PathPlannerConfig.html#register()"><code>PathPlannerUtil.PathPlannerConfig.register()</code></a> for a regular option, or <a href="PathPlannerUtil.PathPlannerConfig.html#registerDefault()"><code>PathPlannerUtil.PathPlannerConfig.registerDefault()</code></a> for the chooser's default option. A config can also register
+directly with a <code>LoggedNetworkChooser</code> when a custom chooser is used. The methods without a
+chooser register the routine with <a href="../../opmodes/AutonOpMode.html" title="class in com.stuypulse.robot.opmodes"><code>AutonOpMode</code></a>.
+
+<p>Path names are checked when the configuration is created. Missing paths are reported to the
+Driver Station with a suggested closest match when one is available.</div>
 </div>
 </section>
 <section class="summary">
@@ -101,7 +132,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static class&nbsp;</code></div>
 <div class="col-second even-row-color"><code><a href="PathPlannerUtil.PathPlannerConfig.html" class="type-name-link" title="class in com.stuypulse.robot.util.auton">PathPlannerUtil.PathPlannerConfig</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">PathPlanner Configuration</div>
+</div>
 </div>
 </section>
 </li>
@@ -110,9 +143,11 @@ loadScripts(document, 'script');</script>
 <section class="constructor-summary" id="constructor-summary">
 <h2>Constructor Summary</h2>
 <div class="caption"><span>Constructors</span></div>
-<div class="summary-table two-column-summary">
-<div class="table-header col-first">Constructor</div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier</div>
+<div class="table-header col-second">Constructor</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>private </code></div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">PathPlannerUtil</a>()</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
@@ -129,29 +164,15 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#compareNameProximity(java.util.HashMap,java.util.HashMap)" class="member-name-link">compareNameProximity</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/HashMap.html" title="class or interface in java.util" class="external-link">HashMap</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Character.html" title="class or interface in java.lang" class="external-link">Character</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;list1,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/HashMap.html" title="class or interface in java.util" class="external-link">HashMap</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Character.html" title="class or interface in java.lang" class="external-link">Character</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;list2)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/HashMap.html" title="class or interface in java.util" class="external-link">HashMap</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Character.html" title="class or interface in java.lang" class="external-link">Character</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#countChars(char%5B%5D)" class="member-name-link">countChars</a><wbr>(char[]&nbsp;chars)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#findClosestMatch(java.util.List,java.lang.String)" class="member-name-link">findClosestMatch</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;paths,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;input)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getPathFileNames()" class="member-name-link">getPathFileNames</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">PATH FILENAME CORRECTION **</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static com.pathplanner.lib.path.PathPlannerPath</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#load(java.lang.String)" class="member-name-link">load</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Loads a PathPlanner path by name.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static com.pathplanner.lib.path.PathPlannerPath[]</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadPaths(java.lang.String...)" class="member-name-link">loadPaths</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;names)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">PATH LOADING **</div>
+<div class="block">Loads multiple PathPlanner paths in the order given.</div>
 </div>
 </div>
 </div>
@@ -174,7 +195,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;()">
 <h3>PathPlannerUtil</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.html#line-25">PathPlannerUtil</a></span>()</div>
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.html#line-53">PathPlannerUtil</a></span>()</div>
 </div>
 </section>
 </li>
@@ -190,8 +211,17 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="loadPaths(java.lang.String...)">
 <h3>loadPaths</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">com.pathplanner.lib.path.PathPlannerPath[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.html#line-72">loadPaths</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;names)</span></div>
-<div class="block">PATH LOADING **</div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">com.pathplanner.lib.path.PathPlannerPath[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.html#line-174">loadPaths</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;names)</span></div>
+<div class="block">Loads multiple PathPlanner paths in the order given. Each name is passed to <a href="#load(java.lang.String)"><code>load(String)</code></a>.
+
+<p>If a path cannot be loaded or found, an error is reported to the Driver Station, and null
+is returned in the corresponding position.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>names</code> - PathPlanner path names to load</dd>
+<dt>Returns:</dt>
+<dd>The corresponding paths where entries that fail to load are <code>null</code></dd>
+</dl>
 </div>
 </section>
 </li>
@@ -199,42 +229,17 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="load(java.lang.String)">
 <h3>load</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">com.pathplanner.lib.path.PathPlannerPath</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.html#line-80">load</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getPathFileNames()">
-<h3>getPathFileNames</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.html#line-90">getPathFileNames</a></span>()</div>
-<div class="block">PATH FILENAME CORRECTION **</div>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="findClosestMatch(java.util.List,java.lang.String)">
-<h3>findClosestMatch</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.html#line-105">findClosestMatch</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;paths,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;input)</span></div>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="countChars(char[])">
-<h3>countChars</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/HashMap.html" title="class or interface in java.util" class="external-link">HashMap</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Character.html" title="class or interface in java.lang" class="external-link">Character</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.html#line-120">countChars</a></span><wbr><span class="parameters">(char[]&nbsp;chars)</span></div>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="compareNameProximity(java.util.HashMap,java.util.HashMap)">
-<h3>compareNameProximity</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.html#line-137">compareNameProximity</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/HashMap.html" title="class or interface in java.util" class="external-link">HashMap</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Character.html" title="class or interface in java.lang" class="external-link">Character</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;list1,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/HashMap.html" title="class or interface in java.util" class="external-link">HashMap</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Character.html" title="class or interface in java.lang" class="external-link">Character</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;list2)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">com.pathplanner.lib.path.PathPlannerPath</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/util/auton/PathPlannerUtil.html#line-191">load</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
+<div class="block">Loads a PathPlanner path by name.
+
+<p>If the path cannot be loaded or found, an error is reported to the Driver Station, and
+null is returned.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>name</code> - PathPlanner path name</dd>
+<dt>Returns:</dt>
+<dd>The loaded path, or <code>null</code> if not found</dd>
+</dl>
 </div>
 </section>
 </li>

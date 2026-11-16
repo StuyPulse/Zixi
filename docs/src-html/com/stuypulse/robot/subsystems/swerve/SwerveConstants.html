@@ -7,7 +7,7 @@
 <meta name="description" content="source: package: com.stuypulse.robot.subsystems.swerve, interface: SwerveConstants">
 <meta name="generator" content="javadoc/SourceToHTMLConverter">
 <link rel="stylesheet" type="text/css" href="../../../../../../resource-files/stylesheet.css">
-<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../../betterjdocs.css"><link rel="icon" href="../../../../../../favicon.svg?t=1794701387529" type="image/x-icon"><script defer type="module" src="../../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../../pages/source-page/source-page.js"></script></head>
+<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../../betterjdocs.css"><link rel="icon" href="../../../../../../favicon.svg?t=1794800351876" type="image/x-icon"><script defer type="module" src="../../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../../pages/source-page/source-page.js"></script></head>
 <body class="source-page">
 <main role="main">
 <div class="source-container">
@@ -17,23 +17,44 @@
 <span class="source-line-no">004</span><span id="line-4">/**************************************************************/</span>
 <span class="source-line-no">005</span><span id="line-5">package com.stuypulse.robot.subsystems.swerve;</span>
 <span class="source-line-no">006</span><span id="line-6"></span>
-<span class="source-line-no">007</span><span id="line-7">import static org.wpilib.units.Units.RadiansPerSecond;</span>
-<span class="source-line-no">008</span><span id="line-8">import static org.wpilib.units.Units.RadiansPerSecondPerSecond;</span>
-<span class="source-line-no">009</span><span id="line-9">import static org.wpilib.units.Units.Seconds;</span>
-<span class="source-line-no">010</span><span id="line-10"></span>
-<span class="source-line-no">011</span><span id="line-11">import org.wpilib.units.measure.AngularAcceleration;</span>
-<span class="source-line-no">012</span><span id="line-12">import org.wpilib.units.measure.AngularVelocity;</span>
-<span class="source-line-no">013</span><span id="line-13">import org.wpilib.units.measure.Time;</span>
-<span class="source-line-no">014</span><span id="line-14"></span>
-<span class="source-line-no">015</span><span id="line-15">public interface SwerveConstants {</span>
-<span class="source-line-no">016</span><span id="line-16">    public interface Characterization {</span>
-<span class="source-line-no">017</span><span id="line-17">        Time FF_START_DELAY = Seconds.of(1);</span>
-<span class="source-line-no">018</span><span id="line-18">        double FF_RAMP_RATE = 1;</span>
-<span class="source-line-no">019</span><span id="line-19"></span>
-<span class="source-line-no">020</span><span id="line-20">        AngularVelocity WHEEL_RADIUS_MAX_VELOCITY = RadiansPerSecond.of(0.25);</span>
-<span class="source-line-no">021</span><span id="line-21">        AngularAcceleration WHEEL_RADIUS_RAMP_RATE = RadiansPerSecondPerSecond.of(0.05);</span>
-<span class="source-line-no">022</span><span id="line-22">    }</span>
-<span class="source-line-no">023</span><span id="line-23">}</span>
+<span class="source-line-no">007</span><span id="line-7">import static org.wpilib.units.Units.*;</span>
+<span class="source-line-no">008</span><span id="line-8"></span>
+<span class="source-line-no">009</span><span id="line-9">import org.wpilib.units.*;</span>
+<span class="source-line-no">010</span><span id="line-10">import org.wpilib.units.measure.*;</span>
+<span class="source-line-no">011</span><span id="line-11"></span>
+<span class="source-line-no">012</span><span id="line-12">public interface SwerveConstants {</span>
+<span class="source-line-no">013</span><span id="line-13">    public interface Characterization {</span>
+<span class="source-line-no">014</span><span id="line-14">        Time FF_START_DELAY = Seconds.of(1);</span>
+<span class="source-line-no">015</span><span id="line-15">        double FF_RAMP_RATE = 1;</span>
+<span class="source-line-no">016</span><span id="line-16"></span>
+<span class="source-line-no">017</span><span id="line-17">        AngularVelocity WHEEL_RADIUS_MAX_VELOCITY = RadiansPerSecond.of(0.25);</span>
+<span class="source-line-no">018</span><span id="line-18">        AngularAcceleration WHEEL_RADIUS_RAMP_RATE = RadiansPerSecondPerSecond.of(0.05);</span>
+<span class="source-line-no">019</span><span id="line-19">    }</span>
+<span class="source-line-no">020</span><span id="line-20"></span>
+<span class="source-line-no">021</span><span id="line-21">    public interface SwerveCharacterization {</span>
+<span class="source-line-no">022</span><span id="line-22">        Time FF_START_DELAY = Seconds.of(2.0);</span>
+<span class="source-line-no">023</span><span id="line-23">        double FF_RAMP_RATE = 0.1;</span>
+<span class="source-line-no">024</span><span id="line-24"></span>
+<span class="source-line-no">025</span><span id="line-25">        double WHEEL_RADIUS_MAX_VELOCITY = 0.25;</span>
+<span class="source-line-no">026</span><span id="line-26">        double WHEEL_RADIUS_RAMP_RATE = 0.05;</span>
+<span class="source-line-no">027</span><span id="line-27"></span>
+<span class="source-line-no">028</span><span id="line-28">        Time SYSID_REST = Seconds.of(1.5);</span>
+<span class="source-line-no">029</span><span id="line-29"></span>
+<span class="source-line-no">030</span><span id="line-30">        public interface DriveSysId {</span>
+<span class="source-line-no">031</span><span id="line-31">            Velocity&lt;VoltageUnit&gt; RAMP_RATE = Volts.of(1).per(Second);</span>
+<span class="source-line-no">032</span><span id="line-32">            Voltage STEP_VOLTAGE = Volts.of(4);</span>
+<span class="source-line-no">033</span><span id="line-33">            Time QUASISTATIC_TIMEOUT = Seconds.of(5);</span>
+<span class="source-line-no">034</span><span id="line-34">            Time DYNAMIC_TIMEOUT = Seconds.of(2);</span>
+<span class="source-line-no">035</span><span id="line-35">        }</span>
+<span class="source-line-no">036</span><span id="line-36"></span>
+<span class="source-line-no">037</span><span id="line-37">        public interface SteerSysId {</span>
+<span class="source-line-no">038</span><span id="line-38">            Velocity&lt;VoltageUnit&gt; RAMP_RATE = Volts.of(1).per(Second);</span>
+<span class="source-line-no">039</span><span id="line-39">            Voltage STEP_VOLTAGE = Volts.of(7);</span>
+<span class="source-line-no">040</span><span id="line-40">            Time QUASISTATIC_TIMEOUT = Seconds.of(6);</span>
+<span class="source-line-no">041</span><span id="line-41">            Time DYNAMIC_TIMEOUT = Seconds.of(2);</span>
+<span class="source-line-no">042</span><span id="line-42">        }</span>
+<span class="source-line-no">043</span><span id="line-43">    }</span>
+<span class="source-line-no">044</span><span id="line-44">}</span>
 
 
 

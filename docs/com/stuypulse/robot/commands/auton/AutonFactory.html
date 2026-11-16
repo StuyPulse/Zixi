@@ -12,7 +12,7 @@
 <script type="text/javascript" src="../../../../../script-files/script.js"></script>
 <script type="text/javascript" src="../../../../../script-files/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="../../../../../script-files/jquery-ui.min.js"></script>
-<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../betterjdocs.css"><link rel="icon" href="../../../../../favicon.svg?t=1794701387491" type="image/x-icon"><script defer type="module" src="../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
+<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../betterjdocs.css"><link rel="icon" href="../../../../../favicon.svg?t=1794800351791" type="image/x-icon"><script defer type="module" src="../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
 <body class="class-declaration-page">
 <script type="text/javascript">const pathtoroot = "../../../../../";
 loadScripts(document, 'script');</script>
@@ -53,11 +53,18 @@ loadScripts(document, 'script');</script>
 <div class="toc-header">Contents&nbsp;<input type="text" class="filter-input" disabled placeholder="Filter contents (type .)" aria-label="Filter table of contents" autocomplete="off" spellcheck="false"><input type="reset" class="reset-filter" disabled tabindex="-1" value="Reset"></div>
 <ol class="toc-list" tabindex="-1">
 <li><a href="#" tabindex="0">Description</a></li>
+<li><a href="#field-summary" tabindex="0">Field Summary</a></li>
 <li><a href="#constructor-summary" tabindex="0">Constructor Summary</a></li>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
+<li><a href="#field-detail" tabindex="0">Field Details</a>
+<ol class="toc-list">
+<li><a href="#swerve" tabindex="0">swerve</a></li>
+<li><a href="#vision" tabindex="0">vision</a></li>
+</ol>
+</li>
 <li><a href="#constructor-detail" tabindex="0">Constructor Details</a>
 <ol class="toc-list">
-<li><a href="#%3Cinit%3E()" tabindex="0">AutonFactory()</a></li>
+<li><a href="#%3Cinit%3E(com.stuypulse.robot.subsystems.swerve.Swerve,com.stuypulse.robot.subsystems.vision.Vision)" tabindex="0">AutonFactory(Swerve, Vision)</a></li>
 </ol>
 </li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
@@ -78,13 +85,33 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="horizontal-scroll">
-<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/commands/auton/AutonFactory.html#line-8">AutonFactory</a></span>
+<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/commands/auton/AutonFactory.html#line-11">AutonFactory</a></span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">Class that stores all auton commands</div>
 </div>
 </section>
 <section class="summary">
 <ul class="summary-list">
+<!-- =========== FIELD SUMMARY =========== -->
+<li>
+<section class="field-summary" id="field-summary">
+<h2>Field Summary</h2>
+<div class="caption"><span>Fields</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Field</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>private final <a href="../../subsystems/swerve/Swerve.html" title="class in com.stuypulse.robot.subsystems.swerve">Swerve</a></code></div>
+<div class="col-second even-row-color"><code><a href="#swerve" class="member-name-link">swerve</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Add robot subsystems into this constructor for easy access when making autons</div>
+</div>
+<div class="col-first odd-row-color"><code>private final <a href="../../subsystems/vision/Vision.html" title="class in com.stuypulse.robot.subsystems.vision">Vision</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#vision" class="member-name-link">vision</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+</div>
+</section>
+</li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <li>
 <section class="constructor-summary" id="constructor-summary">
@@ -93,10 +120,9 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">AutonFactory</a>()</code></div>
-<div class="col-last even-row-color">
-<div class="block">Add robot subsystems into this constructor for easy access when making autons</div>
-</div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(com.stuypulse.robot.subsystems.swerve.Swerve,com.stuypulse.robot.subsystems.vision.Vision)" class="member-name-link">AutonFactory</a><wbr>(<a href="../../subsystems/swerve/Swerve.html" title="class in com.stuypulse.robot.subsystems.swerve">Swerve</a>&nbsp;swerve,
+ <a href="../../subsystems/vision/Vision.html" title="class in com.stuypulse.robot.subsystems.vision">Vision</a>&nbsp;vision)</code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -126,17 +152,42 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="details">
 <ul class="details-list">
+<!-- ============ FIELD DETAIL =========== -->
+<li>
+<section class="field-details" id="field-detail">
+<h2>Field Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="swerve">
+<h3>swerve</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="../../subsystems/swerve/Swerve.html" title="class in com.stuypulse.robot.subsystems.swerve">Swerve</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/commands/auton/AutonFactory.html#line-13">swerve</a></span></div>
+<div class="block">Add robot subsystems into this constructor for easy access when making autons</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="vision">
+<h3>vision</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="../../subsystems/vision/Vision.html" title="class in com.stuypulse.robot.subsystems.vision">Vision</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/commands/auton/AutonFactory.html#line-15">vision</a></span></div>
+</div>
+</section>
+</li>
+</ul>
+</section>
+</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;()">
+<section class="detail" id="&lt;init&gt;(com.stuypulse.robot.subsystems.swerve.Swerve,com.stuypulse.robot.subsystems.vision.Vision)">
 <h3>AutonFactory</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/commands/auton/AutonFactory.html#line-10">AutonFactory</a></span>()</div>
-<div class="block">Add robot subsystems into this constructor for easy access when making autons</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/commands/auton/AutonFactory.html#line-17">AutonFactory</a></span><wbr><span class="parameters">(<a href="../../subsystems/swerve/Swerve.html" title="class in com.stuypulse.robot.subsystems.swerve">Swerve</a>&nbsp;swerve,
+ <a href="../../subsystems/vision/Vision.html" title="class in com.stuypulse.robot.subsystems.vision">Vision</a>&nbsp;vision)</span></div>
 </div>
 </section>
 </li>
@@ -152,7 +203,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="doNothingAuton()">
 <h3>doNothingAuton</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Auton.html" title="interface in com.stuypulse.robot.commands.auton">Auton</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/commands/auton/AutonFactory.html#line-12">doNothingAuton</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Auton.html" title="interface in com.stuypulse.robot.commands.auton">Auton</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/commands/auton/AutonFactory.html#line-22">doNothingAuton</a></span>()</div>
 </div>
 </section>
 </li>
