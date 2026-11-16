@@ -198,7 +198,7 @@ public class Robot extends LoggedOpModeRobot {
 
             case REPLAY -> {
                 // Replaying a log, set up replay source
-                // setUseTiming(false); // Run as fast as possible
+                setUseTiming(false); // Run as fast as possible
                 String logPath = LogFileUtil.findReplayLog();
                 Logger.setReplaySource(new WPILOGReader(logPath));
                 Logger.addDataReceiver(
