@@ -4,8 +4,6 @@
 /**************************************************************/
 package com.stuypulse.robot.subsystems.vision;
 
-import com.limelightvision.IMUMode;
-import com.limelightvision.Limelight;
 import com.stuypulse.robot.constants.FieldConstants;
 import com.stuypulse.robot.constants.GlobalSettings;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.Camera;
@@ -29,6 +27,8 @@ import org.wpilib.math.numbers.N3;
 import org.wpilib.system.Timer;
 import org.wpilib.util.Alert;
 
+import com.limelightvision.IMUMode;
+import com.limelightvision.Limelight;
 import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Supplier;
-
 import org.littletonrobotics.junction.Logger;
 
 public class Vision extends PeriodicSubsystem {
@@ -49,7 +48,10 @@ public class Vision extends PeriodicSubsystem {
 
     private final Timer hdrTimer;
 
-    public Vision(VisionConsumer consumer, EnumMap<Camera, VisionIO> cameraIOMap, Supplier<Rotation2d> rotationSupplier) {
+    public Vision(
+            VisionConsumer consumer,
+            EnumMap<Camera, VisionIO> cameraIOMap,
+            Supplier<Rotation2d> rotationSupplier) {
         this.consumer = consumer;
 
         this.io = new EnumMap<>(cameraIOMap);

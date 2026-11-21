@@ -8,7 +8,6 @@ import org.wpilib.math.geometry.Pose3d;
 import org.wpilib.math.geometry.Rotation2d;
 
 import com.limelightvision.IMUMode;
-
 import org.littletonrobotics.junction.AutoLog;
 import org.littletonrobotics.junction.AutoLogOutput;
 

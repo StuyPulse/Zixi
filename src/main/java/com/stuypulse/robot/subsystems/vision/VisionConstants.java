@@ -11,7 +11,6 @@ import org.wpilib.math.geometry.Transform3d;
 import org.wpilib.units.measure.Time;
 
 import com.limelightvision.IMUMode;
-
 import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean;
 
 public interface VisionConstants {

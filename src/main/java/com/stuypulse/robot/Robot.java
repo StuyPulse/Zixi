@@ -106,8 +106,7 @@ public class Robot extends LoggedOpModeRobot {
                             camera,
                             VisionConstants.VISION_MODE == VisionMode.LIMELIGHT
                                     ? new VisionIOLimelight(
-                                            camera.getName(),
-                                            camera.getRobotToCamera())
+                                            camera.getName(), camera.getRobotToCamera())
                                     : new VisionIOPhoton(
                                             camera.getName(), camera.getRobotToCamera()));
                 }
