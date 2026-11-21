@@ -10,6 +10,8 @@ import org.wpilib.math.geometry.Rotation3d;
 import org.wpilib.math.geometry.Transform3d;
 import org.wpilib.units.measure.Time;
 
+import com.limelightvision.IMUMode;
+
 import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean;
 
 public interface VisionConstants {
@@ -19,7 +21,7 @@ public interface VisionConstants {
 
         Time HDR_SWITCHING_INTERVAL = Seconds.of(0.5);
 
-        int RESET_IMU_INDEX = 1;
+        IMUMode RESET_IMU_MODE = IMUMode.EXTERNAL_SEED_INTERNAL;
 
         // Basic filtering thresholds
         double MAX_AMBIGUITY = 0.3;

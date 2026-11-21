@@ -6,42 +6,24 @@ package com.stuypulse.robot.subsystems.vision;
 
 import static org.wpilib.units.Units.Degrees;
 
-import org.wpilib.math.geometry.Pose3d;
 import org.wpilib.math.geometry.Rotation2d;
-import org.wpilib.math.geometry.Rotation3d;
 import org.wpilib.math.geometry.Transform3d;
-import org.wpilib.math.util.Units;
-import org.wpilib.networktables.DoubleArrayPublisher;
-import org.wpilib.networktables.DoubleArraySubscriber;
-import org.wpilib.networktables.DoubleSubscriber;
-import org.wpilib.networktables.IntegerPublisher;
-import org.wpilib.networktables.IntegerSubscriber;
 import org.wpilib.networktables.NetworkTable;
 import org.wpilib.networktables.NetworkTableInstance;
-import org.wpilib.networktables.TimestampedDoubleArray;
 import org.wpilib.system.RobotController;
 
-import java.util.Arrays;
+import com.limelightvision.FiducialTarget;
+import com.limelightvision.Limelight;
+import com.limelightvision.LimelightResults;
+import com.limelightvision.PoseEstimateType;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Supplier;
 
 /** IO implementation for real Limelight hardware. */
 public class VisionIOLimelight implements VisionIO {
-    private final Supplier<Rotation2d> rotationSupplier;
-    private final DoubleArrayPublisher orientationPublisher;
-    private final IntegerPublisher pipelinePublisher;
-    private final IntegerPublisher imuModePublisher;
-    private final DoubleArrayPublisher aprilTagWhitelistPublisher;
-
-    private final DoubleSubscriber latencySubscriber;
-    private final DoubleSubscriber txSubscriber;
-    private final DoubleSubscriber tySubscriber;
-    private final DoubleArraySubscriber megatag1Subscriber;
-    private final DoubleArraySubscriber megatag2Subscriber;
-    private final IntegerSubscriber pipelineSubscriber;
+    private final Limelight camera;
 
     private MegaTagMode megaTagMode;
 
@@ -51,22 +33,22 @@ public class VisionIOLimelight implements VisionIO {
      * @param name The configured name of the Limelight.
      * @param rotationSupplier Supplier for the current estimated rotation, used for MegaTag 2.
      */
-    public VisionIOLimelight(
-            String name, Transform3d robotToCamera, Supplier<Rotation2d> rotationSupplier) {
+    public VisionIOLimelight(String name, Transform3d robotToCamera) {
         NetworkTable table = NetworkTableInstance.getDefault().getTable(name);
-        this.rotationSupplier = rotationSupplier;
-        orientationPublisher = table.getDoubleArrayTopic("robot_orientation_set").publish();
-        pipelinePublisher = table.getIntegerTopic("pipeline").publish();
-        imuModePublisher = table.getIntegerTopic("imumode_set").publish();
-        aprilTagWhitelistPublisher = table.getDoubleArrayTopic("fiducial_id_filters_set").publish();
-        latencySubscriber = table.getDoubleTopic("tl").subscribe(0.0);
-        txSubscriber = table.getDoubleTopic("tx").subscribe(0.0);
-        tySubscriber = table.getDoubleTopic("ty").subscribe(0.0);
-        megatag1Subscriber =
-                table.getDoubleArrayTopic("botpose_wpiblue").subscribe(new double[] {});
-        megatag2Subscriber =
-                table.getDoubleArrayTopic("botpose_orb_wpiblue").subscribe(new double[] {});
-        pipelineSubscriber = table.getIntegerTopic("pipeline").subscribe(0);
+        this.camera = new Limelight(name);
+        // orientationPublisher = table.getDoubleArrayTopic("robot_orientation_set").publish();
+        // pipelinePublisher = table.getIntegerTopic("pipeline").publish();
+        // imuModePublisher = table.getIntegerTopic("imumode_set").publish();
+        // aprilTagWhitelistPublisher =
+        // table.getDoubleArrayTopic("fiducial_id_filters_set").publish();
+        // latencySubscriber = table.getDoubleTopic("tl").subscribe(0.0);
+        // txSubscriber = table.getDoubleTopic("tx").subscribe(0.0);
+        // tySubscriber = table.getDoubleTopic("ty").subscribe(0.0);
+        // megatag1Subscriber =
+        //         table.getDoubleArrayTopic("botpose_wpiblue").subscribe(new double[] {});
+        // megatag2Subscriber =
+        //         table.getDoubleArrayTopic("botpose_orb_wpiblue").subscribe(new double[] {});
+        // pipelineSubscriber = table.getIntegerTopic("pipeline").subscribe(0);
 
         megaTagMode = MegaTagMode.MEGATAG_1;
 
@@ -88,82 +70,62 @@ public class VisionIOLimelight implements VisionIO {
         // Update connection status based on whether an update has been seen in the last
         // 250ms
         inputs.connected =
-                ((RobotController.getMonotonicTime() - latencySubscriber.getLastChange()) / 1000)
+                ((RobotController.getMonotonicTime() * 1e-6) - camera.getTargetingLatencyMillis())
                         < 250;
 
-        inputs.currentPipeline = (int) pipelineSubscriber.get();
+        inputs.currentPipeline = camera.getCurrentPipelineIndex();
 
         // Update target observation
         inputs.latestTargetObservation =
                 new TargetObservation(
-                        Rotation2d.fromDegrees(txSubscriber.get()),
-                        Rotation2d.fromDegrees(tySubscriber.get()));
+                        Rotation2d.fromDegrees(camera.getTXDegrees()),
+                        Rotation2d.fromDegrees(camera.getTYDegrees()));
 
         // Update orientation for MegaTag 2
-        orientationPublisher.accept(
-                new double[] {rotationSupplier.get().getDegrees(), 0.0, 0.0, 0.0, 0.0, 0.0});
-        NetworkTableInstance.getDefault()
-                .flush(); // Increases network traffic but recommended by Limelight
+        // done in vision.java now
+
+        // NetworkTableInstance.getDefault()
+        //         .flush(); // done in vision.java
 
         // Read new pose observations from NetworkTables
         Set<Integer> tagIds = new HashSet<>();
         List<PoseObservation> poseObservations = new LinkedList<>();
 
         if (megaTagMode == MegaTagMode.MEGATAG_1) {
-            for (TimestampedDoubleArray rawSample : megatag1Subscriber.readQueue()) {
-                if (rawSample.value.length == 0) continue;
-                for (int i = 11; i < rawSample.value.length; i += 7) {
-                    tagIds.add((int) rawSample.value[i]);
+            for (LimelightResults rawSample : camera.readResultsQueue()) {
+                if (!rawSample.valid) { // ignore invalid results obv
+                    continue;
+                }
+                for (FiducialTarget tag : rawSample.fiducialTargets) {
+                    tagIds.add(tag.fiducialId);
+                }
+                double ambiguity = 0.0;
+                // Ambiguity, using only the first tag because ambiguity isn't
+                // applicable for
+                // multitag
+                if (megaTagMode == MegaTagMode.MEGATAG_1 && rawSample.fiducialTargets.length == 1) {
+                    ambiguity = rawSample.fiducialTargets[0].ambiguity;
                 }
                 poseObservations.add(
                         new PoseObservation(
                                 // Timestamp, based on server timestamp of publish and latency
-                                rawSample.timestamp * 1.0e-6 - rawSample.value[6] * 1.0e-3,
+                                rawSample.ntTimestampMicros * 1.0e-6
+                                        - rawSample.timestampMillis * 1.0e-3,
 
                                 // 3D pose estimate
-                                parsePose(rawSample.value),
-
-                                // Ambiguity, using only the first tag because ambiguity isn't
-                                // applicable for
-                                // multitag
-                                rawSample.value.length >= 18 ? rawSample.value[17] : 0.0,
+                                rawSample.getRobotPose(PoseEstimateType.MT1_WPIBLUE),
+                                ambiguity,
 
                                 // Tag count
-                                (int) rawSample.value[7],
+                                rawSample.fiducialTargets.length,
 
                                 // Average tag distance
-                                rawSample.value[9],
+                                rawSample.avgTagDistanceMeters,
 
                                 // Observation type
-                                PoseObservationType.MEGATAG_1));
-            }
-        }
-
-        if (megaTagMode == MegaTagMode.MEGATAG_2) {
-            for (TimestampedDoubleArray rawSample : megatag2Subscriber.readQueue()) {
-                if (rawSample.value.length == 0) continue;
-                for (int i = 11; i < rawSample.value.length; i += 7) {
-                    tagIds.add((int) rawSample.value[i]);
-                }
-                poseObservations.add(
-                        new PoseObservation(
-                                // Timestamp, based on server timestamp of publish and latency
-                                rawSample.timestamp * 1.0e-6 - rawSample.value[6] * 1.0e-3,
-
-                                // 3D pose estimate
-                                parsePose(rawSample.value),
-
-                                // Ambiguity, zeroed because the pose is already disambiguated
-                                0.0,
-
-                                // Tag count
-                                (int) rawSample.value[7],
-
-                                // Average tag distance
-                                rawSample.value[9],
-
-                                // Observation type
-                                PoseObservationType.MEGATAG_2));
+                                megaTagMode == MegaTagMode.MEGATAG_1
+                                        ? PoseObservationType.MEGATAG_1
+                                        : PoseObservationType.MEGATAG_2));
             }
         }
 
@@ -181,26 +143,13 @@ public class VisionIOLimelight implements VisionIO {
         }
     }
 
-    /** Parses the 3D pose from a Limelight botpose array. */
-    private static Pose3d parsePose(double[] rawLLArray) {
-        return new Pose3d(
-                rawLLArray[0],
-                rawLLArray[1],
-                rawLLArray[2],
-                new Rotation3d(
-                        Units.degreesToRadians(rawLLArray[3]),
-                        Units.degreesToRadians(rawLLArray[4]),
-                        Units.degreesToRadians(rawLLArray[5])));
-    }
-
     @Override
     public void applyOutputs(VisionIOOutputs outputs) {
-        pipelinePublisher.accept(outputs.pipeline);
+        camera.setPipelineIndex(outputs.pipeline);
 
         this.megaTagMode = outputs.megaTagMode;
 
-        aprilTagWhitelistPublisher.accept(
-                Arrays.stream(outputs.aprilTagWhitelist).asDoubleStream().toArray());
-        imuModePublisher.accept(outputs.imuMode);
+        camera.setFiducialIDFiltersOverride(outputs.aprilTagWhitelist);
+        camera.setIMUMode(outputs.imuMode);
     }
 }

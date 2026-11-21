@@ -11,8 +11,9 @@ import com.stuypulse.robot.subsystems.vision.Vision;
 public class AutonFactory {
     /** Add robot subsystems into this constructor for easy access when making autons */
     private final Swerve swerve;
+
     private final Vision vision;
-    
+
     public AutonFactory(Swerve swerve, Vision vision) {
         this.swerve = swerve;
         this.vision = vision;

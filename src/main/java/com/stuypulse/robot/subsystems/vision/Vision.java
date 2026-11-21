@@ -4,6 +4,8 @@
 /**************************************************************/
 package com.stuypulse.robot.subsystems.vision;
 
+import com.limelightvision.IMUMode;
+import com.limelightvision.Limelight;
 import com.stuypulse.robot.constants.FieldConstants;
 import com.stuypulse.robot.constants.GlobalSettings;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.Camera;
@@ -33,21 +35,26 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.function.Supplier;
+
 import org.littletonrobotics.junction.Logger;
 
 public class Vision extends PeriodicSubsystem {
     private final VisionConsumer consumer;
     private final EnumMap<Camera, VisionIO> io;
+    private final Supplier<Rotation2d> rotationSupplier;
     private final EnumMap<Camera, VisionIOInputsAutoLogged> inputs;
     private final EnumMap<Camera, VisionIOOutputs> outputs;
     private final EnumMap<Camera, Alert> disconnectedAlerts;
 
     private final Timer hdrTimer;
 
-    public Vision(VisionConsumer consumer, EnumMap<Camera, VisionIO> cameraIOMap) {
+    public Vision(VisionConsumer consumer, EnumMap<Camera, VisionIO> cameraIOMap, Supplier<Rotation2d> rotationSupplier) {
         this.consumer = consumer;
 
         this.io = new EnumMap<>(cameraIOMap);
+
+        this.rotationSupplier = rotationSupplier;
 
         // Initialize inputs
         this.inputs = new EnumMap<>(Camera.class);
@@ -97,6 +104,8 @@ public class Vision extends PeriodicSubsystem {
             currentIO.updateInputs(currentInputs);
             Logger.processInputs("Vision/" + entry.getKey().getName(), currentInputs);
         }
+        Limelight.setSharedRobotOrientation(rotationSupplier.get().getDegrees());
+        Limelight.flushNT();
 
         Optional<Integer> pipeline = getPipeline();
 
@@ -288,7 +297,7 @@ public class Vision extends PeriodicSubsystem {
                 .named("Vision Set April Tag Whitelist");
     }
 
-    private Command setIMUMode(int imuMode, String name) {
+    private Command setIMUMode(IMUMode imuMode, String name) {
         return run(coroutine -> {
                     for (VisionIOOutputs output : outputs.values()) {
                         output.imuMode = imuMode;
@@ -297,11 +306,11 @@ public class Vision extends PeriodicSubsystem {
                 .named(name);
     }
 
-    public Command setIMUMode(int imuMode) {
+    public Command setIMUMode(IMUMode imuMode) {
         return setIMUMode(imuMode, "Vision Set IMU Mode");
     }
 
     public Command resetIMU() {
-        return setIMUMode(VisionSettings.RESET_IMU_INDEX, "Vision Reset IMU");
+        return setIMUMode(VisionSettings.RESET_IMU_MODE, "Vision Reset IMU");
     }
 }

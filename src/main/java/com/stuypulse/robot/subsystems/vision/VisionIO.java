@@ -7,6 +7,8 @@ package com.stuypulse.robot.subsystems.vision;
 import org.wpilib.math.geometry.Pose3d;
 import org.wpilib.math.geometry.Rotation2d;
 
+import com.limelightvision.IMUMode;
+
 import org.littletonrobotics.junction.AutoLog;
 import org.littletonrobotics.junction.AutoLogOutput;
 
@@ -32,7 +34,7 @@ public interface VisionIO {
         public int[] aprilTagWhitelist = new int[0];
 
         @AutoLogOutput(key = "Vision/IMU Mode")
-        public int imuMode = 1;
+        public IMUMode imuMode = IMUMode.EXTERNAL_SEED_INTERNAL;
     }
 
     /** Represents the angle to a simple target, not used for pose estimation. */
