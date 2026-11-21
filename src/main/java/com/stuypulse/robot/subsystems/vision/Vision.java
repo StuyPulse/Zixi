@@ -107,7 +107,6 @@ public class Vision extends PeriodicSubsystem {
             Logger.processInputs("Vision/" + entry.getKey().getName(), currentInputs);
         }
         Limelight.setSharedRobotOrientation(rotationSupplier.get().getDegrees());
-        Limelight.flushNT();
 
         Optional<Integer> pipeline = getPipeline();
 
