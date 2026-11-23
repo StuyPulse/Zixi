@@ -26,7 +26,7 @@ public class AutonOpMode implements OpMode {
     public static void addAuton(String name, Auton auton) {
         chooser.add(name, auton);
     }
-    
+
     public AutonOpMode(Robot robot) {
         this.robot = robot;
 
@@ -34,7 +34,6 @@ public class AutonOpMode implements OpMode {
         chooser.onChange(this::setAuto);
     }
 
-    
     private void setAuto(Auton auton) {
         ifNotNull(Auton::clearPaths);
         auto = auton;

@@ -138,15 +138,9 @@ public class Swerve extends PeriodicSubsystem {
         }
         odometryLock.unlock();
 
-        // Stop moving when disabled
-        if (RobotState.isDisabled()) {
-            for (var module : modules) {
-                module.stop();
-            }
-        }
-
         // Log empty setpoint states when disabled
         if (RobotState.isDisabled()) {
+            stopModules();
             Logger.recordOutput("SwerveStates/Setpoints", new SwerveModuleVelocity[] {});
             Logger.recordOutput("SwerveStates/SetpointsOptimized", new SwerveModuleVelocity[] {});
         }
@@ -194,6 +188,12 @@ public class Swerve extends PeriodicSubsystem {
      * @param speeds Speeds in meters/sec
      */
     public void runVelocity(ChassisVelocities speeds) {
+        if (!GlobalSettings.EnabledSubsystems.SWERVE.get()) {
+            stopModules();
+
+            return;
+        }
+
         // Calculate module setpoints
         ChassisVelocities discreteSpeeds = speeds.discretize(0.02);
         SwerveModuleVelocity[] setpointStates = kinematics.toSwerveModuleVelocities(discreteSpeeds);
@@ -234,6 +234,12 @@ public class Swerve extends PeriodicSubsystem {
     /** Stops the drive. */
     public void stop() {
         runVelocity(new ChassisVelocities());
+    }
+
+    public void stopModules() {
+        for (var module : modules) {
+            module.stop();
+        }
     }
 
     /**
