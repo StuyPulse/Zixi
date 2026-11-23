@@ -139,7 +139,7 @@ public class Swerve extends PeriodicSubsystem {
         odometryLock.unlock();
 
         // Log empty setpoint states when disabled
-        if (RobotState.isDisabled()) {
+        if (RobotState.isDisabled() || !GlobalSettings.EnabledSubsystems.SWERVE.get()) {
             stopModules();
             Logger.recordOutput("SwerveStates/Setpoints", new SwerveModuleVelocity[] {});
             Logger.recordOutput("SwerveStates/SetpointsOptimized", new SwerveModuleVelocity[] {});
