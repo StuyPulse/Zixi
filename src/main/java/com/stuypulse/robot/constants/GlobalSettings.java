@@ -20,10 +20,10 @@ public interface GlobalSettings {
      * functionality from external dashboards.
      */
     interface EnabledSubsystems {
-        LoggedNetworkBoolean VISION = new LoggedNetworkBoolean("/Tuning/Enabled Subsystems/Vision");
-
         LoggedNetworkBoolean SWERVE =
                 new LoggedNetworkBoolean("/Tuning/Enabled Subsystems/Swerve", true);
+        LoggedNetworkBoolean VISION =
+                new LoggedNetworkBoolean("/Tuning/Enabled Subsystems/Vision", true);
     }
 
     /** What mode the robot is in when running a simulation. */
