@@ -12,7 +12,7 @@
 <script type="text/javascript" src="../../../../../script-files/script.js"></script>
 <script type="text/javascript" src="../../../../../script-files/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="../../../../../script-files/jquery-ui.min.js"></script>
-<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../betterjdocs.css"><link rel="icon" href="../../../../../favicon.svg?t=1795479053656" type="image/x-icon"><script defer type="module" src="../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
+<script>!function(){let s=localStorage.getItem("theme")||"system",e=s;"system"===s&&(e=window.matchMedia("(prefers-color-scheme:light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}();</script><link rel="stylesheet" href="../../../../../betterjdocs.css"><link rel="icon" href="../../../../../favicon.svg?t=1795731583833" type="image/x-icon"><script defer type="module" src="../../../../../shared/hash-navigation.js"></script><script defer type="module" src="../../../../../shared/svgs.js"></script><script defer type="module" src="../../../../../shared/syntax-highlighting.js"></script><script defer type="module" src="../../../../../shared/theme.js"></script><script defer type="module" src="../../../../../shared/utils.js"></script><script defer type="module" src="../../../../../pages/class-declaration/class-declaration.js"></script><script defer type="module" src="../../../../../pages/class-declaration/syntax-highlight-blocks.js"></script></head>
 <body class="class-declaration-page">
 <script type="text/javascript">const pathtoroot = "../../../../../";
 loadScripts(document, 'script');</script>
@@ -85,6 +85,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#runSteerCharacterization(double)" tabindex="0">runSteerCharacterization(double)</a></li>
 <li><a href="#getSteerCharacterizationPositionRad()" tabindex="0">getSteerCharacterizationPositionRad()</a></li>
 <li><a href="#stop()" tabindex="0">stop()</a></li>
+<li><a href="#stopModules()" tabindex="0">stopModules()</a></li>
 <li><a href="#stopWithX()" tabindex="0">stopWithX()</a></li>
 <li><a href="#getModuleVelocities()" tabindex="0">getModuleVelocities()</a></li>
 <li><a href="#getModulePositions()" tabindex="0">getModulePositions()</a></li>
@@ -287,8 +288,11 @@ processing inputs.</div>
 <div class="block">Stops the drive.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stopWithX()" class="member-name-link">stopWithX</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stopModules()" class="member-name-link">stopModules</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stopWithX()" class="member-name-link">stopWithX</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Stops the drive and turns the modules to an X arrangement to resist movement.</div>
 </div>
 </div>
@@ -406,7 +410,7 @@ processing inputs.</div>
 <section class="detail" id="visionConsumer">
 <h3>visionConsumer</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../vision/Vision.VisionConsumer.html" title="interface in com.stuypulse.robot.subsystems.vision">Vision.VisionConsumer</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-329">visionConsumer</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../vision/Vision.VisionConsumer.html" title="interface in com.stuypulse.robot.subsystems.vision">Vision.VisionConsumer</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-335">visionConsumer</a></span></div>
 </div>
 </section>
 </li>
@@ -457,7 +461,7 @@ processing inputs.</div>
 <section class="detail" id="runVelocity(org.wpilib.math.kinematics.ChassisVelocities)">
 <h3>runVelocity</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-196">runVelocity</a></span><wbr><span class="parameters">(org.wpilib.math.kinematics.ChassisVelocities&nbsp;speeds)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-190">runVelocity</a></span><wbr><span class="parameters">(org.wpilib.math.kinematics.ChassisVelocities&nbsp;speeds)</span></div>
 <div class="block">Runs the drive at the desired velocity.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -501,10 +505,18 @@ processing inputs.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="stopModules()">
+<h3>stopModules</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-239">stopModules</a></span>()</div>
+</div>
+</section>
+</li>
+<li>
 <section class="detail" id="stopWithX()">
 <h3>stopWithX</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-243">stopWithX</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-249">stopWithX</a></span>()</div>
 <div class="block">Stops the drive and turns the modules to an X arrangement to resist movement. The modules
 will return to their normal orientations the next time a nonzero velocity is requested.</div>
 </div>
@@ -514,7 +526,7 @@ will return to their normal orientations the next time a nonzero velocity is req
 <section class="detail" id="getModuleVelocities()">
 <h3>getModuleVelocities</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">org.wpilib.math.kinematics.SwerveModuleVelocity[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-267">getModuleVelocities</a></span>()</div>
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">org.wpilib.math.kinematics.SwerveModuleVelocity[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-273">getModuleVelocities</a></span>()</div>
 <div class="block">Returns the module states (turn angles and drive velocities) for all of the modules.</div>
 </div>
 </section>
@@ -523,7 +535,7 @@ will return to their normal orientations the next time a nonzero velocity is req
 <section class="detail" id="getModulePositions()">
 <h3>getModulePositions</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">org.wpilib.math.kinematics.SwerveModulePosition[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-277">getModulePositions</a></span>()</div>
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">org.wpilib.math.kinematics.SwerveModulePosition[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-283">getModulePositions</a></span>()</div>
 <div class="block">Returns the module positions (turn angles and drive positions) for all of the modules.</div>
 </div>
 </section>
@@ -532,7 +544,7 @@ will return to their normal orientations the next time a nonzero velocity is req
 <section class="detail" id="getChassisSpeeds()">
 <h3>getChassisSpeeds</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">org.wpilib.math.kinematics.ChassisVelocities</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-286">getChassisSpeeds</a></span>()</div>
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">org.wpilib.math.kinematics.ChassisVelocities</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-292">getChassisSpeeds</a></span>()</div>
 <div class="block">Returns the measured chassis speeds of the robot.</div>
 </div>
 </section>
@@ -541,7 +553,7 @@ will return to their normal orientations the next time a nonzero velocity is req
 <section class="detail" id="getWheelRadiusCharacterizationPositions()">
 <h3>getWheelRadiusCharacterizationPositions</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-292">getWheelRadiusCharacterizationPositions</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-298">getWheelRadiusCharacterizationPositions</a></span>()</div>
 <div class="block">Returns the position of each module in radians.</div>
 </div>
 </section>
@@ -550,7 +562,7 @@ will return to their normal orientations the next time a nonzero velocity is req
 <section class="detail" id="getFFCharacterizationVelocity()">
 <h3>getFFCharacterizationVelocity</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-301">getFFCharacterizationVelocity</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-307">getFFCharacterizationVelocity</a></span>()</div>
 <div class="block">Returns the average velocity of the modules in rotations/sec (Phoenix native units).</div>
 </div>
 </section>
@@ -559,7 +571,7 @@ will return to their normal orientations the next time a nonzero velocity is req
 <section class="detail" id="getPose()">
 <h3>getPose</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.wpilib.math.geometry.Pose2d</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-310">getPose</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.wpilib.math.geometry.Pose2d</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-316">getPose</a></span>()</div>
 <div class="block">Returns the current odometry pose.</div>
 </div>
 </section>
@@ -568,7 +580,7 @@ will return to their normal orientations the next time a nonzero velocity is req
 <section class="detail" id="getRotation()">
 <h3>getRotation</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.wpilib.math.geometry.Rotation2d</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-316">getRotation</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.wpilib.math.geometry.Rotation2d</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-322">getRotation</a></span>()</div>
 <div class="block">Returns the current odometry rotation.</div>
 </div>
 </section>
@@ -577,7 +589,7 @@ will return to their normal orientations the next time a nonzero velocity is req
 <section class="detail" id="resetPose(org.wpilib.math.geometry.Pose2d)">
 <h3>resetPose</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-321">resetPose</a></span><wbr><span class="parameters">(org.wpilib.math.geometry.Pose2d&nbsp;pose)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-327">resetPose</a></span><wbr><span class="parameters">(org.wpilib.math.geometry.Pose2d&nbsp;pose)</span></div>
 <div class="block">Resets the current odometry pose.</div>
 </div>
 </section>
@@ -586,7 +598,7 @@ will return to their normal orientations the next time a nonzero velocity is req
 <section class="detail" id="resetRotation(org.wpilib.math.geometry.Rotation2d)">
 <h3>resetRotation</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-325">resetRotation</a></span><wbr><span class="parameters">(org.wpilib.math.geometry.Rotation2d&nbsp;rotation)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-331">resetRotation</a></span><wbr><span class="parameters">(org.wpilib.math.geometry.Rotation2d&nbsp;rotation)</span></div>
 </div>
 </section>
 </li>
@@ -594,7 +606,7 @@ will return to their normal orientations the next time a nonzero velocity is req
 <section class="detail" id="getMaxLinearSpeedMetersPerSec()">
 <h3>getMaxLinearSpeedMetersPerSec</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-332">getMaxLinearSpeedMetersPerSec</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-338">getMaxLinearSpeedMetersPerSec</a></span>()</div>
 <div class="block">Returns the maximum linear speed in meters per sec.</div>
 </div>
 </section>
@@ -603,7 +615,7 @@ will return to their normal orientations the next time a nonzero velocity is req
 <section class="detail" id="getMaxAngularSpeedRadPerSec()">
 <h3>getMaxAngularSpeedRadPerSec</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-337">getMaxAngularSpeedRadPerSec</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-343">getMaxAngularSpeedRadPerSec</a></span>()</div>
 <div class="block">Returns the maximum angular speed in radians per sec.</div>
 </div>
 </section>
@@ -612,7 +624,7 @@ will return to their normal orientations the next time a nonzero velocity is req
 <section class="detail" id="getModuleTranslations()">
 <h3>getModuleTranslations</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">org.wpilib.math.geometry.Translation2d[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-342">getModuleTranslations</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">org.wpilib.math.geometry.Translation2d[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/stuypulse/robot/subsystems/swerve/Swerve.html#line-348">getModuleTranslations</a></span>()</div>
 <div class="block">Returns an array of module translations.</div>
 </div>
 </section>
