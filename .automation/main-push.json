@@ -1,7 +1,7 @@
 {
-  "message": "fix: enable vision by default (#44)",
-  "hash": "13f29054982e17576d04a1fff1a5f2dff705c1fc",
-  "commitTimestamp": "2026-11-23T19:08:57-05:00",
-  "triggerTimestamp": "2026-11-24T00:09:02.515Z",
+  "message": "feat: swerve enabled check (#45)\n\n* feat: swerve enabled check\n\n* feat: stop modules periodically when swerve disabled",
+  "hash": "16e42a9bbb5a5e1e9e2a22d066f9b4e31a9ddeba",
+  "commitTimestamp": "2026-11-26T17:18:07-05:00",
+  "triggerTimestamp": "2026-11-26T22:18:12.089Z",
   "manuallyTriggered": false
 }
