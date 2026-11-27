@@ -18,7 +18,7 @@ public class RobotTest {
     }
 
     @Test
-    public void testRobotContainer() {
+    public void testRobotConstruction() {
         assertDoesNotThrow(Robot::new);
     }
 }
