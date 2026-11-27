@@ -22,7 +22,7 @@ import com.stuypulse.robot.subsystems.swerve.TunerConstants;
 import com.stuypulse.robot.subsystems.vision.Vision;
 import com.stuypulse.robot.subsystems.vision.VisionConstants;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.Camera;
-import com.stuypulse.robot.subsystems.vision.VisionConstants.VisionMode;
+import com.stuypulse.robot.subsystems.vision.VisionConstants.CameraType;
 import com.stuypulse.robot.subsystems.vision.VisionIO;
 import com.stuypulse.robot.subsystems.vision.VisionIOLimelight;
 import com.stuypulse.robot.subsystems.vision.VisionIOPhoton;
@@ -104,7 +104,7 @@ public class Robot extends LoggedOpModeRobot {
                 for (Camera camera : VisionConstants.Camera.values()) {
                     visionIOMap.put(
                             camera,
-                            VisionConstants.VISION_MODE == VisionMode.LIMELIGHT
+                            camera.getCameraType() == CameraType.LIMELIGHT
                                     ? new VisionIOLimelight(
                                             camera.getName(), camera.getRobotToCamera())
                                     : new VisionIOPhoton(
