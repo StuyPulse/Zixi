@@ -1,7 +1,7 @@
 {
-  "message": "feat: swerve enabled check (#45)\n\n* feat: swerve enabled check\n\n* feat: stop modules periodically when swerve disabled",
-  "hash": "16e42a9bbb5a5e1e9e2a22d066f9b4e31a9ddeba",
-  "commitTimestamp": "2026-11-26T22:18:07Z",
-  "triggerTimestamp": "2026-11-27T17:27:08.887Z",
-  "manuallyTriggered": true
+  "message": "fix: photon lib vendordep (#47)",
+  "hash": "a4528fd6cabe35cf11d3f5ad2d3c6a7bfa533476",
+  "commitTimestamp": "2026-11-27T12:42:08-05:00",
+  "triggerTimestamp": "2026-11-27T17:42:12.365Z",
+  "manuallyTriggered": false
 }
