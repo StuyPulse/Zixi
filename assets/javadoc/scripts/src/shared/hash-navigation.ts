@@ -2,6 +2,9 @@ import { scrollBehavior, getElementFromHash } from "./utils.js";
 
 const hashNavigationCallbacks: HashNavigationCallback[] = [];
 
+let currentTarget: HTMLElement | null = null;
+const HASH_TARGET_CLASS = "hash-target";
+
 const handleHashNavigation = () => {
     const hash = window.location.hash;
 
@@ -12,6 +15,12 @@ const handleHashNavigation = () => {
 
     const element = getElementFromHash();
     if (!element) return;
+
+    if (currentTarget) {
+        currentTarget.classList.remove(HASH_TARGET_CLASS);
+    }
+    element.classList.add(HASH_TARGET_CLASS);
+    currentTarget = element;
 
     const handled = hashNavigationCallbacks.some(
         callback => callback(element)
@@ -38,11 +47,15 @@ const initializeHashNavigation = () => {
     });
 
     window.addEventListener("hashchange", handleHashNavigation);
-};
+
+    if (getElementFromHash()) {
+        handleHashNavigation();
+    }
+}
 
 const onHashNavigate = (callback: HashNavigationCallback) => {
     hashNavigationCallbacks.push(callback);
-};
+}
 
 initializeHashNavigation();
 
