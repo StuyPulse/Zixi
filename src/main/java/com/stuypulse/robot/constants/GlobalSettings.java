@@ -20,6 +20,8 @@ public interface GlobalSettings {
      * functionality from external dashboards.
      */
     interface EnabledSubsystems {
+        LoggedNetworkBoolean SWERVE =
+                new LoggedNetworkBoolean("/Tuning/Enabled Subsystems/Swerve", true);
         LoggedNetworkBoolean VISION =
                 new LoggedNetworkBoolean("/Tuning/Enabled Subsystems/Vision", true);
     }
