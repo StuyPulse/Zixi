@@ -206,11 +206,17 @@ const handleThemeChangeEvent = () => {
     if (themeState === "system")
         setTheme("system");
 };
+let dontTransitionTimeout;
 const setTheme = (theme) => {
     if (!themes.includes(theme)) {
         console.warn(`Invalid theme: ${theme}. Valid themes are: ${themes.join(", ")}`);
         return;
     }
+    clearInterval(dontTransitionTimeout);
+    const headings = document.querySelectorAll("body.class-declaration-page section.detail > h3");
+    headings.forEach((heading) => {
+        heading.classList.add("dont-transition");
+    });
     themeState = theme;
     let effectiveTheme = theme === "system"
         ? (systemThemeQuery.matches ? "light" : "dark")
@@ -232,6 +238,11 @@ const setTheme = (theme) => {
     themeChangeCallbacks.forEach((callback) => callback(themeState, effectiveTheme));
     localStorage.setItem("theme", themeState);
     document.documentElement.setAttribute("data-theme", effectiveTheme);
+    dontTransitionTimeout = setTimeout(() => {
+        headings.forEach((heading) => {
+            heading.classList.remove("dont-transition");
+        });
+    }, 100);
 };
 (() => {
     let storedTheme = localStorage.getItem("theme");
