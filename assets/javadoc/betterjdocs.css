@@ -42,7 +42,7 @@
   --autocomplete-selected-bg-light: #ffcccc;
 
   --target-highlight-color-dark: color-mix(in srgb, var(--primary-color-dark) 75%, white);
-  --target-highlight-color-light: color-mix(in srgb, var(var(--primary-color-light)) 34%, white);
+  --target-highlight-color-light: color-mix(in srgb, var(--primary-color-light) 34%, white);
 }
 
 /* OUR STYLESHEETS */
