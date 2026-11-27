@@ -4,6 +4,7 @@
 /**************************************************************/
 package com.stuypulse.robot.subsystems.vision;
 
+import org.wpilib.math.geometry.Pose3d;
 import org.wpilib.math.geometry.Rotation2d;
 import org.wpilib.math.geometry.Transform3d;
 
@@ -32,12 +33,12 @@ public class VisionIOLimelight implements VisionIO {
         this.camera = new Limelight(name);
 
         megaTagMode = MegaTagMode.MEGATAG_1;
+
+        camera.setCameraPose_RobotSpaceOverride(new Pose3d(robotToCamera.getTranslation(), robotToCamera.getRotation()), false);
     }
 
     @Override
     public void updateInputs(VisionIOInputs inputs) {
-        // Update connection status based on whether an update has been seen in the last
-        // 250ms
         inputs.connected = camera.isConnected();
 
         inputs.currentPipeline = camera.getCurrentPipelineIndex();

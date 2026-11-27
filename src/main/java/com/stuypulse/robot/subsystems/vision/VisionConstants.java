@@ -39,8 +39,6 @@ public interface VisionConstants {
         double BUZZ_DEBOUNCE = 0.25;
     }
 
-    record CameraData(String name, Transform3d robotToCamera, double stdDevFactor) {}
-
     /**
      * Represents a camera from its physical position and identified by name.
      *
@@ -50,7 +48,9 @@ public interface VisionConstants {
      */
     public enum Camera {
         ;
-        private final CameraData data;
+        private final String name;
+        private final Transform3d robotToCamera;
+        private final double stdDevFactor;
 
         /**
          * Internal constructor to setup a camera with a {@link CameraData} instance
@@ -60,28 +60,21 @@ public interface VisionConstants {
          * @param stdDevFactor scalar factor to multiply the camrea's standard deviations by
          */
         private Camera(String name, Transform3d robotToCamera, double stdDevFactor) {
-            this.data = new CameraData(name, robotToCamera, stdDevFactor);
+            this.name = name;
+            this.robotToCamera = robotToCamera; 
+            this.stdDevFactor = stdDevFactor;
         }
 
         public String getName() {
-            return data.name();
+            return this.name;
         }
 
         public Transform3d getRobotToCamera() {
-            return data.robotToCamera();
+            return this.robotToCamera;
         }
 
         public double getStdDevFactor() {
-            return data.stdDevFactor();
-        }
-
-        /**
-         * Gets the backing data object
-         *
-         * @return The corresponding {@link CameraData} instance
-         */
-        public CameraData getData() {
-            return data;
+            return this.stdDevFactor;
         }
     }
 
