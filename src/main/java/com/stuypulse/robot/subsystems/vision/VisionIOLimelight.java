@@ -34,7 +34,8 @@ public class VisionIOLimelight implements VisionIO {
 
         megaTagMode = MegaTagMode.MEGATAG_1;
 
-        camera.setCameraPose_RobotSpaceOverride(new Pose3d(robotToCamera.getTranslation(), robotToCamera.getRotation()), false);
+        camera.setCameraPose_RobotSpaceOverride(
+                new Pose3d(robotToCamera.getTranslation(), robotToCamera.getRotation()), false);
     }
 
     @Override

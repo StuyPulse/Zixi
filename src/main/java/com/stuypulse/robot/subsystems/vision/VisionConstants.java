@@ -40,7 +40,7 @@ public interface VisionConstants {
     }
 
     /**
-     * Represents a camera from its physical position and identified by name.
+     * Represents a camera from its physical position and identified by name, which must be unique.
      *
      * <p>An constant of this enum looks like this <code>
      * NAME("detailed name", {@link Transform3d#Transform3d(double, double, double, Rotation3d) new Transform3d(x, y, z, rotation)}, 1.0);
@@ -51,6 +51,7 @@ public interface VisionConstants {
         private final String name;
         private final Transform3d robotToCamera;
         private final double stdDevFactor;
+        private final CameraType type;
 
         /**
          * Internal constructor to setup a camera with a {@link CameraData} instance
@@ -59,10 +60,12 @@ public interface VisionConstants {
          * @param robotToCamera transformation from the robot origin to the camera's position
          * @param stdDevFactor scalar factor to multiply the camrea's standard deviations by
          */
-        private Camera(String name, Transform3d robotToCamera, double stdDevFactor) {
+        private Camera(
+                String name, Transform3d robotToCamera, double stdDevFactor, CameraType type) {
             this.name = name;
-            this.robotToCamera = robotToCamera; 
+            this.robotToCamera = robotToCamera;
             this.stdDevFactor = stdDevFactor;
+            this.type = type;
         }
 
         public String getName() {
@@ -75,6 +78,10 @@ public interface VisionConstants {
 
         public double getStdDevFactor() {
             return this.stdDevFactor;
+        }
+
+        public CameraType getCameraType() {
+            return this.type;
         }
     }
 
@@ -93,10 +100,11 @@ public interface VisionConstants {
         }
     }
 
-    public enum VisionMode {
+    /** Represents what backend should be used to control the camera */
+    public enum CameraType {
+        /** Limelight lib backend using {@link VisionIOLimelight} */
         LIMELIGHT,
+        /** Limelight lib backend using {@link VisionIOPhoton} */
         PHOTONVISION
     }
-
-    VisionMode VISION_MODE = VisionMode.LIMELIGHT;
 }

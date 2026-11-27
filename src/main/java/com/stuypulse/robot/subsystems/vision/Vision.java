@@ -71,7 +71,7 @@ public class Vision extends PeriodicSubsystem {
             disconnectedAlerts.put(
                     camera,
                     new Alert(
-                            "Vision " + camera.getName(),
+                            "Camera" + camera.getName() + "Disconnect",
                             "Vision camera " + camera.getName() + " is disconnected.",
                             Alert.Level.MEDIUM));
         }
@@ -95,10 +95,6 @@ public class Vision extends PeriodicSubsystem {
 
     @Override
     public void periodic() {
-        if (!GlobalSettings.EnabledSubsystems.VISION.get()) {
-            return;
-        }
-
         for (Entry<Camera, VisionIO> entry : io.entrySet()) {
             VisionIO currentIO = entry.getValue();
             VisionIOInputsAutoLogged currentInputs = inputs.get(entry.getKey());
@@ -106,6 +102,11 @@ public class Vision extends PeriodicSubsystem {
             Logger.processInputs("Vision/" + entry.getKey().getName(), currentInputs);
         }
         Limelight.setSharedRobotOrientation(rotationSupplier.get().getDegrees());
+
+        // inputs should update regardless of being enabled
+        if (!GlobalSettings.EnabledSubsystems.VISION.get()) {
+            return;
+        }
 
         Optional<Integer> pipeline = getPipeline();
 
@@ -207,16 +208,16 @@ public class Vision extends PeriodicSubsystem {
 
             // Log camera metadata
             Logger.recordOutput(
-                    "Vision/Camera" + currentCamera.name() + "/TagPoses",
+                    "Vision/Camera_" + currentCamera.getName() + "/TagPoses",
                     tagPoses.toArray(new Pose3d[tagPoses.size()]));
             Logger.recordOutput(
-                    "Vision/Camera" + currentCamera.name() + "/RobotPoses",
+                    "Vision/Camera_" + currentCamera.getName() + "/RobotPoses",
                     robotPoses.toArray(new Pose3d[robotPoses.size()]));
             Logger.recordOutput(
-                    "Vision/Camera" + currentCamera.name() + "/RobotPosesAccepted",
+                    "Vision/Camera_" + currentCamera.getName() + "/RobotPosesAccepted",
                     robotPosesAccepted.toArray(new Pose3d[robotPosesAccepted.size()]));
             Logger.recordOutput(
-                    "Vision/Camera" + currentCamera.name() + "/RobotPosesRejected",
+                    "Vision/Camera_" + currentCamera.getName() + "/RobotPosesRejected",
                     robotPosesRejected.toArray(new Pose3d[robotPosesRejected.size()]));
             allTagPoses.addAll(tagPoses);
             allRobotPoses.addAll(robotPoses);
