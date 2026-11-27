@@ -7,7 +7,6 @@ package com.stuypulse.robot.subsystems.vision;
 import com.stuypulse.robot.constants.FieldConstants;
 import com.stuypulse.robot.constants.GlobalSettings;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.Camera;
-import com.stuypulse.robot.subsystems.vision.VisionConstants.CameraData;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.Pipeline;
 import com.stuypulse.robot.subsystems.vision.VisionConstants.VisionSettings;
 import com.stuypulse.robot.subsystems.vision.VisionIO.MegaTagMode;
@@ -27,27 +26,36 @@ import org.wpilib.math.numbers.N3;
 import org.wpilib.system.Timer;
 import org.wpilib.util.Alert;
 
+import com.limelightvision.IMUMode;
+import com.limelightvision.Limelight;
 import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
 public class Vision extends PeriodicSubsystem {
     private final VisionConsumer consumer;
     private final EnumMap<Camera, VisionIO> io;
+    private final Supplier<Rotation2d> rotationSupplier;
     private final EnumMap<Camera, VisionIOInputsAutoLogged> inputs;
     private final EnumMap<Camera, VisionIOOutputs> outputs;
     private final EnumMap<Camera, Alert> disconnectedAlerts;
 
     private final Timer hdrTimer;
 
-    public Vision(VisionConsumer consumer, EnumMap<Camera, VisionIO> cameraIOMap) {
+    public Vision(
+            VisionConsumer consumer,
+            EnumMap<Camera, VisionIO> cameraIOMap,
+            Supplier<Rotation2d> rotationSupplier) {
         this.consumer = consumer;
 
         this.io = new EnumMap<>(cameraIOMap);
+
+        this.rotationSupplier = rotationSupplier;
 
         // Initialize inputs
         this.inputs = new EnumMap<>(Camera.class);
@@ -97,6 +105,7 @@ public class Vision extends PeriodicSubsystem {
             currentIO.updateInputs(currentInputs);
             Logger.processInputs("Vision/" + entry.getKey().getName(), currentInputs);
         }
+        Limelight.setSharedRobotOrientation(rotationSupplier.get().getDegrees());
 
         Optional<Integer> pipeline = getPipeline();
 
@@ -123,11 +132,11 @@ public class Vision extends PeriodicSubsystem {
 
         // Loop over cameras
         for (Entry<Camera, VisionIO> entry : io.entrySet()) {
-            CameraData currentCameraData = entry.getKey().getData();
-            VisionIOInputsAutoLogged currentInputs = inputs.get(entry.getKey());
+            Camera currentCamera = entry.getKey();
+            VisionIOInputsAutoLogged currentInputs = inputs.get(currentCamera);
 
             // Update disconnected alert
-            disconnectedAlerts.get(entry.getKey()).set(!currentInputs.connected);
+            disconnectedAlerts.get(currentCamera).set(!currentInputs.connected);
 
             // Initialize logging values
             List<Pose3d> tagPoses = new LinkedList<>();
@@ -186,8 +195,8 @@ public class Vision extends PeriodicSubsystem {
                     linearStdDev *= VisionSettings.LINEAR_STD_DEV_MEGATAG_2_FACTOR;
                     angularStdDev *= VisionSettings.ANGULAR_STD_DEV_MEGATAG_2_FACTOR;
                 }
-                linearStdDev *= currentCameraData.stdDevFactor();
-                angularStdDev *= currentCameraData.stdDevFactor();
+                linearStdDev *= currentCamera.getStdDevFactor();
+                angularStdDev *= currentCamera.getStdDevFactor();
 
                 // Send vision observation
                 consumer.accept(
@@ -198,16 +207,16 @@ public class Vision extends PeriodicSubsystem {
 
             // Log camera metadata
             Logger.recordOutput(
-                    "Vision/Camera" + currentCameraData.name() + "/TagPoses",
+                    "Vision/Camera" + currentCamera.name() + "/TagPoses",
                     tagPoses.toArray(new Pose3d[tagPoses.size()]));
             Logger.recordOutput(
-                    "Vision/Camera" + currentCameraData.name() + "/RobotPoses",
+                    "Vision/Camera" + currentCamera.name() + "/RobotPoses",
                     robotPoses.toArray(new Pose3d[robotPoses.size()]));
             Logger.recordOutput(
-                    "Vision/Camera" + currentCameraData.name() + "/RobotPosesAccepted",
+                    "Vision/Camera" + currentCamera.name() + "/RobotPosesAccepted",
                     robotPosesAccepted.toArray(new Pose3d[robotPosesAccepted.size()]));
             Logger.recordOutput(
-                    "Vision/Camera" + currentCameraData.name() + "/RobotPosesRejected",
+                    "Vision/Camera" + currentCamera.name() + "/RobotPosesRejected",
                     robotPosesRejected.toArray(new Pose3d[robotPosesRejected.size()]));
             allTagPoses.addAll(tagPoses);
             allRobotPoses.addAll(robotPoses);
@@ -288,7 +297,7 @@ public class Vision extends PeriodicSubsystem {
                 .named("Vision Set April Tag Whitelist");
     }
 
-    private Command setIMUMode(int imuMode, String name) {
+    private Command setIMUMode(IMUMode imuMode, String name) {
         return run(coroutine -> {
                     for (VisionIOOutputs output : outputs.values()) {
                         output.imuMode = imuMode;
@@ -297,11 +306,11 @@ public class Vision extends PeriodicSubsystem {
                 .named(name);
     }
 
-    public Command setIMUMode(int imuMode) {
+    public Command setIMUMode(IMUMode imuMode) {
         return setIMUMode(imuMode, "Vision Set IMU Mode");
     }
 
     public Command resetIMU() {
-        return setIMUMode(VisionSettings.RESET_IMU_INDEX, "Vision Reset IMU");
+        return setIMUMode(VisionSettings.RESET_IMU_MODE, "Vision Reset IMU");
     }
 }
