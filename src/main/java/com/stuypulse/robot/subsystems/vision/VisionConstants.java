@@ -104,7 +104,7 @@ public interface VisionConstants {
     public enum CameraType {
         /** Limelight lib backend using {@link VisionIOLimelight} */
         LIMELIGHT,
-        /** Limelight lib backend using {@link VisionIOPhoton} */
+        /** Photon lib backend using {@link VisionIOPhoton} */
         PHOTONVISION
     }
 }
