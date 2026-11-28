@@ -106,9 +106,7 @@ public class Robot extends LoggedOpModeRobot {
                             camera,
                             VisionConstants.VISION_MODE == VisionMode.LIMELIGHT
                                     ? new VisionIOLimelight(
-                                            camera.getName(),
-                                            camera.getRobotToCamera(),
-                                            swerve::getRotation)
+                                            camera.getName(), camera.getRobotToCamera())
                                     : new VisionIOPhoton(
                                             camera.getName(), camera.getRobotToCamera()));
                 }
@@ -143,7 +141,7 @@ public class Robot extends LoggedOpModeRobot {
                 }
             }
         }
-        vision = new Vision(swerve.visionConsumer, visionIOMap);
+        vision = new Vision(swerve.visionConsumer, visionIOMap, swerve::getRotation);
 
         configureDefaultCommands();
         configureButtonBindings();
